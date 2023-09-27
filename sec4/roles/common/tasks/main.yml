@@ -19,3 +19,15 @@
     - net.ipv6.conf.default.disable_ipv6
 
 ##(3)YUMパッケージのアップデート
+- name: configure / Update yum packeges
+  yum:
+    name: '*'
+    state: latest
+    update_cache: yes
+
+##(4)EPELリポジトリの設定
+- name: configure / Import EPEL Repository
+  yum: 
+    name: epel-release
+    state: latest
+    update_cache: yes
