@@ -1,0 +1,22 @@
+---
+##(1)Remiリポジトリの登録
+- name: install / Import repository
+  get_url:
+    url: http://rpms.famillecollet.com/enterprise/remi.repo
+    dest: /etc/yum.repos.d/remi.repo
+    mode: 0644
+
+##(2)PHP-FPMのインストール
+- name: install / Install required packages
+  yum:
+    name: "{{ php_packages }}"
+    state: present
+    enablerepo: remi-php56
+
+###Yumモジュールを利用したリポジトリ登録
+# ---
+# - name: install / Import Remi Repository
+#   yum:
+#     name: http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+#     state: present
+#     update_cache: yes
