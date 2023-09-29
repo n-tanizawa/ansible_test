@@ -1,0 +1,7 @@
+---
+##(1)Nginxのインストール
+- name: install / Install required packages
+  yum:
+    name: "{{ nginx_packages }}"
+    state: present
+    
