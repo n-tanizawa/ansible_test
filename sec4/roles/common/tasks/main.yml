@@ -1,7 +1,7 @@
 ---
 ##(1)SELinuxのモード変更
 - name: configure / SELinux permissive
-  ansible.posix.selinux:
+  selinux:
     policy: targeted
     state: permissive
   when: ansible_selinux.config_mode == 'enforcing'
