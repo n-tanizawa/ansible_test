@@ -1,7 +1,7 @@
 ---
 ##(1)SELinuxのモード変更
 - name: configure / SELinux permissive
-  selinux:
+  ansible.posix.selinux:
     policy: targeted
     state: permissive
   when: ansible_selinux.config_mode == 'enforcing'
@@ -31,4 +31,3 @@
     name: epel-release
     state: latest
     update_cache: yes
-    
