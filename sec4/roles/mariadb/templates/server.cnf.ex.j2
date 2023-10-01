@@ -58,11 +58,11 @@ innodb_buffer_pool_size = '8192M'
 [server]
 pid-file=/var/lib/mysql/mariadb.pid
 
-[sst]
-{% if sst_method == 'mariabackup' and api_address_family == 'ipv6' %}
+# [sst]
+# {% if sst_method == 'mariabackup' and api_address_family == 'ipv6' %}
 # NOTE(yoctozepto): for IPv6 we need to tweak sockopt for socat (mariabackup sst backend)
 # see: https://mariadb.com/kb/en/library/xtrabackup-v2-sst-method/#performing-ssts-with-ipv6-addresses
 # and: https://jira.mariadb.org/browse/MDEV-18797
 # this can be removed when MDEV-18797 is resolved
-sockopt=",pf=ip6"
-{% endif %}
+# sockopt=",pf=ip6"
+# {% endif %}
