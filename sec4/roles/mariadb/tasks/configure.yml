@@ -8,7 +8,7 @@
     group: root
     mode: 0644
     backup: yes
-  when: inventory_hostname == "{{ db1i }}"
+  when: inventory_hostname == db1i
 
 ## (2) 全てのMariaDB設定の配備
 - name: configure / Setup galera configure file to slave
@@ -19,7 +19,7 @@
     group: root
     mode: 0644
     backup: yes
-  when: inventory_hostname != "{{ db1i }}"
+  when: inventory_hostname != db1i
 
 ## (3) MariaDBの全停止
 - name: configure / Stop all MariaDB for initialization
@@ -50,7 +50,7 @@
         group: root
         mode: 0644
         backup: yes
-      when: inventory_hostname == "{{ db1i }}"
+      when: inventory_hostname == db1i
 
     ## (7) MariaDBのrootパスワード設定
     - name: configure / Change root password
