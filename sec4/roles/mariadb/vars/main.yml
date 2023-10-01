@@ -4,7 +4,7 @@ mariadb_rsync_port: 4444
 mariadb_nodesync_port: 4567
 mariadb_snapshotstate_port: 4568
 
-mariadb_release: 10.3.9
+mariadb_release: 10.3.39
 mariadb_sst_user: galera
 mariadb_ssht_pass: galera
 mariadb_root_pass: ansible
