@@ -3,7 +3,7 @@
 - name: check_install / Allow ports for firewalld
   firewalld:
     port: "{{ item }}"
-    permenent: yes
+    permanent: yes
     immediate: yes
     state: enabled
   loop: "{{ mariadb_firewalld_port }}"
