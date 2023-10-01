@@ -25,10 +25,10 @@ wsrep_cluster_address="gcomm://
 {%- for host in groups['databases'] -%}
 {{ hostvars[host].ansible_default_ipv4.address }}
 {%- if not loop.last %},{% endif -%}
-{%- endfor -%}
+{%- endfor -%}"
 binlog_format=row
 default_storage_engine=InnoDB
-innobd_autonc_lock_mode=2
+innobd_autoinc_lock_mode=2
 innodb_locks_unsafe_for_binlog=1
 bind-address={{ ansible_default_ipv4.address }}
 wsrep_cluster_name="MariaDB_Cluster"
