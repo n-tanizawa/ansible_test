@@ -1,12 +1,12 @@
 ---
-##(1)SELinuxのモード変更
-# - name: configure / SELinux permissive
-#   selinux:
-#     policy: targeted
-#     state: permissive
-#   when: ansible_selinux.config_mode == 'enforcing'
+#(1)SELinuxのモード変更
+- name: configure / SELinux permissive
+  selinux:
+    policy: targeted
+    state: permissive
+  when: ansible_selinux.config_mode == 'enforcing'
 
-##(2)IPv6インターフェースの無効化
+#(2)IPv6インターフェースの無効化
 - name: configure / Disable ipv6 interface
   sysctl:
     state: present
