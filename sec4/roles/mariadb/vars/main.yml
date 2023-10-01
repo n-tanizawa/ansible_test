@@ -1,5 +1,4 @@
 ---
-kolla_base_distro: centos
 mariadb_service_port: 3306
 mariadb_rsync_port: 4444
 mariadb_nodesync_port: 4567

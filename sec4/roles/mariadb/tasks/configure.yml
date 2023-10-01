@@ -1,6 +1,6 @@
 ---
-## (1) MariaDB設定の配備
-- name: configure / Setup configure file
+## (1) マスターノードのMariaDB設定の配備
+- name: configure / Setup configure file to master
   template:
     src: server.cnf.j2
     dest: /etc/my.cnf.d/server.cnf
@@ -8,8 +8,20 @@
     group: root
     mode: 0644
     backup: yes
+  when: inventory_hostname == "{{ db1i }}"
 
-## (2) MariaDBの全停止
+## (2) 全てのMariaDB設定の配備
+- name: configure / Setup galera configure file to slave
+  template:
+    src: galera.cnf.j2
+    dest: /etc/my.cnf.d/server.cnf
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  when: inventory_hostname != "{{ db1i }}"
+
+## (3) MariaDBの全停止
 - name: configure / Stop all MariaDB for initialization
   systemd:
     name: mysql
@@ -17,11 +29,11 @@
 
 - name: configure / Start MariaDB Galera Master node
   block:
-    ## (3) マスタノードの起動
+    ## (4) マスタノードの起動
     - name: configure / Bootstrap first MariaDB Galera Cluster node
       command: galera_new_cluster
 
-    ## (4) マスターノードの起動確認
+    ## (5) マスターノードの起動確認
     - name: configure / Wait for bootstrapping first MariaDB
       wait_for:
         host: "{{ ansible_default_ipv4.address }}"
@@ -29,12 +41,23 @@
         delay: 5
         timeout: 60
 
-    ## (5) MariaDBのrootパスワード設定
+    ## (6) マスターノードのMariaDB設定の再配備
+    - name: configure / Setup galera configure file to master
+      template:
+        src: galera.cnf.j2
+        dest: /etc/my.cnf.d/server.cnf
+        owner: root
+        group: root
+        mode: 0644
+        backup: yes
+      when: inventory_hostname == "{{ db1i }}"
+
+    ## (7) MariaDBのrootパスワード設定
     - name: configure / Change root password
       command: mysqladmin -u root password "{{ mariadb_root_pass }}"
       register: changed_root_pass
 
-    ## (6) rootパスワード用ロックファイルの配備
+    ## (8) rootパスワード用ロックファイルの配備
     - name: configure / Setup flag file
       file:
         path: /var/lib/mysql/.changed_root_pass.lck
@@ -42,7 +65,7 @@
         mode: 0400
       when: changed_root_pass.changed
 
-    ## (7) SSTユーザーの追加
+    ## (9) SSTユーザーの追加
     - name: configure / Add Galera SST user
       mysql_user:
         login_password: "{{ mariadb_root_pass }}"
@@ -53,13 +76,13 @@
         append_privs: yes
   run_once: true ## block全体に適用されるパラメーター
 
-## (8) クラスタノードの起動
+## (10) クラスタノードの起動
 - name: configure / Start MariaDB Galera Cluster node
   systemd:
     name: mysql
     state: started
 
-## (9) クラスタノードの起動確認
+## (11) クラスタノードの起動確認
 - name: configure / Wait for starting MariaDB Galera Cluster node
   wait_for:
     host: "{{ ansible_default_ipv4.address }}"
