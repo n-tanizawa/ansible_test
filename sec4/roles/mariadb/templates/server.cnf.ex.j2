@@ -1,60 +1,45 @@
-# {%- set wsrep_driver = '/usr/lib/galera/libgalera_smm.so' if kolla_base_distro in ['debian', 'ubuntu'] else '/usr/lib64/galera/libgalera_smm.so' %}
-# {% set sst_method = 'mariabackup' %}
-
-[client]
-default-character-set=utf8
-
-[mysql]
-default-character-set=utf8
+[server]
 
 [mysqld]
-basedir=/usr
+character-set-server=utf8
 
-log_error=/var/log/kolla/mariadb/mariadb.log
+log-output=FILE
 
-log_bin=mysql-bin
-binlog_format=ROW
-expire_logs_days=14
-default-storage-engine=innodb
-innodb_autoinc_lock_mode=2
+# Error log
+log-error="/var/log/mariadb/mysqld.log"
 
-collation-server = utf8_general_ci
-init-connect='SET NAMES utf8'
-character-set-server = utf8
+# Query log
+general-log=0
+general_log_file="/var/log/mariadb/sql.log"
 
-datadir=/var/lib/mysql/
+# Slow Query log
+slow-query-log=1
+slow_query_log_file="/var/log/mariadb/slow.log"
+log_queries_not_using_indexes
+log_slow_admin_statements
+long_query_time=10
 
+[galera]
+wsrep_provider=/usr/lib64/galera/libgalera_smm.so
 wsrep_cluster_address="gcomm://
 {%- for host in groups['databases'] -%}
 {{ hostvars[host].ansible_default_ipv4.address }}
 {%- if not loop.last %},{% endif -%}
-{%- endfor -%}
+{%- endfor -%}"
 binlog_format=row
 default_storage_engine=InnoDB
-innobd_autonc_lock_mode=2
+innodb_autoinc_lock_mode=2
 innodb_locks_unsafe_for_binlog=1
 bind-address={{ ansible_default_ipv4.address }}
-wsrep_provider=/usr/lib64/galera/libgalera_smm.so
 wsrep_cluster_name="MariaDB_Cluster"
 wsrep_node_name="{{ ansible_hostname }}"
 wsrep_node_address="{{ ansible_default_ipv4.address }}"
 wsrep_sst_method=rsync
 wsrep_sst_auth={{ mariadb_sst_user }}:{{ mariadb_sst_pass }}
-wsrep_slave_threads=4
-wsrep_on = ON
+wsrep_on=ON
 
-max_connections=10000
+[embedded]
 
-key_buffer_size = '64M'
-max_heap_table_size = '64M'
-tmp_table_size = '64M'
-{% set dynamic_pool_size_mb = (hostvars[inventory_hostname].ansible_facts.memtotal_mb * 0.4) | round | int %}
-{% if dynamic_pool_size_mb < 8192 %}
-innodb_buffer_pool_size = '{{ dynamic_pool_size_mb }}M'
-{% else %}
-innodb_buffer_pool_size = '8192M'
-{% endif %}
+[mariadb]
 
-[server]
-pid-file=/var/lib/mysql/mariadb.pid
-
+[mariadb-10.3]
