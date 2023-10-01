@@ -21,11 +21,7 @@ long_query_time=10
 
 [galera]
 wsrep_provider=/usr/lib64/galera/libgalera_smm.so
-wsrep_cluster_address="gcomm://
-{%- for host in groups['databases'] -%}
-{{ hostvars[host].ansible_default_ipv4.address }}
-{%- if not loop.last %},{% endif -%}
-{%- endfor -%}"
+wsrep_cluster_address="gcomm://"
 binlog_format=row
 default_storage_engine=InnoDB
 innobd_autoinc_lock_mode=2
