@@ -1,7 +1,7 @@
 ---
 ##(1)firewalldのポート許可
 - name: check_install / Allow ports for firewalld
-  firewalld:
+  ansible.posix.firewalld:
     port: "{{ item }}"
     permenent: yes
     immediate: yes
