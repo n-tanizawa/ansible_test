@@ -1,3 +1,24 @@
+[server]
+
+[mysqld]
+character-set-server=utf8
+
+log-output=FILE
+
+# Error log
+log-error="/var/log/mariadb/mysqld.log"
+
+# Query log
+general-log=0
+general_log_file="/var/log/mariadb/sql.log"
+
+# Slow Query log
+slow-query-log=1
+slow_query_log_file="/var/log/mariadb/slow.log"
+log_queries_not_using_indexes
+log_slow_admin_statements
+long_query_time=10
+
 [galera]
 wsrep_provider=/usr/lib64/galera/libgalera_smm.so
 wsrep_cluster_address="gcomm://
@@ -16,3 +37,9 @@ wsrep_node_address="{{ ansible_default_ipv4.address }}"
 wsrep_sst_method=rsync
 wsrep_sst_auth={{ mariadb_sst_user }}:{{ mariadb_sst_pass }}
 wsrep_on=ON
+
+[embedded]
+
+[mariadb]
+
+[mariadb-10.3]
