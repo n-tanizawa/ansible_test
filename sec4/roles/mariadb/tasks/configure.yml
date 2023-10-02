@@ -94,6 +94,7 @@
         host: "{{ ansible_default_ipv4.network }}/{{ ansible_default_ipv4.netmask }}"
         priv: "*.*:RELOAD,LOCK TABLES,REPLICATION CLIENT"
         append_privs: yes
+      ignore_errors: yes
   run_once: true ## block全体に適用されるパラメーター
 
 ## (11) クラスタノードの起動
