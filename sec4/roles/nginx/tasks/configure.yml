@@ -1,5 +1,14 @@
 ---
-##(1)Nginx設定の配備
+# (1) nginxエラー用ディレクトリ作成
+- name: Create /var/log/nginx directory if it doesn't exist
+  ansible.builtin.file:
+    path: /var/log/nginx
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+##(2)Nginx設定の配備
 - name: configure / Setup global configuration file
   copy:
     src: nginx.conf
@@ -8,7 +17,7 @@
     group: root
     mode: 0644
 
-##(2)バーチャルホスト設定の配備
+##(3)バーチャルホスト設定の配備
 - name: configure / Setup configuration file
   template:
     src: wordpress.conf.j2
@@ -17,14 +26,14 @@
     group: root
     mode: 0644
 
-##(3)Nginxの起動
+##(4)Nginxの起動
 - name: configure / Start nginx service
   systemd:
     name: nginx
     state: reloaded
     enabled: yes
 
-##(4)Nginxの起動確認
+##(5)Nginxの起動確認
 - name: configure / Wait for nginx restart
   wait_for:
     host: "{{ ansible_default_ipv4.address }}"
