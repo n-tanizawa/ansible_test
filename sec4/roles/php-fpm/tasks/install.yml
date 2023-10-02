@@ -10,6 +10,7 @@
   command: yum install -y https://rpms.remirepo.net/enterprise/remi-release-7.rpm
   args:
     warn: no  # ワーニングメッセージを無効化します
+  ignore_errors: yes
 
 ##(2)PHP-FPMのインストール
 - name: install / Install required packages
