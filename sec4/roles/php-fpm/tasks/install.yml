@@ -11,7 +11,7 @@
   yum:
     name: "{{ php_packages }}"
     state: present
-    enablerepo: remi-php82
+    enablerepo: remi-php56
 
 ###Yumモジュールを利用したリポジトリ登録
 # ---
