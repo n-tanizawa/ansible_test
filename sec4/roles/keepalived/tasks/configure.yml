@@ -1,6 +1,56 @@
 ---
-##(1)Keepalivedのインストール
-- name: install / Install required packages
-  yum:
-    name: "{{ keepalived_packages }}"
-    state: present
+##(1)Keepalivedのdefault設定
+- name: configure / Configure service defaults
+  copy:
+    src: default_keepalived
+    dest: /etc/default/keepalived
+    owner: root
+    group: root
+    mode: 0644
+
+# (2) Keepalived設定ファイル用ディレクトリ作成
+- name: Create /etc/keepalived directory if it doesn't exist
+  ansible.builtin.file:
+    path: /etc/keepalived
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+##(3)Keepalived設定の配備
+- name: configure / Setup configuration file
+  template:
+    src: keepalived.conf.j2
+    dest: /etc/keepalived/keepalived.conf
+    owner: root
+    group: root
+    mode: 0644
+
+##(4)Rsyslog設定の配備
+- name: configure / Configure rsyslog settings
+  template:
+    src: rsyslog_service.conf.j2
+    dest: /etc/rsyslog.d/keepalived.conf
+    owner: root
+    group: root
+    mode: 0644
+
+##(5)Keepalivedの起動
+- name: configure / Start keepalived
+  systemd:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
+  loop:
+   - keepalived
+   - rsyslog
+
+##(6)Keepalivedの起動確認
+- name: configure / Wait for keepalived reload
+  local_action:
+    module: wait_for
+    host: "{{ item.address }}"
+    delay: 5
+    timeout: 60
+  loop: "{{ keepalived_vip_interfaces }}"
+  run_once: True
