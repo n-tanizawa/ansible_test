@@ -36,6 +36,17 @@
     name: mysql
     state: stopped
 
+## (2) マスターノードの設定ファイルの配備
+- name: configure / Setup /var/lib/mysql/grastate.dat to master
+  template:
+    src: grastat.dat.j2
+    dest: /var/lib/mysql/grastate.dat
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+  when: inventory_hostname == 'db1i'
+
 - name: configure / Start MariaDB Galera Master node
   block:
     ## (5) マスタノードの起動
