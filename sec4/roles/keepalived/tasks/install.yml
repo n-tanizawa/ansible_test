@@ -8,7 +8,16 @@
     group: root
     mode: 0644
 
-##(2)Keepalived設定の配備
+# (2) Keepalived設定ファイル用ディレクトリ作成
+- name: Create /etc/keepalived directory if it doesn't exist
+  ansible.builtin.file:
+    path: /etc/keepalived
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+##(3)Keepalived設定の配備
 - name: configure / Setup configuration file
   template:
     src: keepalived.conf.j2
@@ -17,7 +26,7 @@
     group: root
     mode: 0644
 
-##(3)Rsyslog設定の配備
+##(4)Rsyslog設定の配備
 - name: configure / Configure rsyslog settings
   template:
     src: rsyslog_service.conf.j2
@@ -26,7 +35,7 @@
     group: root
     mode: 0644
 
-##(4)Keepalivedの起動
+##(5)Keepalivedの起動
 - name: configure / Start keepalived
   systemd:
     name: "{{ item }}"
@@ -36,7 +45,7 @@
    - keepalived
    - rsyslog
 
-##(5)Keepalivedの起動確認
+##(6)Keepalivedの起動確認
 - name: configure / Wait for keepalived reload
   local_action:
     module: wait_for
