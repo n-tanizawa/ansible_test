@@ -31,7 +31,7 @@
 ##(4)ロックファイルを待つ
 - name: Wait for YUM lock file to be released
   pause:
-    seconds: 15  # 例: 15秒待機
+    seconds: 5  # 例: 15秒待機
 
 ##(5)YUMパッケージのアップデート
 - name: configure / Update yum packeges
@@ -42,14 +42,47 @@
   async: 1000
   poll: 1
   register: yum_sleeper
+  ignore_errors: yes
 
-- name: Yum check on fire and forget task
+- name: configure / Yum check on fire and forget task
   async_status:
     jid: "{{yum_sleeper.ansible_job_id}}"
   register: job_result
   until: job_result.finished
   retries: 30
   delay: 10
+  ignore_errors: yes
+
+- name: configure / yum-complete-transaction
+  command: yum-complete-transaction --cleanup-only
+  ignore_errors: yes
+  when: yum_sleeper.rc != 0  # 前のタスクが失敗した場合のみ実行
+      
+- name: configure / yum history redo last
+  command: yum history redo last
+  ignore_errors: yes
+  when: yum_sleeper.rc != 0  # 前のタスクが失敗した場合のみ実行
+
+- name: configure / Update yum packeges again
+  yum:
+    name: '*'
+    state: latest
+    update_cache: yes
+  async: 1000
+  poll: 1
+  register: yum_sleeper
+  ignore_errors: yes
+  when: yum_sleeper.rc != 0  # 前のタスクが失敗した場合のみ実行
+
+- name: configure / Yum check on fire and forget task
+  async_status:
+    jid: "{{yum_sleeper.ansible_job_id}}"
+  register: job2_result
+  until: job2_result.finished
+  retries: 30
+  delay: 10
+  ignore_errors: yes
+  when: yum_sleeper.rc != 0  # 前のタスクが失敗した場合のみ実行
 
 ##(6)EPELリポジトリの設定
 - name: configure / Import EPEL Repository
