@@ -41,8 +41,8 @@
   template:
     src: grastat.dat.j2
     dest: /var/lib/mysql/grastate.dat
-    owner: root
-    group: root
+    owner: mysql
+    group: mysql
     mode: 0644
     backup: yes
   when: inventory_hostname == 'db1i'
