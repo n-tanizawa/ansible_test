@@ -56,12 +56,12 @@
 - name: configure / yum-complete-transaction
   command: yum-complete-transaction --cleanup-only
   ignore_errors: yes
-  when: yum_sleeper.rc != 0  # 前のタスクが失敗した場合のみ実行
+  when: yum_sleeper.failed  # 前のタスクが失敗した場合のみ実行
       
 - name: configure / yum history redo last
   command: yum history redo last
   ignore_errors: yes
-  when: yum_sleeper.rc != 0  # 前のタスクが失敗した場合のみ実行
+  when: yum_sleeper.failed  # 前のタスクが失敗した場合のみ実行
 
 - name: configure / Update yum packeges again
   yum:
@@ -72,7 +72,7 @@
   poll: 1
   register: yum_sleeper
   ignore_errors: yes
-  when: yum_sleeper.rc != 0  # 前のタスクが失敗した場合のみ実行
+  when: yum_sleeper.failed  # 前のタスクが失敗した場合のみ実行
 
 - name: configure / Yum check on fire and forget task
   async_status:
@@ -82,7 +82,7 @@
   retries: 30
   delay: 10
   ignore_errors: yes
-  when: yum_sleeper.rc != 0  # 前のタスクが失敗した場合のみ実行
+  when: yum_sleeper.failed  # 前のタスクが失敗した場合のみ実行
 
 ##(6)EPELリポジトリの設定
 - name: configure / Import EPEL Repository
