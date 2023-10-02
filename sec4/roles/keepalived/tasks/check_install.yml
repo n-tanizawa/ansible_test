@@ -4,7 +4,6 @@
   firewalld:
     zone: public
     rich_rule: 'rule protocol value=vrrp family="ipv4" destination address="224.0.0.0/8" accept'
-  permanent: yes
   state: enabled
 
 ##(2)IPフォワーディングの許可
