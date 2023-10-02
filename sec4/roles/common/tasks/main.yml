@@ -24,6 +24,17 @@
     name: '*'
     state: latest
     update_cache: yes
+  async: 1000
+  poll: 1
+  register: yum_sleeper
+
+- name: Yum check on fire and forget task
+  async_status:
+    jid: "{{yum_sleeper.ansible_job_id}}"
+  register: job_result
+  until: job_result.finished
+  retries: 30
+  delay: 10
 
 ##(4)EPELリポジトリの設定
 - name: configure / Import EPEL Repository
