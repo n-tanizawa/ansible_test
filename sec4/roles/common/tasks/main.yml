@@ -58,15 +58,17 @@
   shell: "[[ -f /var/run/yum.pid ]] && echo 'Lock file exists' || echo 'Lock file does not exist'"
   register: yum_lock_check
   ignore_errors: yes
+  when: yum_sleeper.failed
 
 - name: Remove YUM lock file if it exists
   shell: "[[ -f /var/run/yum.pid ]] && rm -f /var/run/yum.pid"
-  when: yum_lock_check.stdout == 'Lock file exists'
+  when: yum_lock_check.stdout == 'Lock file exists' and yum_sleeper.failed
 
 ##(4)ロックファイルを待つ
 - name: Wait for YUM lock file to be released
   pause:
     seconds: 5  # 例: 15秒待機
+  when: yum_sleeper.failed
 
 - name: configure / yum-complete-transaction
   command: yum-complete-transaction --cleanup-only
