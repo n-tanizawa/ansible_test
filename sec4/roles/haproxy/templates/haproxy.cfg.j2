@@ -10,7 +10,7 @@ global
     deamon
     stats           socket /var/run/haproxy.sock mode 600 level admin
     stats           bind-process 1
-    nbproc          {{ ansible_processer_cores }}
+    nbproc          1
 
 default
     mode                    tcp
