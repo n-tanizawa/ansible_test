@@ -53,54 +53,6 @@
   delay: 10
   ignore_errors: yes
 
-##(3)ロックファイルの確認と解除
-- name: Check for YUM lock file
-  shell: "[[ -f /var/run/yum.pid ]] && echo 'Lock file exists' || echo 'Lock file does not exist'"
-  register: yum_lock_check
-  ignore_errors: yes
-  when: yum_sleeper.failed
-
-- name: Remove YUM lock file if it exists
-  shell: "[[ -f /var/run/yum.pid ]] && rm -f /var/run/yum.pid"
-  when: yum_lock_check.stdout == 'Lock file exists' and yum_sleeper.failed
-
-##(4)ロックファイルを待つ
-- name: Wait for YUM lock file to be released
-  pause:
-    seconds: 5  # 例: 15秒待機
-  when: yum_sleeper.failed
-
-- name: configure / yum-complete-transaction
-  command: yum-complete-transaction --cleanup-only
-  ignore_errors: yes
-  when: yum_sleeper.failed  # 前のタスクが失敗した場合のみ実行
-      
-- name: configure / yum history redo last
-  command: yum history redo last
-  ignore_errors: yes
-  when: yum_sleeper.failed  # 前のタスクが失敗した場合のみ実行
-
-- name: configure / Update yum packeges again
-  yum:
-    name: '*'
-    state: latest
-    update_cache: yes
-  async: 1000
-  poll: 1
-  register: yum_sleeper
-  ignore_errors: yes
-  when: yum_sleeper.failed  # 前のタスクが失敗した場合のみ実行
-
-- name: configure / Yum check on fire and forget task
-  async_status:
-    jid: "{{yum_sleeper.ansible_job_id}}"
-  register: job2_result
-  until: job2_result.finished
-  retries: 30
-  delay: 10
-  ignore_errors: yes
-  when: yum_sleeper.failed  # 前のタスクが失敗した場合のみ実行
-
 ##(6)EPELリポジトリの設定
 - name: configure / Import EPEL Repository
   yum: 
