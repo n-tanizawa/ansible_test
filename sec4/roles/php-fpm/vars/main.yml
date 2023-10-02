@@ -8,6 +8,7 @@ php_packages:
    - php-fpm
    - php-mbstring
    - php-mysql
+   - php-enchant
    - php-process
    - php-gd
    - php-xml
