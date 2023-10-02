@@ -51,6 +51,5 @@ backend {{ haproxy_backend_app }}
     {{ option }}
 {% endfor %}
 {% for host in groups[haproxy_backend_groups] %}
-    server      {{ hostvars[host].inventory_hostname }} {{hostvars[host].
-ansible_host }}:{{ haproxy_backend_port }} check inter 2000 rise 2 fall 5
+    server      {{ hostvars[host].inventory_hostname }} {{hostvars[host].ansible_host }}:{{ haproxy_backend_port }} check inter 2000 rise 2 fall 5
 {% endfor %}
