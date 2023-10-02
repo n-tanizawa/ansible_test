@@ -26,8 +26,8 @@
       priv: "{{ wordpress_db_name }}.*:ALL"
       state: present
       
-   run_once: True                                    ##block全体に適用されるパラメーター
-   delegate_to: "{{ hostvars.db1i.ansible_host }}"   ##block全体に適用されるパラメーター
+  run_once: True                                    ##block全体に適用されるパラメーター
+  delegate_to: "{{ hostvars.db1i.ansible_host }}"   ##block全体に適用されるパラメーター
 #####blockの終了#####
 
 ##(4)WordPress設定の配備
