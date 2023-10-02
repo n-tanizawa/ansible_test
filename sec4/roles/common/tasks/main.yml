@@ -18,7 +18,7 @@
     - net.ipv6.conf.all.disable_ipv6
     - net.ipv6.conf.default.disable_ipv6
 
-##(3)YUMパッケージのアップデート
+##(3)ロックファイルの確認と解除
 - name: Check for YUM lock file
   shell: "[[ -f /var/run/yum.pid ]] && echo 'Lock file exists' || echo 'Lock file does not exist'"
   register: yum_lock_check
@@ -28,10 +28,12 @@
   shell: "[[ -f /var/run/yum.pid ]] && rm -f /var/run/yum.pid"
   when: yum_lock_check.stdout == 'Lock file exists'
 
+##(4)ロックファイルを待つ
 - name: Wait for YUM lock file to be released
   pause:
     seconds: 300  # 例: 5分間待機
 
+##(5)YUMパッケージのアップデート
 - name: configure / Update yum packeges
   yum:
     name: '*'
@@ -49,7 +51,7 @@
   retries: 30
   delay: 10
 
-##(4)EPELリポジトリの設定
+##(6)EPELリポジトリの設定
 - name: configure / Import EPEL Repository
   yum: 
     name: epel-release
