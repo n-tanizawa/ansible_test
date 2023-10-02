@@ -8,7 +8,7 @@ haproxy_backend_app: "{{ cluster_service }}"
 haproxy_backend_groups: apps
 haproxy_backend_option:
    - "balance source"
-   - "http-request set-header Host{{ hostvars.app_v1e.ansible_host }}"
+   - "http-request set-header Host {{ hostvars.app_v1e.ansible_host }}"
    
 haproxy_firewalld_port:
    - "{{ haproxy_stats_port }}/tcp"
