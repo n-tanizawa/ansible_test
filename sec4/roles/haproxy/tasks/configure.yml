@@ -23,7 +23,7 @@
 - name: configure / Start rsyslog service
   systemd:
     name: rsyslog
-    state: reloaded
+    state: restarted
     enabled: yes
 
 ##(4)HAProxyの起動
