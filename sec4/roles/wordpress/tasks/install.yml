@@ -3,14 +3,14 @@
 - name: install / Download WordPress
   git: 
     repo: https://github.com/WordPress/WordPress.git
-    dest: "/srv/wordpress-{{ wordpress_version }}"
+    dest: "/wordpress-{{ wordpress_version }}"
     version: "{{ wordpress_version }}-branch"
 
 ##(2)ドキュメントルートの作成
 - name: install / Link wordpress root document
   file:
     src: /srv/wordpress-{{ wordpress_version }}
-    path: /srv/wordpress
+    path: {{ document_root }}/wordpress-{{ wordpress_version }}
     owner: nginx
     group: nginx
     state: link
@@ -18,7 +18,7 @@
 ##(3)ドキュメントルールの所有権設定
 - name: install / Change ownership in WordPress
   file:
-    path: /srv/wordpress-{{ wordpress_version }}
+    path:  {{ document_root }}//wordpress-{{ wordpress_version }}
     owner: nginx
     group: nginx
     recurse: yes
