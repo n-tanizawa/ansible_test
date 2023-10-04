@@ -1,27 +1,19 @@
 server {
-        listen      {{ ansible_default_ipv4.address }}:{{ nginx_service_port }};
-        root {{ wordpress_doc_root }};
+  listen {{ nginx_service_port }};
+  server_name {{ ansible_default_ipv4.address }};
+  root {{ wordpress_doc_root }};
+  index index.php index.html index.htm;
 
-        # Deny access to any files with a .php extension in the uploads directiory
-        location ~* /(?:uploadsfiles)/.*\.php$ {
-                deny all;
-        }
+  location / {
+    try_files $uri $uri/ /index.php?$query_string;
+  }
 
-        location / {
-                index index.php index.html index.htm;
-                try_files $uri $uri/ /index.php $args;
-        }
-
-        location ~* /wp-config.php {
-                deny all;
-        }
-
-        location ~\.php$ {
-                try_files $uri =404;
-                fastcgi_split_path_info ~(.+\.php)(/.+)$;
-                fastcgi_index index.php;
-                fastcgi_pass unix:/var/run/php-fpm/wordpress.sock;
-                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-                include     fastcgi_params;
-        }
+  location ~ \.php$ {
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    fastcgi_pass unix:/var/run/php74-fpm.sock;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param PATH_INFO $fastcgi_path_info;
+    include fastcgi_params;
+  }
 }

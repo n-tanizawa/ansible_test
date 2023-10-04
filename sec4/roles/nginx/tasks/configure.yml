@@ -10,8 +10,8 @@
 
 ##(2)Nginx設定の配備
 - name: configure / Setup global configuration file
-  copy:
-    src: nginx.conf
+  template:
+    src: nginx.conf.j2
     dest: /etc/nginx/nginx.conf
     owner: root
     group: root
