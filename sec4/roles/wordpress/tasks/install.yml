@@ -14,6 +14,7 @@
     owner: nginx
     group: nginx
     state: link
+    force: yes  # 既存のファイルまたはディレクトリを上書き
 
 ##(3)ドキュメントルールの所有権設定
 - name: install / Change ownership in WordPress
