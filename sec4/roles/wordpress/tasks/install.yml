@@ -3,7 +3,7 @@
 - name: install / Download WordPress
   git: 
     repo: https://github.com/WordPress/WordPress.git
-    dest: "{{ document_root }}/wordpress-{{ wordpress_version }}"
+    dest: "/srv/wordpress-{{ wordpress_version }}"
     version: "{{ wordpress_version }}-branch"
 
 ##(2)ドキュメントルートの作成
