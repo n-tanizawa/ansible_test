@@ -10,7 +10,7 @@
 - name: install / Link wordpress root document
   file:
     src: "/srv/wordpress-{{ wordpress_version }}"
-    path: "{{ document_root }}/wordpress-{{ wordpress_version }}"
+    path: "{{ document_root }}/wordpress"
     owner: nginx
     group: nginx
     state: link
@@ -19,7 +19,7 @@
 ##(3)ドキュメントルールの所有権設定
 - name: install / Change ownership in WordPress
   file:
-    path: "{{ document_root }}/wordpress-{{ wordpress_version }}"
+    path: "{{ document_root }}/wordpress"
     owner: nginx
     group: nginx
     recurse: yes
