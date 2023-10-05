@@ -4,5 +4,5 @@ nginx_firewalld_port:
    - "{{ nginx_service_port }}/tcp"
 wordpress_doc_root: "/usr/share/nginx/html"
 nginx_packages:
-   - nginx-1.25.1
+   - nginx-1.24.0
    - MySQL-python
