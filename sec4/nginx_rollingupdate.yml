@@ -1,0 +1,45 @@
+---
+- name: Rolling Update for Nginx
+  hosts: apps
+  become: True
+  serial: 1
+
+  vars:
+    cluster_service: app_cluster
+
+##(1)更新対象のメンテナンスモードへ移行
+  pre_tasks:
+  - name: Disable WordPress service
+    haproxy:
+      state: disabled
+      host: "{{ inventory_hostname }}"
+      backend: "{{ cluster_service }}"
+      socket: /var/run/haproxy.sock
+      wait: yes
+    delegate_to: "{{ item }}"
+    loop: "{{ groups.lbs }}"
+
+##(2)設定ファイルの追加
+  - name: Copy nginx.repo to /etc/yum.repsd
+    copy:
+      src: nginx.repo
+      dest: /etc/yum.repos.d/
+      owner: root
+      group: root
+      mode: 0644
+  
+##(3)Nginxのアップデート作業
+  roles:
+   - { role: nginx, tags: nginx }
+
+##(4)更新対象のメンテナンスモード解除
+  post_tasks:
+  - name: Re-enable WordPress service
+    haproxy:
+      state: enabled
+      host: "{{ inventory_hostname }}"
+      backend: "{{ cluster_service }}"
+      socket: /var/run/haproxy.sock
+      wait: yes
+    delegate_to: "{{ item }}"
+    loop: "{{ groups.lbs }}"
