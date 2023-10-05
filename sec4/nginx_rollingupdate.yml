@@ -24,9 +24,9 @@
     yum_repository:
       name: nginx
       description: NGINX Mainline Repository
-      baseurl: https://nginx.org/packages/mainline/centos/7/$basearch/
+      baseurl: http://nginx.org/packages/mainline/centos/$releasever/$basearch/ 
       gpgcheck: yes
-      gpgkey: https://nginx.org/keys/nginx_signing.key
+      gpgkey: https://nginx. org/keys/nginx_signing.key 
       enabled: yes
 
 ##(3)Nginxのアップデート作業
