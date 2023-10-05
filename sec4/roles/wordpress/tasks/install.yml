@@ -3,14 +3,14 @@
 - name: install / Download WordPress
   git: 
     repo: https://github.com/WordPress/WordPress.git
-    dest: "{{ document_root }}/wordpress-{{ wordpress_version }}"
+    dest: {{ document_root }}/wordpress-{{ wordpress_version }}
     version: "{{ wordpress_version }}-branch"
 
 ##(2)ドキュメントルートの作成
 - name: install / Link wordpress root document
   file:
     src: /srv/wordpress-{{ wordpress_version }}
-    path: "{{ document_root }}/wordpress-{{ wordpress_version }}"
+    path: {{ document_root }}/wordpress-{{ wordpress_version }}
     owner: nginx
     group: nginx
     state: link
