@@ -22,7 +22,7 @@
 ##(2)メインラインの最新版に設定
   - name: Enable nginx-mainline YUM repository
     yum_repository:
-      name: nginx-mainline
+      name: nginx
       description: NGINX Mainline Repository
       baseurl: https://nginx.org/packages/mainline/centos/7/$basearch/
       gpgcheck: yes
