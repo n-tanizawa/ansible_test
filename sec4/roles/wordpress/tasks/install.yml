@@ -23,3 +23,5 @@
     owner: nginx
     group: nginx
     recurse: yes
+    state: directory
+
