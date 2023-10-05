@@ -34,7 +34,7 @@
 - name: configure / Deploy WordPress config file
   template:
     src: wp-config.php.j2
-    dest: {{ document_root }}/wp-config.php
+    dest: /srv/wordpress/wp-config.php
     owner: nginx
     group: nginx
     mode: 0644
