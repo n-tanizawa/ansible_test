@@ -4,5 +4,5 @@ nginx_firewalld_port:
    - "{{ nginx_service_port }}/tcp"
 wordpress_doc_root: "/usr/share/nginx/html"
 nginx_packages:
-   - nginx-1.24.0
+   - http://nginx.org/packages/mainline/centos/7/x86_64/RPMS/nginx-1.21.4-1.el7.ngx.x86_64.rpm
    - MySQL-python
