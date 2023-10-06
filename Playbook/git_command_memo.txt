@@ -1,8 +1,8 @@
 
-[git pull]
+[git pull] 
 git pull https://github.com/n-tanizawa/ansible_test.git 
 
-[git push]
+[git push]→./git_push.bat
 git add .
 git commit -m "comment"
 git push origin main
