@@ -1,0 +1,21 @@
+[事前準備]
+・Ansible運用ユーザーの作成     ## 実環境では誤操作を考慮して特権ユーザでの操作を避け、運用オペレーション用のユーザを使用する
+
+・SSH公開鍵認証の設定　         ## 秘密鍵と公開鍵のペアを利用し、パスワードの盗聴を避ける
+    ssh-keygen -t rsa
+    ssh-copy-id -o StrictHostKeyChecking=no -i $HOME/.ssh/id_rsa.pub localhost
+    ssh-copy-id -o StrictHostKeyChecking=no -i $HOME/.ssh/id_rsa.pub [ターゲットノード]
+
+・作業ディレクトリの作成        ## Playbookを作成するディレクトリ
+    mkdir -vp PATH 
+    ## -v 結果を表示 
+    ## -p 親ディレクトリが存在しなくてもエラーメッセージを表示せずに親ディレクトリと子ディレクトリを作成する
+    
+・ansible.cfgの設定            ## Ansibleの設定ファイル
+
+
+[コマンド実行方法]
+cd C:\Users\tncoc\デスクトップ\ansible\ansible_test\effective_ansible\sec2 ## playbookのあるディレクトリへ移動
+ansible -i inventory.ini test_servers -m ping ## pingモジュールで疎通確認
+
+--ask-pass または -k パスワード認証にて都度パスワードを入力する
