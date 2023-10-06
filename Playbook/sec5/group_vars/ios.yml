@@ -1,0 +1,11 @@
+---
+ansible_connection: network_cli     # 利用するコネクションプラグイン
+ansible_network_os: ios       # プラットフォーム名
+ansible_user: iosuser         # 接続するユーザー名
+ansible_password: iosp@ss99   # 接続するパスワード
+
+show_commands:
+   - show clock
+   - show version
+   - show interfaces
+   - show running-config

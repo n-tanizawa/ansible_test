@@ -1,0 +1,27 @@
+---
+ntp:    # NTPサーバー設定
+  servers:
+    - x.x.x.x
+    - x.x.x.x
+
+snmp:   # SNMP設定
+  community:
+    - name: public      # コミュニティ名
+      read_write: no    # ReadOnly権限ならno
+    - name: secret
+      read_write: yes   # ReadWrite権限ならyes
+
+syslog: # Syslogサーバー設定
+  servers:
+    - x.x.x.x
+    - x.x.x.x
+
+user:   # ユーザー設定
+  - name: admin01     # ユーザー名
+    sshkey: ~/user_keys/admin01_id_rsa.pub    # 公開鍵のパス
+    privilege: 15     # ios用権限設定
+    role: super-user  #junos用権限設定
+  - name: admin02
+    sshkey: ~/user_keys/admin02_id_rsa.pub
+    privilege: 15
+    role: super-user 

@@ -1,0 +1,11 @@
+---
+ansible_connection: netconf     # 利用するコネクションプラグイン
+ansible_network_os: junos       # プラットフォーム名
+ansible_user: junosuser         # 接続するユーザー名
+ansible_password: junosp@ss99   # 接続するパスワード
+
+show_commands:    # Juniper Junos上で実行したいshowコマンドのリスト
+   - show system uptime
+   - show version
+   - show interfaces
+   - show configuration
