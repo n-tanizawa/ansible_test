@@ -1,0 +1,11 @@
+
+[git pull]
+git pull https://github.com/n-tanizawa/ansible_test.git 
+
+[git push]
+git add .
+git commit -m "comment"
+git push origin main
+
+[git clone]
+git clone https://github.com/n-tanizawa/ansible_test.git 
