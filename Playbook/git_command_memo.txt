@@ -9,3 +9,25 @@ git push origin main
 
 [git clone]
 git clone https://github.com/n-tanizawa/ansible_test.git 
+
+[git config] #優先順位は、system < global < local
+-- system
+git config --system user.name "hoge"
+git config --system user.email hoge@example.com
+
+-- global
+git config --global user.name "fuga"
+git config --global user.email fuga@example.com
+
+-- local
+git config --local user.name "piyo"
+git config --local user.email piyo@example.com
+
+-- git -c
+git -c user.name="bar" -c user.email=bar@example.com commit -m "test"
+
+#	        適用範囲	                         設定ファイルの場所	                  設定コマンド（git config）のオプション
+# system	システム上の全ユーザーの全リポジトリ	/etc/gitconfig	                    --system
+# global	使用ユーザー	                      ~/.gitconfig                        --global
+                                                 または~/.config/git/config	
+# local	    設定したリポジトリ	                  .git/config（設定したリポジトリ内）   --localまたはなし
