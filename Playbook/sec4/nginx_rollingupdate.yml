@@ -19,21 +19,11 @@
     delegate_to: "{{ item }}"
     loop: "{{ groups.lbs }}"
 
-##(2)メインラインの最新版に設定
-  - name: Enable nginx-mainline YUM repository
-    yum_repository:
-      name: nginx
-      description: NGINX Mainline Repository
-      baseurl: http://nginx.org/packages/mainline/centos/$releasever/$basearch/ 
-      gpgcheck: yes
-      gpgkey: https://nginx. org/keys/nginx_signing.key 
-      enabled: yes
-
-##(3)Nginxのアップデート作業
+##(2)Nginxのアップデート作業
   roles:
    - { role: nginx, tags: nginx }
 
-##(4)更新対象のメンテナンスモード解除
+##(3)更新対象のメンテナンスモード解除
   post_tasks:
   - name: Re-enable WordPress service
     haproxy:
