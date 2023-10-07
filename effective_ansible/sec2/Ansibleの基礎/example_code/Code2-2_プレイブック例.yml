@@ -1,0 +1,5 @@
+---
+- hosts: web_servers
+  tasks:
+   - name: Ping Connection
+     ping:

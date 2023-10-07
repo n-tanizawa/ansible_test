@@ -1,0 +1,7 @@
+vars:
+    local_home: "{{ lookup('env', 'HOME', errors='ignore') }}"
+tasks:
+ - name: Copy Files
+   copy:
+    src: foo.conf
+    dest: "{{ local_home }}/foo.conf"
