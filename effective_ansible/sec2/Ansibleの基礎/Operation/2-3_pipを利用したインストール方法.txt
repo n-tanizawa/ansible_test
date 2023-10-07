@@ -1,0 +1,16 @@
+[pipを利用したAnsibleのインストール]
+
+root権限でvirtualenvをインストールし、その後に一般ユーザで仮想実行環境を作成してAnsibleをインストールする。
+pipを利用するためには、Pythonの開発ツール群を事前にインストールする必要がある。
+
+$ sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+$ sudo yum install -y python36u python36u-libs python36u-devel python36u-pip
+$ sudo pip3.6 install --upgrade pip
+$ sudo pip3.6 install virtualenv
+$ virtualenv $HOME/virtualenv
+$ source $HOME/venv/bin/activate
+(venv) $ pip3.6 install ansible==2.8.4
+(venv) $ ansible --version
+
+virtualenvを活用した場合は、毎回virtualenvを有効化してからAnsibleを利用しなければならない。
+また、サーバーへ再ログインすることで、virtualenvが無効化される。
