@@ -1,0 +1,5 @@
+Centos環境でのインストール方法
+
+$ sudo yum install \ -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+$ sudo yum install -y ansible
+$ ansible --version
