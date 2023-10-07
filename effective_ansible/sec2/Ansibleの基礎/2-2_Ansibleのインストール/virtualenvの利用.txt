@@ -1,3 +1,9 @@
+[virtualenvの仕組み]
+virtualenvとは、同一のPythonバージョンで異なる仮想環境を管理し、用途に応じてPython環境を切り替えるためのツール。
+これを利用することによって、同一バージョン内でもライブラリが異なる環境を作り出すことができる。
+また、OSの標準ライブラリにインストールされたPythonライブラリを維持したまま、自由にPythonライブラリのインストールや
+削除が可能。ただし、virtualenvは異なるPythonのバージョンを切り替えるツールではない。
+
 $ virtualenv [環境名]                   ## Python仮想環境の作成
 $ source [環境名]/bin/activate          ## virtualenvの有効化
 (環境名)$ python -c "help('module')"    ## 仮想環境
