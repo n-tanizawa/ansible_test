@@ -1,0 +1,4 @@
+$ virtualenv [環境名]                   ## Python仮想環境の作成
+$ source [環境名]/bin/activate          ## virtualenvの有効化
+(環境名)$ python -c "help('module')"    ## 仮想環境
+(環境名)$ deactivate                    ## virtualenvの無効化
