@@ -1,0 +1,37 @@
+■ ansible.cfgの設定
+   
+   読み込みの優先順位
+　(1)環境変数にファイルパスを設定（例:ANSIBLE_CONFIG=/usr/local/ansible/conf/ansible.cfg）
+　(2)カレントディレクトリに存在する設定(./ansible.cfg)
+　(3)ホームディレクトリに存在する設定($HOEM/.ansible.cfg)
+　(4)/etc/ansible/ansible.cfg
+
+　OSパッケージマネージャーでインストールした場合は、/etc/ansible/配下にデフォルトで配置されるが、
+　pipやソースコードからインストールした場合は、設定ファイルは存在しない。
+
+　よく使用されるansible.cfgのパラメーター
+　
+   設定パラメーター    デフォルト値        内容
+
+   forks               5                ターゲットノードの並列処理を行うプロセス数を設定する
+
+   log_path            -                ansible実行コマンドログの配置場所を設定する
+
+   host_key_checking   True             ターゲットノードにSSH接続する際の公開鍵のフィンガープリントチェックを行う
+
+   gathering           implicit         ターゲットノードの詳細情報取得に関する設定を行う
+                                           implicit:キャッシュが無視され、常に情報収集が行われる
+                                           explicit:キャッシュを利用し、情報収集が行われない
+                                           smart:新規に接続したときのみ情報収集を行い、キャッシュがある場合は情報収集を行わない
+
+   gather_subset       all              ターゲットノードの詳細情報取得を制限できる
+                                           all:全ての情報を取得する
+                                           network:最小限の情報をネットワーク情報を収集する
+                                           hardware:ハードウェア情報を収集する
+                                           virtual:最小限の情報と仮想マシンに関する情報を収集する
+
+   transport           smart            ターゲットノードへの接続方法の設定を行う
+                                           smart:OpenSSHがControlPersist#機能対応時はOpenSSH接続を行い、
+                                                 未対応であれば、PythonモジュールのParamikoを利用して接続を行う
+                                           paramiko:PythonのSSH機能で、アクションのたびに各ホストに再接続を行う
+                                           local:SSHを利用せずに、直接ローカルホストに接続を行う
