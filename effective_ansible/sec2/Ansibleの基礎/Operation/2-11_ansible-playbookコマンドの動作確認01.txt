@@ -1,0 +1,1 @@
+$ ansible-playbook -i ./sec/test02_inventory.ini ./sec2/test_playbook.yml
