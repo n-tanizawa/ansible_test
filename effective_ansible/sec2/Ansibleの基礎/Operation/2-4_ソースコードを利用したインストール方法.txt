@@ -9,3 +9,8 @@ $ sudo pip3.6 install virtualenv
 $ virtualenv $HOME/venv
 $ source $HOME/venv/bin/activate
 (venv) $ git clone https://github.com/ansible/ansible.git --recursive
+(venv) $ cd ./ansible
+(venv) $ git checkout stable-2.8
+(venv) $ pip3.6 install -r ./requirements.txt
+(venv) $ pip3.6 install packaging
+(venv) $ ansible --version
