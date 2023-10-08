@@ -1,0 +1,20 @@
+[root権限の必要なOSのユーザ作成]
+ansibleコマンドでは、root権限の必要なオペレーションも実行可能。
+OSのユーザ管理にはuserモジュールを利用する。
+userモジュールには以下のアーギュメントが用意されている。
+
+・user:ユーザ名を指定
+・groups:所属グループを指定
+・append:groupsで指定したグループ以外を除外しないかを指定
+・comment:ユーザーの詳細を指定
+
+root権限が必要なものは-b(become)オプションを利用し、特権で作業を実行する。
+また、becomeオプションと合わせて-KオプションでBECOMEパスワードを指定する。
+なお、これらのオプションを利用するには、事前にターゲットノード側で実行者がsudo権限を持っている必要がある。
+
+$ cd PATH_TO/effective_ansible/sec2
+## root権限が必要なものは、権限がなくて失敗する
+$ ansible -i inventory.ini test_servers -m user \ -a 'user=user01 groups="wheel" append=yes \ comment="Test User01"'
+## root権限が必要なものは、becomeオプションでsudoを利用
+$ ansible -i inventory.ini test_servers -m user -K -b \ -a 'user=user01 groups="wheel" append=yes comment="Test User01"'
+$ id user01
