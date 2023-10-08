@@ -2,14 +2,8 @@
 (1)Ansible運用ユーザーの作成     ## 実環境では誤操作を考慮して特権ユーザでの操作を避け、運用オペレーション用のユーザを使用する
 
 (2)SSH公開鍵認証の設定　         ## 秘密鍵と公開鍵のペアを利用し、パスワードの盗聴を避ける
-    ssh-keygen -t rsa
-    ssh-copy-id -o StrictHostKeyChecking=no -i $HOME/.ssh/id_rsa.pub localhost
-    ssh-copy-id -o StrictHostKeyChecking=no -i $HOME/.ssh/id_rsa.pub [ターゲットノード]
 
 (3)作業ディレクトリの作成        ## Playbookを作成するディレクトリ
-    mkdir -vp PATH 
-    ## -v 結果を表示
-    ## -p 親ディレクトリが存在しなくてもエラーメッセージを表示せずに親ディレクトリと子ディレクトリを作成する
 
 (4)ansible.cfgの設定            ## Ansibleの設定ファイル
 
