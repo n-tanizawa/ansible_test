@@ -7,3 +7,4 @@ Ansibleは、SSHを利用してターゲットノードに接続を行う。
 $ ssh-keygen -t rsa
 $ ssh-copy-id -o StrictHostKeyChecking=no -i $HOME/.ssh/id_rsa.pub localhost
 $ ssh-copy-id -o StrictHostKeyChecking=no -i $HOME/.ssh/id_rsa.pub [ターゲットノード]
+利用するターゲットノードに対しても同様に公開鍵の登録を行う。
