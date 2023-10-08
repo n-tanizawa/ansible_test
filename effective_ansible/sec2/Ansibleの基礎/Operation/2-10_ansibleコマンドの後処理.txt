@@ -1,0 +1,4 @@
+[確認作業で作成したものの削除]
+
+$ ansible -i inventory.ini test_servers -m file \ -a 'path=$HOME/test.txt state=absent'
+$ ansible -i inventory.ini test_servers -m user -K -b \ -a 'user=user01 state=absent'
