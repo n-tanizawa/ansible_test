@@ -1,0 +1,11 @@
+[ソースコードを利用したインストール方法]
+ソースコードからインストールすることにより最新バージョンのAnsibleを利用できる。
+AnsibleはPython製のモジュールのため、ソースコードからインストールする場合も、virtualenvを利用したインストールが行える。
+
+$ sudo yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+$ sudo yum install -y python36u python36u-libs python36u-devel python36u-pip
+$ sudo pip3.6 install --upgrade pip
+$ sudo pip3.6 install virtualenv
+$ virtualenv $HOME/venv
+$ source $HOME/venv/bin/activate
+(venv) $ git clone https://github.com/ansible/ansible.git --recursive
