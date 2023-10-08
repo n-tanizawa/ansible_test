@@ -1,0 +1,9 @@
+[SSH公開鍵認証の設定]
+Ansibleは、SSHを利用してターゲットノードに接続を行う。
+通常、SSHではユーザ名とパスワードを利用するパスワード認証を行うが、公開鍵認証方式を使うことで、
+より安全な通信を実現する。Ansibleを利用する場合は、コントロールノードがターゲットノードに接続を行うため、
+コントロールノード側で秘密鍵と公開鍵を作成し、ターゲットノード側に公開鍵を登録する。
+
+$ ssh-keygen -t rsa
+$ ssh-copy-id -o StrictHostKeyChecking=no -i $HOME/.ssh/id_rsa.pub localhost
+$ ssh-copy-id -o StrictHostKeyChecking=no -i $HOME/.ssh/id_rsa.pub [ターゲットノード]
