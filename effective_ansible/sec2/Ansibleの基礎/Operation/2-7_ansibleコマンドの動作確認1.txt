@@ -1,4 +1,6 @@
-[ansibleコマンドの動作確認1]
+[疎通確認]
+ターゲットノード側でpingの疎通確認を行うには、pingモジュールを使用する。
+
 cd C:\Users\tncoc\デスクトップ\ansible\ansible_test\effective_ansible\sec2 ## playbookのあるディレクトリへ移動
 
 ansible -i inventory.ini test_servers -m ping ## pingモジュールで疎通確認
@@ -8,3 +10,5 @@ ansible -i inventory.ini test_servers -m file \ -a 'path=$HOME/test.txt state=to
 ## --ask-pass または -k パスワード認証にて都度パスワードを入力する
 
 ls -la /home/ansible/test.txt 
+
+localhost | SUCCESSと表示されれば接続成功
