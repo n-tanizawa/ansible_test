@@ -1,0 +1,24 @@
+[接続変数]
+ホスト変数とグループ変数には、ユーザが固有に設定できるユーザー変数定義とターゲットノードへの接続を制御するための
+接続変数(behavioral inventory parameters)が存在する。
+接続変数にはパラメーターがあらかじめ定義されており、通常SSH接続に関するパラメータを設定する。
+
+・主な接続変数
+
+カテゴリ            接続変数　                  デフォルト値　      概要
+ターゲットノード    ansible_connection          smart             Connectionプラグインを利用したターゲットノードへの
+接続                                                             接続方法を設定する。SSHを利用しない「local」や「docker」、
+                                                                 ネットワーク機器向けの「network_cli」などに変更可能
+SSH接続            ansible_host                -                 ターゲットノードの名前や、エイリアス名を設定する
+SSH接続            ansible_port                22                ターゲットノードのSSHポートを設定する
+SSH接続            ansible_user                コマンド実行       SSH接続するユーザー名を設定する
+                                            　 ユーザ            
+SSH接続            ansible_password            -                 SSHパスワード認証のパスフレーズを設定する   
+Privilege設定      ansible_become              false             特権実行を行うかどうかを設定する
+Privilege設定      ansible_become_user         -                 タスクを実行する特権ユーザを設定する
+Privilege設定      ansible_become_password     -                 特権ユーザになるためのパスフレーズを設定する
+                   (またはansible_become_pass)  
+ターゲットノード    ansible_shell_type          sh                ターゲットノードのShellタイプを選択する
+環境
+ターゲットノード    ansible_python_interpreter  /usr/bin/python   ターゲットノードのPythonのパスを指定する
+環境
