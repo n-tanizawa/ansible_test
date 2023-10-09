@@ -1,0 +1,62 @@
+[インベントリ変数のファイル分割]
+インベントリ内で定義していたホスト変数やグループ変数は、YAMLファイルに分割できる。
+これによって、INI形式で記載されたインベントリにはターゲットノードを記載し、ターゲットノードごとの変数は
+YAMLファイルにまとめられる。ただし、Ansibleが動的に読み込みを行うためには、指定のディレクトリ構造と
+ファイルの命名規則に則って定義する必要がある。
+
+■ インベントリ変数のディレクトリ構造
+・グループ変数
+group_varsというディレクトリ配下に、「group_vars/<グループ名>.yml」または、「group_vars/<グループ名>/XXX.yml」
+という名前でYAMLファイルを配置
+・ホスト変数
+host_varsというディレクトリ配下に、「host_vars/<ホスト名>.yml」または「host_vars/<ホスト名>/XXX.yml」という
+名前でYAMLファイルを配置
+
+C:\USERS\TNCOC\デスクトップ\ANSIBLE\ANSIBLE_TEST\EFFECTIVE_ANSIBLE\SEC3
+│  group_inventory.ini
+│  inventory.ini
+│  site.yml
+│  var_inventory.ini
+│
+├─example_code
+├─group_vars
+│      all.yml
+│      db_servers.yml
+│      web_servers.yml
+│
+├─host_vars
+│      192.168.101.1.yml
+│      192.168.101.2.yml
+│      192.168.101.3.yml
+│      mysql-a.yml
+│      mysql-b.yml
+│      mysql-c.yml
+│
+├─roles
+│  ├─common
+│  │  ├─defaults
+│  │  │      main.yml
+│  │  │
+│  │  ├─files
+│  │  │      XXX.sh
+│  │  │      XXX.txt
+│  │  │
+│  │  ├─handlers
+│  │  │      main.yml
+│  │  │
+│  │  ├─meta
+│  │  │      main.yml
+│  │  │
+│  │  ├─tasks
+│  │  │      main.yml
+│  │  │
+│  │  ├─templates
+│  │  │      my.cnf.j2
+│  │  │
+│  │  └─vars
+│  │          main.yml
+│  │
+│  └─mysql
+└─インベントリの基礎
+        1_接続変数.txt
+        2_インベントリ変数のファイル分割.txt
