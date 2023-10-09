@@ -1,0 +1,6 @@
+[ansible-docコマンドの利用方法]
+
+$ ansible-doc < モジュール名 >
+
+## COPYモジュールの利用例
+$ ansible-doc copy
