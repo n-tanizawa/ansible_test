@@ -12,6 +12,10 @@ group_varsというディレクトリ配下に、「group_vars/<グループ名>
 host_varsというディレクトリ配下に、「host_vars/<ホスト名>.yml」または「host_vars/<ホスト名>/XXX.yml」という
 名前でYAMLファイルを配置
 
+全てのホストはallというグループに所属するため、group_varsディレクトリにall.ymlというファイルを定義することによって、
+全てのホストに適用される変数を指定できる。
+変数定義は、YAML形式で記載を行うことによって、INI形式では表現できなかった、ネストなどの複雑な変数定義を行うこともできる。
+
 C:\USERS\TNCOC\デスクトップ\ANSIBLE\ANSIBLE_TEST\EFFECTIVE_ANSIBLE\SEC3
 │  group_inventory.ini
 │  inventory.ini
