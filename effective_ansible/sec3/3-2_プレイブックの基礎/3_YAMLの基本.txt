@@ -62,12 +62,14 @@ fruit: ## この行には値を代入できない
     ntp_conf: /tmp/ntp.conf 
 
   tasks: #シーケンスがネストされるので、値は入らない
-
-   - name: Install ntp
-     yum: name=ntp state=installed
-
-   - name: Configure ntp
-     copy: src={{ ntp_conf }} dest= /etc/ntp_conf
-
-   - name: Run and Enable ntp
-     service: name=ntpd state=running enabled=yes
+(1)
+↑  - name: Install ntp
+|    yum: name=ntp state=installed
+|
+|  - name: Configure ntp
+|    copy: src={{ ntp_conf }} dest= /etc/ntp_conf
+|   (2)
+|  -↑name: Run and Enable ntp
+↓   ↓service: name=ntpd state=running enabled=yes
+(1)マッピングの中にシーケンスをネスト
+(2)シーケンスの中にマッピングをネスト
