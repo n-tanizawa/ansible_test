@@ -1,0 +1,20 @@
+[・Targetsセクション]
+・Targetsセクションでは、プレイブックの中でターゲットノードの接続に関する必要な情報を定義する。
+インベントリで定義したホストやグループ名は、hostsディレクティブに指定する。
+また、インベントリに記載した名前だけではなく、「hosts: < Host Pattern >」という形式で、ホストパターンを定義できる。
+たとえば、「hosts: "*.ansible.local"」と指定すると、インベントリで定義されたターゲットノードの中から、パターンに
+マッチするホスト(web_server01.ansible.localなど)のみに処理が実行される。
+
+Targetsセクション例
+## [Targetsセクションのフォーマット]
+## - hosts:< ホストパターン >
+## < ディレクティブ >:< 値 >
+## < ディレクティブ >:< 値 >
+##
+## [Example]
+   - hosts: "*.ansible.local"
+     gather_facts: true 
+     remote_user: root
+     become: true
+     become_user: ansible
+     become_method: su
