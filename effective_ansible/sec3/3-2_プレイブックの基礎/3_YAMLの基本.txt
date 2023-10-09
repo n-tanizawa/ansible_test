@@ -20,3 +20,54 @@ tasks:
 
 ## フロースタイル　
 tasks[ {name: Create Group, group: name=management},{name: Create User, user= name=ansible} ]
+
+・コメント
+コメントは#から行末までをコメントとしてみなす。なお、範囲指定のコメント表記はYAMLにはない。
+
+・開始、終了表記
+YAMLファイルは、はじめに「---」から開始し、「...」で定義分を終了する構造。
+したがって、「...」以降は本来YAMLとして解釈されない。これらがなくてもプレイブックはYAMLを前提として解釈されるため、
+問題はないが、開始には「---」を付けるのが良い。
+
+・コレクションの書式
+コレクションとは値を入れるためのデータ形式であり、YAMLで配列を「シーケンス」、連想配列（ハッシュ）を「マッピング」と
+呼んでいる。Ansibleのドキュメントでは「シーケンス」のことを「リスト」、「マッピング」のことを「ディクショナリ」と
+記載している。
+
+・シーケンス書式例
+先頭に「-」を付けて値を列挙することにより、配列やリストを表現する。
+
+- ## 値がない行の後にインデントとハイフンを使うと入れ子構造になる
+  - Kansai
+  - Kyushu
+  -
+    - Tokyo
+    - Kanagawa
+    - Chiba
+
+・マッピング書式例
+fruit: ## この行には値を代入できない
+  apple: リンゴ
+  orange: みかん
+  lemon: レモン
+
+コレクションはスペースでインデントすることにより、ネストを表現することが可能。
+ただし、マッピングでネストを利用する場合は、ネストした後の配列が上位のKeyの値となるため、Keyと同じ行で値を
+代入することはできない。また、Ansibleでは、シーケンスとマッピングが単体で利用されることはなく、組み合わせて
+利用される。
+
+・コレクションのデータ形式
+- host: all
+  vars: #マッピングがネストされるので、値は入らない
+    ntp_conf: /tmp/ntp.conf 
+
+  tasks: #シーケンスがネストされるので、値は入らない
+
+   - name: Install ntp
+     yum: name=ntp state=installed
+
+   - name: Configure ntp
+     copy: src={{ ntp_conf }} dest= /etc/ntp_conf
+
+   - name: Run and Enable ntp
+     service: name=ntpd state=running enabled=yes
