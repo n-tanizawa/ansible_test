@@ -18,3 +18,35 @@ Targetsセクション例
      become: true
      become_user: ansible
      become_method: su
+
+この他にも下記のようなホストパターンが利用できる。
+
+・ホストパターンの種類
+ホストパターン  内容                                            例
+全ノード指定    全てのホストを指定                              allまたは*
+レンジ指定      対象のレンジを指定                              targetnode-[0:100]
+FQDN指定       FQDNの指定                                     targetnode-01.ansible.local
+論理和指定      グループに所属する全ノードを指定                 webservers:staging
+除外指定        グループから!以降のノードやグループを除外         web_servers:!targetnode-1
+論理積指定      &で指定した双方のグループに所属するノードが対象    web_servers:&staging
+正規表現指定    FQDNと正規表現を組み合わせて指定                 ~(srv|node).*\.ansible\.local
+
+これらのホストパターンは、ansibleコマンドを使用した場合の引数でも同じものが使用される。
+なお「*」にはYAMLとしてエイリアス名を指定するという特別な意味があり、「*」の後はアルファベットか数字が続く必要がある。
+そのため、*.ansible.localのようなホストパターンを指定する際は、「*」自体を通常の文字として扱わせるため、
+ホストパターン全体をダブルクォーテーションで囲う必要がある。
+さらに接続に関するディレクティブは、Targetsセクションに記述する。
+プレイブックごとの接続設定を明記する場合は、Targetsセクションにまとめておくと可読性が向上する。
+ただし、接続設定は主に特定の接続機器やターゲットグループ共通の場合が多いため、インベントリの接続変数で設定するのが良い。
+
+・主な接続ディレクティブ
+ディレクティブ   入力値                     概要
+gather_facts    true/false                ターゲットノードの情報取得を行う
+connection      < Connectionプラグイン >   接続方式の変更を行う
+remote_user     < ユーザ名 >               接続ユーザの指定
+port            < ポート番号 >             接続ポートの指定
+become          true/false                接続ユーザ以外で処理を行う
+become_user     < ユーザ名 >               ターゲットノードで処理を行うユーザ
+become_method   sudo/su/pbrun             ターゲットノードで処理を行うコマンドの指定
+                prexec/doas                デフォルトでは、「sudo」が利用される
+                dzdo/ksu/runasなど
