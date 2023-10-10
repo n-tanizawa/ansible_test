@@ -1,0 +1,44 @@
+[Varsセクション]
+Varsセクションは、アーギュメントの動的変更や設定ファイルの再利用など、タスクを効率化するための変数を定義できる。
+このセクションで定義する変数は、プレイ変数と呼ばれ、以下の3つのディレクティブを利用して定義する。
+また変数名さえ異なれば、同時に以下のディレクティブを利用することも可能。
+・vars
+・vars_files
+・vars_prompt
+
+■ vars
+基本の変数は、varsディレクティブのマッピングによって、Keyに変数名、値に変数値を定義する。
+変数名は、変数値を参照する際に利用する。
+
+・varsディレクティブの利用例
+## [Varsセクションのフォーマット]
+## vars:
+## < 変数名 >:< 変数値 >
+## < 変数名 >:< 変数値 >
+##
+## [Example]
+vars:
+  httpd_version: 2.4
+  warning_text: 'WARNING: Use it by Management User'
+  contents: yes
+
+■ vars_files
+vars_filesディレクティブは、変数を定義した、外部のYAMLファイルを複数読み込むことができる。
+これによって、プレイブックとは別のファイルとして、変数情報を管理できる。
+ただし、外部変数ファイルはansible-playbookコマンドを実行する時点で存在しなければならない。
+
+・vars_filesディレクティブの利用例
+## [Varsセクションのフォーマット]
+## vars_files:
+##  - < 変数ファイル >
+##  - < 変数ファイル >
+##
+## [Example]
+vars_files:
+  - /vars/prod_vars.yml
+
+・/vars/prod_vars.yml
+## /vars/prod_vars.yml
+httpd_version: 2.4
+password: ansible
+app_contents: yes
