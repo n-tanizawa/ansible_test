@@ -1,0 +1,30 @@
+[Handlersセクション]
+Handlersセクションは、Tasksセクション同様に、実行したい処理の内容をシーケンスリストで定義する。
+ただし、このセクションは、notifyを指定したタスクが更新された場合(changedという状態)のみ実行されるタスクである。
+この際、notifyに定義された名前と同じハンドラタスクが実行される。
+具体的には、httpdの設定ファイルを変更するタスクを実行し、変更された時だけ、httpdを再起動するという場合などに利用する。
+ハンドラの呼び出し方は、notifyディレクティブの値に、実行したいハンドラ名を記載し、Handlersセクションに同様のタスク名を
+定義することによって実行される。
+
+・Handlersセクション例
+## [Handlersセクションのフォーマット]
+## handlers:
+##  - name: < タスク名 >
+##    < モジュール名 >
+##      < アーギュメント >:< 値 >
+##      < アーギュメント >:< 値 >
+##
+## [Example]
+tasks:
+  - name: Config HTTP
+    template:
+      src: httpd.conf.j2
+      dest: /etc/apache/httpd.conf
+    notify:
+      - Restart HTTP
+
+handlers:
+  - name: Restart HTTP
+    service:
+      name: httpd
+      state: restarted
