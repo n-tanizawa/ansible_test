@@ -28,3 +28,26 @@ handlers:
     service:
       name: httpd
       state: restarted
+
+また、listenディレクティブを使用することで、notifyで定義されたハンドラ名に対して、複数のハンドラタスクを関連付ける
+ことができる。
+
+tasks:
+  - name: Deploy Application
+    git:
+      repo: "https://github.com/WordPress/WordPress.git"
+      dest: /var/www
+    notify:
+      - "Reload web contents"
+
+handlers:
+  - name: Restart php-fpm
+    systemd:
+      name: php-fpm
+      state: restarted
+    listen: "Reload web contents"
+  - name: Restart nginx
+    systemd:
+      name: nginx
+      state: restarted
+    listen: "Reload web contents"
