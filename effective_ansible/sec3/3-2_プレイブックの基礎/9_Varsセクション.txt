@@ -62,3 +62,19 @@ vars_prompt:
     prompt: "Please enter your password."
     private: True
     confirm: True
+
+vars_promptディレクティブに利用できる、サブディレクティブは下記の通り
+
+ディレクティブ  入力値              概要
+name           < 文字列 >          変数名を入力する
+prompt         < 文字列 >          入力時のプロンプト表示文字列
+default        < 変数値 >          デフォルトの変数値
+private        true/false         trueは入力値が画面に表示されない。パスワード入力などで利用
+encrypt        "des_crypt"        入力値をハッシュ化しておくアルゴリズムの指定
+               "md5_crypt"        "Passlib"でサポートされる暗号化が利用可能。またPasslibがインストールされていない
+               "sha256_crypt"     場合、cryptライブラリが利用され、プラットフォームに応じて、下記の暗号化スキームが
+               "sha512_crypt"など サポートされる。
+                                  bcrypt、md5_crypt、sha256_crypt、sha512_crypt
+confirm        true/false         trueは入力値の再入力が求められる
+salt_size      < 数値 >            指定した文字分のsaltをランダムに生成する
+unsafe         true/false         trueは入力値として{%のようなテンプレートエラーを引き起こす文字列も許容する。
