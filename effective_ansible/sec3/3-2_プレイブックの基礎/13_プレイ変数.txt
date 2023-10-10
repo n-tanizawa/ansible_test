@@ -1,0 +1,20 @@
+[プレイ変数] 
+プレイ内で定義される変数。要するに、Varsセクションで指定したvars、vars_files、vars_promptなどが対象。
+ただし、varsディレクティブだけは、タスクや後述のロール、ブロック内でも利用できる。
+これらは定義する場所によって名前が変わり、タスク内で定義した変数を「タスク変数」、ロール内で定義した変数を「ロール変数」、
+最後にブロック内で有効な変数を「ブロック変数」と呼ぶ。
+
+・プレイ変数の定義例
+---     ## タスク変数
+- hosts: all
+  tasks:
+   - debug: var=target_env
+     vars: 
+       target_env: dev
+
+---     ## プレイ変数　
+- hosts: all
+  vars:
+    target_env: stg
+  tasks:
+   - debug: var=target_env

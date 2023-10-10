@@ -1,0 +1,6 @@
+[エクストラ変数]
+コマンドラインから指定できる変数
+ansible-playbookコマンドに-e(--extra-vars)オプションを付けることによって定義できる
+
+・エクストラ変数の定義例
+$ ansible-playbook -i inventory.ini playbook.yml -e "version=1.5 user=ansible"

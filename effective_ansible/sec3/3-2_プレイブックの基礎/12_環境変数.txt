@@ -1,0 +1,22 @@
+[環境変数]
+environmentディレクティブを利用して定義する変数
+Ansibleを利用する際の環境変数であり、LANGやPATH、SHELLなどがansible_envに構成されている
+プロキシ設定などの環境変数を追加する場合に有用
+環境変数はプレイやタスク内で定義することができ、プレイブックすべてに適用される
+
+・環境変数の定義例
+- hosts: all 
+  environment:
+    http_proxy: http://proxy.example.local:8080
+    https_proxy: http://proxy.example.local:8080
+  tasks:
+   - debug:
+       var: ansible_env.http_proxy
+
+なお、プロキシ設定に関しては環境変数だけでなく、通常の変数として設定することも可能。
+その際は、proxy_envという変数の中にhttp_proxyやhttps_proxyといった変数をプロキシに設定する。
+
+・変数によるプロキシ設定例
+vars:
+  proxy_env:
+    http_proxy: http://proxy.example.local:8080

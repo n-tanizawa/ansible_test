@@ -1,0 +1,58 @@
+[ファクト変数]
+ターゲットノードのシステム情報が格納されている変数。
+Ansibleはタスクと実行する前に、ファクトと呼ばれるシステム情報を各ターゲットノードから取得し、ansible_factsという
+変数名に格納している。ファクト変数には、ターゲットノードのネットワークや、ディスク、OSなど様々な情報が格納されている。
+また必要に応じてタスクの内容を変えたり、テンプレートを使って適切な値を挿入したりできる。
+
+・setupモジュールの利用例
+$ ansible localhost -i ./sec3/inventory.ini -m setup
+localhost | SUCCESS => {
+  "ansible_facts":{
+    "ansible_all_ipv4_adresses":[
+      "192.168.101.1"
+    ],
+    "ansible_all_ipv6_adresses":[
+      "fe80::250:56ff:fe8b:64c1"
+    ],
+    "ansible_architecture":"x86_64",
+    "ansible_bios_date":"07/09/2012",
+...(省略)
+
+また、デフォルトではプレイブックを実行した際に、自動的に構成情報が取得される。
+そのため、setupモジュールを利用せずとも、ファクト変数を参照できる。
+下記の例では、ネットワークアダプタ(ens160)のIPアドレスを取得し、設定ファイルに書き込む操作を行っている。
+
+・ファクト変数の利用例
+tasks:
+  - name: create config file 
+    ini_file:
+      path: /home/ansible/tmp/test.ini
+      section: default
+      option: IPADDR
+      value: "{{ ansible_default_ipv4.address }}"
+
+通常、ファクト変数はsetupモジュールによって自動的に取得されるが、ローカルファクト変数を利用して、独自のファクト変数を
+定義することも可能。定義方法は/etc/ansible/facts.d（もしくはローカルファクト変数用に作成したディレクトリ）配下に、
+.factという拡張子で定義ファイルを作成する。ただし、個別にフォルダ作成した場合は、fact_pathでフォルダ名の指定が必要。
+ファクト変数を定義するファイルは、INI形式もしくはJSON形式で定義する。
+しかし本来ファクト変数は最新のシステム状態を動的に取得して活用するもののため、運用上どうしても必要な場合を除き、
+ローカルファクト変数を定義することは避けるべきである。
+
+・ローカルファクト変数の定義例： $HOME/fact.d/test.facts
+[default]
+hardware = x86_64
+network = ens160
+
+・ローカルファクト変数の参照例
+$ ansible localhost -i ./sec3/inventory.ini -m setup -a 'fact_path=/home/ansible/fact.d'
+localhost | SUCCESS => {
+  "ansible_facts":{
+...(省略)
+        "ansible_local":{
+          "test":{
+            "default":{
+              "hardware": "x86_64",
+              "network": "ens160",
+            }
+          }
+        },...(省略)

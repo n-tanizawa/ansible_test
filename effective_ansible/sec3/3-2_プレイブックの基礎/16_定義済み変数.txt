@@ -1,0 +1,28 @@
+[定義済み変数（マジック変数）]
+主にインベントリに記載された情報や、Ansibleの環境情報を定義している。
+ファクト変数同様に動的に取得されるが、決まった変数が参照対象となり、基本的に変更することはできない。
+
+https://docs.ansible.com/ansible/latest/reference_appendices/special_variables.html
+
+・主な定義済み変数
+変数名　                      概要
+hostvars                     各ターゲットノードのファクト変数を集めた変数
+group_names                  指定したターゲットノードが属するグループの一覧
+groups                       全グループとターゲットノードの一覧
+inventory_hostname           インベントリファイルに定義されたホスト名
+inventory_hostname_short     ホスト名の初めの(.)ドットまでの短縮名
+inventory_dir                インベントリファイルのディレクトリパス
+inventory_file               カレントディレクトリからのインベントリファイルの位置
+playbook_dir                 カレントディレクトリからのプレイブックディレクトリパス
+ansible_inventory_sources    利用しているインベントリの一覧
+ansible_play_hosts           プレイが実行されているホストの一覧
+ansible_version              Ansibleのバージョン情報
+ansible_check_mode           実行時に「--check」を付けた場合にtrueとなる
+role_path                    ロール実行時におけるロールのディレクトリパス
+
+・マジック変数の利用例
+127.0.0.1 localhost
+
+{% for host in groups['test_servers'] if host != 'localhost' %}
+{{ hostvars[host]['ansible_default_ipv4']['address'] }}{{ host }}
+{% endfor %}
