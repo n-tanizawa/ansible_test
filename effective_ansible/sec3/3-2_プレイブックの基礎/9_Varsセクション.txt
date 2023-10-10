@@ -42,3 +42,23 @@ vars_files:
 httpd_version: 2.4
 password: ansible
 app_contents: yes
+
+■ vars_prompt
+vars_promptディレクティブは、変数を対話的にユーザに問い合わせることができる。
+たとえば、パスワードの埋め込みや、実行環境によって異なる変数を使いたいときなど、コマンド実行時に直接ユーザから値を
+指定してもらいたいときに利用する。これにより、コマンド実行者が異なってもパスワード入力を都度変更して活用できる。
+
+・vars_promptディレクティブの利用例
+## [Varsセクションのフォーマット]
+## vars_prompt:
+## - name: < 変数名 >
+##   prompt: < 表示テキスト >
+##   private: < True/False >
+##   confirm: < True/False >
+##
+## [Example]
+vars_prompt:
+  - name: "Passphrase"
+    prompt: "Please enter your password."
+    private: True
+    confirm: True
