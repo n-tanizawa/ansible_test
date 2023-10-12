@@ -1,0 +1,30 @@
+[変数の優先順位]
+
+変数の優先順位                           変数の概要
+1.extra_vars                            コマンド実行時に渡すエクストラ変数
+2.include_params                        includeで定義した変数
+3.role(and include_role)params          ロール、およびinclude_roleの呼び出し時に定義した変数
+4.set_facts/registerd vars              set_factsモジュールで定義した変数、またはレジスタ変数に格納した変数
+5.include_vars                          include_varsで呼び出した変数ファイル
+6.task vars                             タスク内のvarsで定義したタスク変数
+7.block vars                            ブロック内のvarsで定義したブロック変数
+8.role vars                             ロールのvarsディレクトリ(roles/xxx/vars/main.yml)で定義された変数
+9.play vars_files                       プレイ内のvars_filesで呼び出した変数ファイル
+10.play vars_prompt                     プレイ内のvars_promptで定義した変数
+11.play vars                            プレイ内のvarsで定義した変数　
+12.host facts/cached set_facts          各ターゲットノードのファクト変数
+13.playbook host_vars                   プレイブックディレクトリ内(host_vars/*)で定義されたグループ変数
+14.inventory host_vars                  インベントリディレクトリ内(inventories/xxx/host_vars/*)で定義されたホスト変数
+15.inventory file or script host vars   インベントリ内で定義、またはダイナミックインベントリで取得したホスト変数
+16.playbook group_vars                  プレイブックディレクトリ内(group_vars/*)で定義されたグループ変数
+17.inventory group_vars                 インベントリディレクトリ内(inventories/xxx/group_vars/*)で定義されたグループ変数
+18.playbook group_vars/all              プレイブックディレクトリ内のALLグループ(group_vars/all.yml)で定義されたグループ変数
+19.inventory group_vars/all             インベントリディレクトリ内のALLグループ(inventories/xxx/group_vars/all.yml)で定義されたグループ変数
+20.inventory file or script group_vars  インベントリ内で定義、またはダイナミックインベントリで取得したグループ変数
+21.role defaults                        ロールのdefaultsディレクトリ(roles/xxx/defaults/main.yml)で定義された変数
+22.command line values                  コマンド実行時に渡すエクストラ変数
+
+よく利用されるインベントリ変数は、変数の優先順位の中では比較的優先度が低く、上書きされる可能性がある。
+また、ロールの中で定義されるデフォルト変数に関しては、比較的優先順位が低いため、初期値を設定しておくと便利。
+このように、同じ名前の変数が異なる場所に定義されていると、複雑な順序を考慮しながらプレイブックを作成しなければならない。
+したがって、運用上は同じ名前をなるべく避け、チーム間で共通の変数定義規則を設けるのが良い。
