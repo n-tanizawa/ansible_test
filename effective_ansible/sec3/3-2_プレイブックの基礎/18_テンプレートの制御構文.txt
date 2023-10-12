@@ -1,0 +1,27 @@
+[テンプレートの制御構文]
+テンプレートでは、変数の参照だけでなく、制御構文を利用して特定の条件で変数参照を選択できる。
+主にAnsibleで利用する構文はif構文とfor構文である。
+
+■ if構文
+if構文では、特定の条件次第で処理の実行可否を判断する場合に利用し、{% if ... %}.....{% endif %}ブロックで囲む。
+
+・jinja2テンプレートのif構文例
+## hostvars[host].ansible_hostが定義されていた場合のみ、変数値を代入する。
+{% if hostvars[host].ansible_host is defined %}
+client_ip = {{ hostvars[host].ansible_host }}
+{% endif %}
+
+■ for構文
+for構文では、特定の条件下で、処理を繰り返す（ループ）場合に利用し、{% for ... %}......{% endfor %}ブロックで囲む。
+
+・jinja2テンプレートのfor構文例
+## groups['all']インベントリに記載したすべてのターゲットノード名と、IPアドレスを1行ずつ出力する。
+{% for host in groups['all'] %}
+  {{ hostvars[host]['ansible_default_ipv4']['address'] }}{{ host }}
+{% endfor %}
+## 192.168.101.1 web_server01
+## 192.168.101.2 web_server02
+
+この他にも、jinja2を利用することで、もっと複雑な制御構文を作成できるが、多用するとプログラミングコードに近づき、
+属人化の恐れがある。そのため、制御構文に関しては、テンプレートを共有するメンバーが、理解できる範囲にとどめておく
+ことが無難。
