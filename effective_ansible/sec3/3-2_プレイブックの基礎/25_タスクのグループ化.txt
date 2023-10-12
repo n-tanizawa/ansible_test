@@ -1,0 +1,38 @@
+[タスクのグループ化]
+blockディレクティブ
+指定のタスクをグルーピング化し、そのすべてのタスクに対して同一のwhenやtagなどのディレクティブが指定できる。
+
+・blockの利用例
+tasks:
+  - block:
+      - copy: src=epel.repo dest=/etc/yum.repo.d/epel_ansible.repo
+      - yum: name='libselinux-python,nginx' state=present
+    when: ansible_os_family == 'RedHat'
+
+  - block:
+      - apt_repository: repo='ppa:nginx/stable'
+      - apt: name='python-selinux,nginx' state=installed
+    when: ansible_os_family == 'Debian'
+
+blockの最大の特徴は、タスクのグルーピング機能だけでなく、エラーハンドリング処理機能が含まれている点。
+通常は、blockの中のタスクのどれかがエラーを返した時点で、block内のタスクが終了してしまう。
+そういったときは、rescueディレクティブを利用すると、blockで定義したタスクのいずれかエラーを返した際にも
+定義したタスクが実行される。また、blockにはalwaysというディレクティブが用意されており、block内のタスクが
+成功しても失敗しても必ず行う後処理の内容が定義できる。具体的には、block内のタスクで変更した内容の確認や、
+エラー時にも実行したいタスクなどに使用する。このalwaysは、あくまでblock内のエラーハンドリング機能の一部で
+あるため、後続のタスクを記載する用途ではないということに注意。
+
+・blockのエラーハンドリング利用例
+tasks:
+  - block:
+      - command: /bin/false
+      - debug: msg='上記のタスクでエラーが発生するため、この処理は実行されません。'
+    rescue:
+      - debug: msg='エラーが発生しました。'
+      - command: /bin/false
+      - debug: msg='上記のタスクでエラーが発生するため、この処理は実行されません。'
+    always:
+      - debug: msg='いつも実行されます。'
+
+このように、blockのエラーハンドリングは便利の機能である反面、プログラミング言語に近く、タスクの設計が必要になる。
+よって、個別のタスクのエラーハンドリングに関しては、failed_whenディレクティブなどを有効に活用するのが良い。
