@@ -1,0 +1,128 @@
+[繰り返しの実行]
+loopディレクティブ
+同様のタスクを何度も実行する場合には、loopディレクティブを利用することによって、データを繰り返し呼び出すことができる。
+例えば、ユーザを複数人作成するタスクを作る場合、1ユーザごとにタスクを定義すると内容が冗長化しプレイブックがすぐに
+肥大化してしまう。こうした処理の冗長性を避けるために、ループが活用できる。
+
+■ 基本のloop
+loopはリスト形式（シーケンス）で定義された変数値を一つずつ展開し、繰り返して実行する機能。
+定義方法としては、タスクのオプションとしてloopを指定し、その中に繰り返し実行したい値をいれる。
+またこの際、事前にシーケンスとして定義した変数を、loopディレクティブに指定することも可能。
+一方、loopの対象となる値の呼び出しには、{{ item }}という固定の変数名を利用する。
+
+・基本のloopの利用例
+## 一度のタスクで、user01からuser03までをすべて同じwheelグループで作成
+- name: Add several users 
+  user:
+    name: "{{ item }}" ## ループの値が一つずつ展開される
+    state: present
+    groups: "wheel"
+  loop:
+    - user01
+    - user02
+    - user03
+
+単一のリストだけでなく、シーケンスにマッピングをネストとして変数をうまく活用することにより、複数の異なる変数を
+参照することも可能。
+
+・マッピングのループ利用例
+## タスク定義だけを再利用し、それぞれのユーザとグループの異なるマッピングを参照する
+- name: Add several user
+  user:
+    name: "{{ item.name }}"
+    state: present
+    groups: "{{ item.groups }}"
+  loop:
+    - { name: 'user01', groups: 'wheel' }
+    - { name: 'user02', groups: 'admin' }   
+
+■ 特殊なloop
+実践的なプレイブックを作るうえでは、シーケンスの変数の中から特定の値だけを繰り返して参照したい場合もある。
+そうした場合は、フィルタを活用する。例えば、特定のDBごとに、すべてのユーザにアクセス権限を割り当てるといった
+多重のリストを相互に繰り返すためには、productフィルタを利用する。これによって、「user01」「user02」の双方が、
+すべてのDBに作成される。フィルタを利用する上で、注意しなければならない点は、loop自体がシーケンス形式（リスト）で
+値を受け渡す必要がある点である。したがって、シーケンス形式でないものに関しては、最後にlistフィルタを使って、値を
+シーケンス形式で出力できるようにしておく。
+
+・多重のループ利用例
+- name: Grant users access to multiple databases
+  postgresql_user:
+    db: "{{ item[0] }}"
+    name: "{{ item[1] }}"
+    password: ansible
+    priv: ALL 
+    state: "present"
+  loop: "{{ db_info[0]|product(db_info[1]|list )}}"
+  vars:
+    db_info:
+      - [ 'org_db', 'provider_db', 'employee_db' ]
+      - [ 'user01', 'user02' ]     
+## db_info[0]にDB名が格納されており、db_info[1]にユーザ名が格納されている。
+
+参照：Ansible変数フィルタ
+https://docs.ansible.com/ansible/latest/user_guide/playbooks_filters.html
+
+■ ループコントロール
+フィルタ以外にも、loopそのものを管理したいという場合には、loop_controlを使用する。
+
+・ループコントロールのオプション一覧
+オプション   概要
+loop_var    ループで指定したリストそのものに変数名を付ける。主に多重ループなどに使用する。
+            また、Ansible2.8からはここで指定した変数名をansible_loop_varで取得できる
+label       ループ内の特定の値をラベルとして定義する。ループ実行時にラベルが付与される
+pause       ループを実行する間隔を秒単位で指定する
+index_var   ループされる回数を0から始まるインデックスで表示する
+extended    trueにすることで拡張ループ変数を利用できるようになる
+
+index_varを利用する場合は、インデックスを入れるための変数名を指定する。
+これはクラスタ構成など、loopを行うグループ内で、それぞれに一意の番号が必要な時などに利用される。
+また、APIを利用したクラウドリソース要求など、loop内の値を連続で呼び出すときに、少し時間を空けたほうがスムーズに
+処理できるものに関しては、pauseを利用する。
+
+・ループコントロールの利用例
+- name: Count databases
+  debug:
+    msg: "{{ item }} with index {{ mysql_idx }}"
+  loop:
+    - name: server-a
+      cpu: 2core
+      disks: 5Gb
+      ram: 15Gb
+    - name: server-b
+      cpu: 2 core
+  ...(省略)...
+    - name: server-e
+      cpu: 2core
+      disks: 5Gb
+      ram: 15Gb
+  loop_control:
+    index_var: mysql_idx  ## サーバの下図だけインデックス（番号）が付与される
+    pause: 2 ## 繰り返しが2秒おきに実行される
+    label: "{{ item.name }}" ## サーバ名でラベルが付与される
+
+loop_controlを利用してラベルを指定しておくことによって、プレイブック実行時の出力に表示される。
+ラベルを指定しないと、itemの内容がすべて表示されるため、出力結果の判別がつかない。
+
+・ループコントロールの実行結果例
+ok: [localhost] => (item=server-a) =>{
+    "msg": "{'name': 'server-a', 'cpu': '2core', 'disks': '5Gb', 'ram': '15Gb'}
+ with_index 0"
+}
+  ...
+ok: [localhost] => (item=server-e) =>{
+    "msg": "{'name': 'server-e', 'cpu': '2core', 'disks': '5Gb', 'ram': '15Gb'}
+ with_index 1"
+}
+
+■ 拡張ループ変数一覧
+変数名                       概要
+ansible_loop.allitems       ループのすべての要素
+ansible_loop.index          最初の要素からのインデックス（1始まり）
+ansible_loop.index0         最初の要素からのインデックス（0始まり）
+ansible_loop.revindex       最後の要素からのインデックス（1始まり）     
+ansible_loop.revindex0      最後の要素からのインデックス（0始まり）
+ansible_loop.first          ループの最初の要素ならTrue
+ansible_loop.last           ループの最後の要素ならTrue
+ansible_loop.length         ループの要素数
+ansible_loop.previtem       ループの前の値
+ansible_loop.nexitem        ループの次の値
