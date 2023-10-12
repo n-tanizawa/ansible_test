@@ -1,0 +1,35 @@
+[条件分岐]
+手順書のようにAnsibleを利用していると、特定の条件の時にだけ、タスクを実行したい場合がある。
+その場合にはwhenディレクティブを利用することにより、タスクに条件を指定して処理を実行できる。
+例えば、WebサーバやDBサーバといったように、役割が異なるターゲットノードに対して、条件判定によって、インストールする
+コンポーネントを切り替えることができる。
+
+・whenディレクティブの利用例
+tasks:
+  - name: Install the httpd for web_servers
+    yum: name=httpd state=installed
+    when: host_role == 'web'
+
+ - name: Install the mysql for db_servers
+   yum: name=mysql state=installed
+   when: host_role == 'db'
+
+■ ファクト変数との連携
+ファクト変数と連携することによって、サーバに適切なタスクを指定することもできる。
+特に利用されるパターンが、OSのディストリビューションによってタスクを分岐するという方法。
+
+・fact変数とwhenディレクティブの利用例
+tasks:
+ - name: Install the ntp in RedHad
+   yum:
+     name: ntp
+     state: installed
+   when: ansible_os_family == 'RedHat'
+
+ - name: Install the ntp in Debian
+   apt:
+     name: ntp
+     state: installed
+   when: anisible_os_family == 'Debian'
+
+もし、whenディレクティブの条件に合致しなかった場合は、対象のタスクは実行されずskipされる。
