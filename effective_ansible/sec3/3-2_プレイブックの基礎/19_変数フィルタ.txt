@@ -1,0 +1,34 @@
+[変数フィルタ]
+jinja2の変数参照には、結果を加工して参照できるフィルタ機能が数多く組み込まれている。
+また、Ansibleにも独自の組み込み変数フィルタが用意されている。
+変数フィルタを利用するためには、変数に|にフィルタオプションを付け、関数呼び出しのようにフィルタオプションを宣言する。
+よく利用されるフィルタオプションには、以下のものがある。
+
+・default: 変数値が未入力の場合、デフォルト値の設定を行う
+・join: 配列の変数値同士をつなぎ合わせる。また、文字を間に入れてつなぎ合わせる
+・length: 変数の文字数、もしくは配列の数を返す
+・lower: 変数値を小文字に変換する
+・upper: 変数値を大文字に変換する
+
+・jinja2テンプレートの変数フィルタ例
+vars:
+  mgmt_users:
+    - user01
+    - user02
+    - user03
+
+{{ mgmt_users[3] | default('user04') }}
+## user04
+
+{{ mgmt_users | join('|')}}
+## user01|user02|user03
+
+{{ mgmt_users | length }}
+## 3
+
+{{ mgmt_users[2] | upper }}
+## USER03 
+
+https://jinja.palletsprojects.com/en/master/templates/#builtin-filters
+https://docs.ansible.com/ansible/latest/user_guide/palybooks_filters.html
+
