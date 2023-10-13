@@ -1,0 +1,16 @@
+[templatesディレクトリ]
+templatesディレクトリは、templateモジュールで利用する、テンプレートファイルを配置するディレクトリである。
+files同様に、このディレクトリも、main.ymlを作成する必要はなく、jinja2形式のテンプレートを配置する。
+
+・templatesの例　./sec3/roles/mysql/templates/my.cnf.j2
+[mysqld]
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+user=mysql
+symbolic-link=0
+port={{ mysql_port }}
+bind-address={{ mysql_bind_address }}
+
+...(省略)...
+
+上記の例のように、mysqlの設定テンプレートファイルを作成する場合は、テンプレートの拡張子を.j2とする。
