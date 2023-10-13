@@ -1,0 +1,54 @@
+[外部ファイルの読み込み]
+実行指定したプレイブックとは別の外部ファイルからタスクを呼び出す方法としては、ロールのほかにも、import_xxxや
+include_xxx(xxxは、tasksやvars、rolesなど)が存在する。
+これらは、プレイブックを補助するユーティリティモジュール群の一つとして取り扱われており、タスクとして他のファイルを
+読み込むことができる。ただし、import_xxxやinclude_xxxは外部ファイルを読み込むタイミングを考慮して使い分けが必要。
+
+・import_xxxモジュール(静的外部ファイル読み込み)
+ansible-playbookコマンドを実行し、プレイブックを解析するときに実行される。
+つまり、プレイブックをpythonの実行スクリプトに変換するタイミングで外部ファイルに定義されたタスクも前処理される。
+また、import_xxxのタスクに利用したオプションは、外部ファイル内に含まれるすべてのタスクに委譲されるため注意が必要。
+具体的なモジュール名は、import_playbook、import_role、import_tasksがある。
+
+・include_xxxモジュール(動的外部ファイル読み込み)
+プレイブック実行中にinclude_xxxがタスクとして呼ばれたタイミングで動的に外部ファイルを呼び出して実行する。
+また、include_xxxを利用したときのタスクオプションは、外部ファイルの呼び出し評価にのみ適用され、外部ファイル内の
+タスクには委譲されない。
+具体的なモジュール名は、include_role、include_tasks、include_varsがある。
+
+■ 静的読み込みと動的読み込みの使い分け
+
+(1)ループの利用は動的読み込み(include_xxx)
+外部ファイルの読み込みをループしたい場合は、include_xxxとloopを組み合わせて利用する。
+なお、ループを利用する場合はimport_xxxが利用できない。
+
+・ループの利用
+tasks:
+  - include_tasks: "setup_task{{ item }}.yml" ## setup_task[1-4].yml
+    loop: "{{ range(1, 4 + 1, 1)|list }}"
+
+(2)特定タスクの実行は静的読み込み(import_xxx)
+外部ファイル内に定義されたタスクを、tagsや「--start-at-task」オプションで実行制御する場合は、事前にtagsの情報や
+タスクの情報が必要なため、import_xxxを利用する。
+
+・特定タスクの実行
+tasks:
+  - import_tasks: "setup_task.yml"
+
+### ansible-playbook -t centos setup_task.yml
+  - name: Upgrade all packages
+    yum:
+      name: '*'
+      state: latest
+    tags:
+      - centos
+
+(3)外部ファイル名の変数化
+import_xxxを利用して外部ファイル名を変数化して読み込む場合、ホスト変数やグループ変数など、インベントリリソースに
+定義された変数は利用できない。これは変数の読み込みタイミングに依存するためである。
+
+(4)ハンドラ呼び出し
+include_xxxを利用し、外部ファイル内でハンドラを定義しても、実行プレイブックからのnotifyで読み出すことはできない。
+notifyは必ずhandlerが事前定義してあることを確認してから実行される。ただし、include_xxxのタスク自体をハンドラタスク
+として定義することは可能。その際は、外部ファイルで定義されたタスクがすべて実行される。
+
