@@ -1,0 +1,15 @@
+[varsディレクトリ]
+varsディレクトリは、変数を定義したYAMLファイルを配置するディレクトリである。
+ここで指定される変数は、ロールの中だけで利用されるためロール変数と呼ばれる。
+変数の定義方法はプレイブックと同様。
+
+・varsの例　./sec3/roles/mysql/vars/main.yml
+---
+mysql_pkgs:
+  - libselinux-python
+  - mysql-server
+  - MySQL-python
+
+mysql_service: mysqld
+
+mysql_conf_dir: "/etc/"
