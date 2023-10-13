@@ -1,0 +1,22 @@
+[ロールの参照]
+ロールを利用することによって、今までTasksセクションやHandlersセクション、Varsセクションなどに定義された個々の項目が
+なくなり、プレイブック本体がとてもシンプルになる。
+ロールを利用する場合は、rolesディレクティブを利用する。
+下記の例のように、ロールを適用するターゲットノードを変更したり、ロールに対して条件判定や変数定義もできるため、
+metaを利用した依存関係はなるべく避けるようにするのが良い。
+
+・Playbookの例　./sec3/site.yml
+---
+- name: Common configuration
+  hosts: all
+  user: root
+  roles:
+   - common
+
+- name: Deploy MySQL and Configure the databases
+  hosts: db_servers
+  user: root
+  roles: 
+   - name: mysql
+     when: ansible_os_family == "RedHat"
+
