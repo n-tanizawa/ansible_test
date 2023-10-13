@@ -1,0 +1,11 @@
+[handlersディレクトリ]
+handlersディレクトリは、Handlersセクションの内容を定義したYAMLファイルを配置するディレクトリである。
+利用方法は、プレイブックに定義したときと同様に、notifyディレクティブで定義されたタスク名に関連づいたタスク名を
+呼び出すことができる。
+
+・handlersの例　./sec3/roles/mysql/handlers/main.yml
+---
+- name: restart mysql
+  service:
+    name: "{{ mysql_service }}"
+    state: restarted
