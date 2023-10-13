@@ -1,0 +1,12 @@
+[defaultsディレクトリ]
+defaultsディレクトリは、変数の初期値を定義したYAMLファイルを配置するディレクトリである。
+main.ymlの中には、テンプレートやタスク内で利用する変数のデフォルト値を設定する。
+よく利用される例としては、ミドルウェアやOSの設定テンプレートに使用するデフォルト値など。
+varsディレクトリ内に定義する変数と比べて変数値の優先順位が低いため、デフォルト値が設定されていないと
+うまく動作しないときなどに利用する。
+
+・defaultsの例　./sec3/roles/mysql/defaults/main.yml
+---
+mysql_port: 3306
+mysql_bind_address: "0.0.0.0"
+mysql_root_db_pass: ansible
