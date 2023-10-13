@@ -1,0 +1,18 @@
+[tasksディレクトリ]
+tasksディレクトリは、Tasksセクションの内容を定義したYAMLファイルを配置するディレクトリである。
+ここでは、ロールごと分割したタスクを定義する。ロールの場合は「tasks:」ディレクティブは定義せずに、タスクリストから
+定義できる。
+
+・tasksの例　./sec3/roles/mysql/tasks/main.yml
+---
+- name: Install the mysql packages in RedHat derivatives
+  yum:
+    name: "{{ mysql_pkgs }}"
+    state: installed
+
+- name: Copy the my.cnf.file
+  template:
+    src: my.cnf.j2
+    dest: "{{ mysql_conf_dir }}/my.cnf"
+  notify: restart mysql
+...(省略)...
