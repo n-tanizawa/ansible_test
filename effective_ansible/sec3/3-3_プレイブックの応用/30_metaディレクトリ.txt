@@ -1,0 +1,33 @@
+[metaディレクトリ]
+metaディレクトリは、ロールのメタ情報やロール間の依存関係を定義したYAMLファイルを配置するディレクトリである。
+main.ymlには、ロールの作成情報を記載しておくほかにも、dependenciesというディレクティブを利用して、
+依存のあるロール名を定義できる。例えば、プレイブックの中に「common」、「nginx」と「mysql」という3つのロールが
+作成されており、「common」「nginx」ロールの内容を「mysql」ロールのタスクよりも先に実行したい場合は、
+「mysql」ロールのmetaディレクトリにファイルを配置することで、期待通りのロールを優先実行してくれる。
+よく利用するケースは、指定のバージョンで作成されたコンポーネントを利用しなければ、そのロールの実行が保証されない場合
+などに利用する。
+
+・metaの例　./sec3/roles/mysql/meta/main.yml
+---
+galaxy_info:
+  author: "Ansible User"
+  company: Example.com
+  license: GNU General Public License 
+  min_ansible_version: 2.0
+  platform:
+   - name: Ubunto
+     version:
+      - precise
+      - quantal
+      - raring
+      - saucy
+
+dependencies:
+  - { role: common, os_parameter: 3 }
+  - { role: nginx, when: "server_groups == 'web_servers'" }
+
+  数多くのロールが存在する場合にも、メタ情報によるロールの依存関係は再帰的にたどられる。
+  また、dependenciesディレクティブには、whenによる条件判定や特定の変数値を設定することができる。
+  しかし、ロール同士の依存関係や変数定義、条件判定を過度に行うと、思いがけない設定やロールの実行を招くことがある。
+  よって、必要以上に依存関係を記述せず、可能であればプレイブックからロールを呼び出す際に依存関係を適切に定義するのが良い。
+  
