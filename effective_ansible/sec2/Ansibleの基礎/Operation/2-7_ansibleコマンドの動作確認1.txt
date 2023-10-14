@@ -5,7 +5,8 @@ cd C:\Users\tncoc\デスクトップ\ansible\ansible_test\effective_ansible\sec2
 
 ansible -i inventory.ini test_servers -m ping ## pingモジュールで疎通確認
 
-ansible -i inventory.ini test_servers -m file \ -a 'path=$HOME/test.txt state=touch mode=0644' ## fileモジュールでテストファイルの作成
+ansible -i inventory.ini test_servers -m file -a 'path=$HOME/test.txt state=touch mode=0644' 
+## fileモジュールでテストファイルの作成
 
 ## --ask-pass または -k パスワード認証にて都度パスワードを入力する
 
