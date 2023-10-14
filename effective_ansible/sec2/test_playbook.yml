@@ -10,7 +10,7 @@
 
     - name: copy file
       copy:
-        src: $HOME/ansible.cfg
+        src: /root/ansible.cfg
         dest: $HOME/tmp/
         owner: ansible
         mode: 0644
