@@ -1,2 +1,2 @@
 $ ansible -i inventory.ini test_servers -m user -a 'user=ansible groups="wheel" append=yes comment="create ansible user"'
-$ ansible-playbook -i ./sec/test02_inventory.ini ./sec2/test_playbook.yml
+$ ansible-playbook -i inventory.ini test_playbook.yml
