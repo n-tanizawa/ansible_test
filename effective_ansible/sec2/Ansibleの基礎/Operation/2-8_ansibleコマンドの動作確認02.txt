@@ -4,6 +4,6 @@
 $ cd PATH_TO/effective_ansible/sec2
 ansible -i inventory.ini test_servers -m file -a 'path=$HOME/test.txt state=touch mode=0644' 
 ## fileモジュールでテストファイルの作成
-$ ls -la /home/ansible/test.txt
+$ ls -la $HOME/test.txt
 
 成功すると"change": trueが表示される。
