@@ -31,7 +31,7 @@
 ##(4)ロックファイルを待つ
 - name: Wait for YUM lock file to be released
   pause:
-    seconds: 5  # 例: 15秒待機
+    seconds: 5  # 5秒待機
 
 ##(5)YUMパッケージのアップデート
 - name: configure / Update yum packeges

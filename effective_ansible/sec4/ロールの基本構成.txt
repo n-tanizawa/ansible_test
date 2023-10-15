@@ -1,0 +1,41 @@
+[プレイブックのディレクトリ構造]
+C:\USERS\0004923\DESKTOP\ANSIBLE_TEST\EFFECTIVE_ANSIBLE\SEC4
+│  inventory.ini
+│  nginx_rollingupdate.yml
+│  wordpress_deploy.yml             ## WordPressのデプロイメントを行うプレイブック
+│
+└─roles
+    ├─common                        ## OSの基本操作を行うロール
+    ├─haproxy                       ## HAProxyの作業を行うロール
+    ├─keepalived                    ## Keepalivedの作業を行うロール
+    ├─mariadb                       ## MariaDBの作業を行うロール
+    ├─nginx                         ## Nginxの作業を行うロール
+    ├─php-fpm                       ## PHP-FPMの作業を行うロール
+    └─wordpress                     ## WordPressの作業を行うロール
+
+[ロールの基本構成例]
+C:\USERS\0004923\DESKTOP\ANSIBLE_TEST\EFFECTIVE_ANSIBLE\SEC4\ROLES\KEEPALIVED
+├─defaults
+├─files
+├─handlers
+├─meta
+├─tasks
+│      check_install.yml
+│      configure.yml
+│      install.yml
+│      main.yml
+│
+├─templates
+├─tests
+└─vars
+
+ロールを利用すると、デフォルトでは、各ロールのタスクディレクトリ内にあるmain.ymlが自動的に読み込まれる。
+しかし、タスクを数多く定義するにもかかわらず、すべてのタスクをmain.ymlに定義すると、main.ymlが肥大化し、どのような
+タスクを処理しているのかがわかりずらくなる。プレイブックを明確化するために、main.yml内のタスクを事前にカテゴリ分けし、
+ファイル分割を行うことで可読性を高める。自動的に読み込まれるmain.ymlには、include_tasksモジュールを用いて、独自に
+作成したファイルの呼び出し定義を行う。
+
+各ミドルウェアのデプロイメントに必要な基本操作カテゴリはおおよそ以下3つとなる。
+(1)インストール前の事前タスク(check_install.yml)
+(2)インストール作業タスク(install.yml)
+(3)設定作業タスク(configure.yml)
