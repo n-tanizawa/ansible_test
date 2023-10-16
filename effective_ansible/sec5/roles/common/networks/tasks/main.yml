@@ -32,7 +32,7 @@
 - name: main / Add bonding connection
   nmcli:
     type: bond
-    conn_name: "{{ item.conn.name }}"
+    conn_name: "{{ item.conn_name }}"
     mode: "balance-rr"
     state: present
   loop: "{{ network_bond }}"
