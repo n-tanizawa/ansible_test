@@ -12,7 +12,7 @@
   loop:
    - "epel-release"
    - "*"
-   when: ansible_os_family == 'RedHat'
+  when: ansible_os_family == 'RedHat'
 
 ##(3)APTパッケージのアップデート
 - name: main / Update apt packages
