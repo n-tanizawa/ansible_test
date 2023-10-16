@@ -36,6 +36,7 @@
   become: yes
   # デバッグメッセージを追加
   register: file_generation_result
+  ignore_errors: yes
 
 - name: main / Debug
   debug:
