@@ -12,8 +12,8 @@
     password: "{{ item.value.pass }}"
     shell: /bin/bash
     home: "/home/{{ item.key }}"
-    stete: present
-    groups: "{{ user_newusers|dict2items }}"
+    state: present
+    groups: "{{ item.value.groups }}"
   loop: "{{ user_newusers|dict2items }}"
 
 ##(3)公開鍵登録
