@@ -34,4 +34,9 @@
     validate: 'visudo -c -f %s'
   loop: "{{ user_newusers|dict2items }}"
   become: yes
+  # デバッグメッセージを追加
+  register: file_generation_result
+
+- debug:
+    var: file_generation_result
 
