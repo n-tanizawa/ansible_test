@@ -22,6 +22,6 @@
 
 ##(4)必要モジュールのインストール
 - name: main / Install the required packages
-  packages:
+  package:
     name: "{{ required_packages }}"
     state: present
