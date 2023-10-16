@@ -20,7 +20,7 @@
 - name: main / Distribute authorized key
   authorized_key:
     user: "{{ item.key }}"
-    key: "{{ lookup('file', '$HOME/.ssh/id_rsa.pub') }}"
+    key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
   loop: "{{ user_newusers|dict2items }}"
 
 ##(4)システム権限の付与
