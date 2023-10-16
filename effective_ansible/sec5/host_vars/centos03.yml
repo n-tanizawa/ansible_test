@@ -1,0 +1,4 @@
+---
+operation_ip: "{{ ansible_host }}/24"
+internal_ip: "10.44.228.163/24"
+external_ip: "192.168.1.103/24"
