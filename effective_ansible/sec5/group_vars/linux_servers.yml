@@ -1,7 +1,7 @@
 ---
-operation_gw: "xxxx"
-internal_gw: "xxxx"
-external_gw: "xxxx"
+operation_gw: "10.44.229.255"
+internal_gw: "10.44.228.255"
+external_gw: "192.168.1.255"
 
 network_ethernet:
    - {conn_name: 'ens192', ipv4: "{{ operation_ip }}", gw4: "{{ operation_gw }}"}
