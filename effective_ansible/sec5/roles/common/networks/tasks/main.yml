@@ -42,7 +42,7 @@
 - name: main / Modify bonding connection
   nmcli:
     type: bond
-    conn_name: "{{ item.conn.name }}"
+    conn_name: "{{ item.conn_name }}"
     ip4: "{{ item.ip4 }}"
     gw4: "{{ item.gw4 }}"
     state: present
@@ -52,7 +52,7 @@
 - name: main / Add bonding slave connection
   nmcli:
     type: bond-slave
-    conn_name: "{{ item.conn.name }}"
+    conn_name: "{{ item.conn_name }}"
     ifname: "{{ item.ifname }}"
     master: "{{ item.master }}"
     state: present
