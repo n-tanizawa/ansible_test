@@ -37,6 +37,7 @@
   # デバッグメッセージを追加
   register: file_generation_result
 
-- debug:
+- name: main / Debug
+  debug:
     var: file_generation_result
 
