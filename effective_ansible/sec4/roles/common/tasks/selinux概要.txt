@@ -1,0 +1,16 @@
+[selinux]
+Security-Enhanced-Linuxの略称。
+セキュリティ関連のLinuxカーネル制御機能のこと。
+SELinuxを利用すると細かいアクセス制御が可能になる。例えば、サービス毎に最小限の権限を与え管理することなどが可能になる。
+
+root権限ですら制限をかけることも可能となっており、redhat系のディストリビューションであるCentOSやFedoraの場合は
+デフォルトで導入されているシステム。
+
+・SELinuxの状態の確認
+# getenforce
+# sestatus
+
+・SELinuxのモード
+Enforcingモード:SELinuxが有効になっている通常運用のためのモード
+permissiveモード:SELinuxによって拒否されるアクセスがあったとしても、ログを残すだけで実際にアクセスを通すモード
+disableモード:SELinuxを完全に無効にする
