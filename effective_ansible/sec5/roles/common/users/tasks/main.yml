@@ -33,12 +33,3 @@
     mode: 0400
     validate: 'visudo -c -f %s'
   loop: "{{ user_newusers|dict2items }}"
-  become: yes
-  # デバッグメッセージを追加
-  register: file_generation_result
-  ignore_errors: yes
-
-- name: main / Debug
-  debug:
-    var: file_generation_result
-
