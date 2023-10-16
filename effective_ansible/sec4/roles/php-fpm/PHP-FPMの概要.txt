@@ -1,0 +1,4 @@
+[PHP-FPM(FastCGI Process Manager)]
+Webサーバ上でPHPを動作させるインターフェース(CGI)を提供するプロセス。
+NginxなどとPHP-FPMが動作することによって、PHP実行環境を提供してWordPressを動作できる。
+
