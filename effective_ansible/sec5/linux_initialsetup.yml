@@ -1,6 +1,6 @@
 ---
 - name: Initialize OS setting for Linux Servers
-  hosts: linux_server
+  hosts: linux_servers
   become: True
 
 ##プロキシ設定が必要な場合
