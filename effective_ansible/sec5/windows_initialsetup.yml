@@ -6,7 +6,7 @@
     win_shared_folder: C:/shares/documents
     required_packages:
       - googlechrome
-      - gr8
+      - jre8
       - notepadplusplus
 
   tasks:
