@@ -1,0 +1,66 @@
+[Widnows(ターゲットノード)の設定]
+## セットアップスクリプトをダウンロード
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/ansible/ansible-documentation/devel/examples/scripts/ConfigureRemotingForAnsible.ps1 -OutFile ConfigureRemotingForAnsible.ps1
+## セットアップスクリプトの実行
+powershell -ExecutionPolicy RemoteSigned .\ConfigureRemotingForAnsible.ps1
+
+## セットアップスクリプト実行時の注意点
+
+## (1)ダウンロードしたスクリプトファイルの実行ポリシー
+## ブラウザからダウンロードしたファイルには、スクリプトの実行にブロックがかかっていることがある。
+## 例)このシステムではスクリプトの実行が無効になっているため、ファイル C:\ConfigureRemotingForAnsible.ps1ファイルを読み込めません。
+## →エクスプローラーからダウンロードしたセットアップスクリプトを右クリックし[プロパティ]を選択し、[ブロックの解除]を実行
+
+## (2)ネットワークプロファイルの変更
+## 対象のネットワークプロファイルインデックス番号を確認
+Get-NetConnectionProfile -IPv4Connectivity Internet
+## 対象のネットワークプロファイルインデックス番号を指定して、ネットワークカテゴリを変更する
+Set-NetConnectionProfile -InterfaceIndex 4 -NetworkCategory Private
+Get-NetConnectionProfile
+## ネットワークプロファイルチェックの無効化(カテゴリをPublicのまま、セットアップスクリプトを実行したい場合)
+powershell -ExecutionPolicy RemoteSigned .\ConfigureRemotingForAnsible.ps1 -SkipNetworkProfileCheck
+
+## (3)自己署名証明書の有効期限変更
+## セットアップスクリプトによって自己署名証明書が作られるが、有効期限は作成から1年のため、変更したい場合は「-CertValidityDays」オプションを追加して実行する。
+powershell -ExecutionPolicy RemoteSigned .\ConfigureRemotingForAnsible.ps1 -CertValidityDays 1000
+
+[コントロールノードの設定]
+WinRM経由で接続を行うためには、Ansibleのコントロールノード側に以下のPythonモジュールをインストールしておく。
+・python-pywinrm　(Python用のWinRMモジュール)
+・python-kerberos (ドメインアカウントを利用する場合のみ必要)
+・requests_kerberos (ドメインアカウントを利用する場合のみ必要)
+
+$ pip3 install pywinrm
+
+・ドメインアカウント接続の場合
+ActiveDirectory配下のドメインアカウントでターゲットノードを利用する場合は、WinRMの他に別途python-kerberos、
+requests_kerberosパッケージが必要。
+
+## python-kerberos、requests_kerberosのインストール作業
+$ sudo yum groupinstall -y "Development Tools"
+$ sudo yum install -y python36u-devel krb5-devel krb5-libs krb5-workstation
+$ pip3 install kerberos requests_kerberos
+
+インストールを行った後は、Kerberosの構成ファイル(krb5.conf)を環境に合わせて設定する。
+ここではどのドメインコントローラーを利用して、特定のドメイン認証を行うかを指定する。
+また、構成ファイルの設定が完了した後、klistコマンドを利用してトークンの取得を行う。
+
+$ vi /etc/krb5.conf    ## 環境に合わせて接続先ドメインコントローラーの設定を行う
+$ kinit Ansible@ANSIBLEDOMAIN.COM   ## ユーザ名(Ansible管理用)でトークンの問い合わせを行う
+Password for Ansible@ANSIBLEDOMAIN.COM:     ## Ansibleユーザのパスワードを挿入
+$ klist     ## トークンチケットが取得できていることを確認
+
+・/etc/krb5.confの設定例
+[realms]
+ ANSIBLEDOMAIN.COM ={                           ## 大文字で定義
+  kdc = ansibledomaindc01.ansibledomain.com     ## 問い合わせ先ドメインコントローラーを指定
+  kdc = ansibledomaindc02.ansibledomain.com     ## 問い合わせ先ドメインコントローラーが複数ある場合に指定
+
+  admin_server = ansibledomaindc01.ansibledomain.com
+  default_domain = ansibledomain.com
+ }
+[domain_realms]
+ .ansibledomain.com = ANSIBLEDOMAIN.COM     ## 大文字で定義
+ ansibledomain.com = ANSIBLEDOMAIN.COM      ## 大文字で定義
+
+
