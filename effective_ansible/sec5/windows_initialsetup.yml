@@ -69,8 +69,8 @@
       path: C:\ProgramData\chocolatey
       state: absent
     ignore_errors: yes
-    notify:
-      - Reboot
+  - name: Reboot
+    win_reboot:
 
 ##(9)Chocolateyの再インストール
   - name: Install Chocolatey
@@ -88,9 +88,5 @@
   - name: Setup hostname
     win_hostname:
      name: "{{ inventory_hostname }}"
-    notify:
-      - Reboot
-
-  handlers:
   - name: Reboot
     win_reboot:
