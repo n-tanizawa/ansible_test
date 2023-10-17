@@ -88,5 +88,8 @@
   - name: Setup hostname
     win_hostname:
      name: "{{ inventory_hostname }}"
+    register: hostname_result
+
   - name: Reboot
     win_reboot:
+    when: hostname_result.reboot_required
