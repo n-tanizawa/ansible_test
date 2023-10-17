@@ -66,6 +66,6 @@ $ klist     ## トークンチケットが取得できていることを確認
 ・接続確認
 $ cd effective_ansible/sec5
 $ ansible windows_servers -i inventoroy.ini -m win_ping
-$ ansible windows_servers -i inventoroy.ini -m win_ping
+$ ansible windows_servers -i inventoroy.ini -m setup windows01
 
 
