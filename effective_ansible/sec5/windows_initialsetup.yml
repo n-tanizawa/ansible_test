@@ -16,8 +16,10 @@
      timezone: "Tokyo Standard Time"
 
 ##(2)時刻同期
-  - name: Sync local time
-    raw: Set-Date (Invoke-WebRequest -Uri https://ntp-a1.nict.go.jp/cgi-bin/time).Headers.Date
+  # - name: Sync local time
+  #   raw: Set-Date (Invoke-WebRequest -Uri https://ntp-a1.nict.go.jp/cgi-bin/time).Headers.Date
+
+## NICTによるHTTP/HTTPSを使った時刻同期は 2022年3月31日 に提供が終了されます。
 
 ##(3)ローカル管理者ユーザーの作成
   - name: Create windows users
