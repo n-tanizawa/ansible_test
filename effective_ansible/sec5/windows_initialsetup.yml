@@ -69,6 +69,7 @@
       path: C:\ProgramData\chocolatey
       state: absent
     ignore_errors: yes
+    register: hostname_result
     notify:
       - Reboot
 
