@@ -63,17 +63,36 @@
      include_sub_features: yes
      include_management_tools: yes
 
-##(8)パッケージの追加
+##(8)既存のChocolateyの削除
+  - name: Delete Chocolatey installation directory
+    win_file:
+      path: C:\ProgramData\chocolatey
+      state: absent
+    ignore_errors: yes
+    notify:
+      - Reboot
+
+##(9)Chocolateyの再インストール
+  - name: Install Chocolatey
+    win_shell: |
+      Set-ExecutionPolicy Bypass -Scope Process -Force; 
+      [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; 
+      iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+##(10)パッケージの追加
   - name: Install required packages
     win_chocolatey:
      name: "{{ required_packages }}"
 
-##(9)ホスト名の変更
+##(11)ホスト名の変更
   - name: Setup hostname
     win_hostname:
      name: "{{ inventory_hostname }}"
     register: hostname_result
+    notify:
+      - Reboot
 
+  handlers:
   - name: Reboot
     win_reboot:
     when: hostname_result.reboot_required
