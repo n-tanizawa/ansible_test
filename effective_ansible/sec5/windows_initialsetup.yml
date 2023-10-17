@@ -69,7 +69,6 @@
       path: C:\ProgramData\chocolatey
       state: absent
     ignore_errors: yes
-    register: hostname_result
     notify:
       - Reboot
 
@@ -89,11 +88,9 @@
   - name: Setup hostname
     win_hostname:
      name: "{{ inventory_hostname }}"
-    register: hostname_result
     notify:
       - Reboot
 
   handlers:
   - name: Reboot
     win_reboot:
-    when: hostname_result.reboot_required
