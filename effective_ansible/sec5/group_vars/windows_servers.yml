@@ -1,6 +1,6 @@
 ---
-ansible_user: Administrator                        ## ドメインを指定する場合は、Ansible@realm
-ansible_password: 'Passw0rd'                 ## Ansibleユーザーのパスワードの作成
+ansible_user: Ansible                         ## ドメインを指定する場合は、Ansible@realm
+ansible_password: '@nsible01'                 ## Ansibleユーザーのパスワードの作成
 ansible_port: 5986
 ansible_connection: winrm                     ## Connection Pluginの設定を変更する
 ansible_winrm_server_cert_validation: ignore  ## PythonのSSL証明書検証の無効化
