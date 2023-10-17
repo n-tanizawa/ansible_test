@@ -1,8 +1,20 @@
 [Widnows(ターゲットノード)の設定]
+## PowerShellを管理者権限で開き、下記の手順を行う。
+
+mkdir C:\tmp　## tmpディレクトリの作成、移動
+cd C:\tmp
 ## セットアップスクリプトをダウンロード
 Invoke-WebRequest -Uri https://raw.githubusercontent.com/ansible/ansible-documentation/devel/examples/scripts/ConfigureRemotingForAnsible.ps1 -OutFile ConfigureRemotingForAnsible.ps1
-## セットアップスクリプトの実行
-powershell -ExecutionPolicy RemoteSigned .\ConfigureRemotingForAnsible.ps1
+dir ## ダウンロードできていることを確認
+powershell -ExecutionPolicy RemoteSigned .\ConfigureRemotingForAnsible.ps1　## セットアップスクリプトの実行
+
+## セットアップスクリプト内部では以下の作業を行っている。
+## (1)HTTPS接続用SSL自己署名証明書の発行
+## (2)ファイアウォール設定
+## (3)PowerShellリモート実行許可
+
+## WinRMを経由してコマンドを実行する場合は、接続するユーザが管理者権限を持っている必要があるため、Administrators
+グループに所属するAnsibleユーザを事前に作成しておく。
 
 ## セットアップスクリプト実行時の注意点
 
@@ -65,7 +77,7 @@ $ klist     ## トークンチケットが取得できていることを確認
 
 ・接続確認
 $ cd effective_ansible/sec5
-$ ansible windows_servers -i inventoroy.ini -m win_ping
-$ ansible windows_servers -i inventoroy.ini -m setup
+$ ansible windows_servers -i inventory.ini -m win_ping
+$ ansible windows_servers -i inventory.ini -m setup
 
 

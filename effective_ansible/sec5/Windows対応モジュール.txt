@@ -1,0 +1,22 @@
+[Widnows対応モジュール]
+モジュール名    機能
+raw            ターゲットノード上でPowerShellのコマンドレット実行やEXEファイルの実行が行える
+script         PowerShellスクリプトを転送し、ターゲットノード上で実行する
+slurp          ターゲットノード上の文字列や、画像などのファイルデータをBase64でエンコードし、メモリ上の値で返してくる
+fetch          ターゲットノード上のファイルを、マネージメントノード上に取得する
+setup          ターゲットノードの情報を取得する
+
+## rawモジュール利用例
+$ ansible windows_servers -i inventory.ini -m raw -a 'Get-Data'
+
+## scriptモジュール利用例
+$ ansible windows_servers -i inventory.ini -m script -a helloworld.ps1
+
+## slurpモジュール利用例
+$ ansible windows_servers -i inventory.ini -m slurp -a 'src=C:\\tmp\ConfigureRemotingForAnsible.ps1'
+
+## fetchモジュール利用例
+$ ansible windows_servers -i inventory.ini -m fetch -a 'src=C:\\tmp\ConfigureRemotingForAnsible.ps1 dest=./ConfigureRemotingForAnsible.ps1'
+
+## setupモジュール利用例
+$ ansible windows_servers -i inventory.ini -m setup
