@@ -96,4 +96,11 @@ gather_subset     all             !config     収集するファクトの種類�
 
 - name: debug
   debug:
-    msg: "{{ ansible_net_version }}"       
+    msg: "{{ ansible_net_version }}" 
+
+(venv)$ ansible-playbook -i inventory.ini ios_facts.yml
+
+・ネットワークモジュール利用時のファクトの扱いについて
+ネットワークモジュール利用時、プレイブックに指定するgather_facts: yesはコントロールノードのファクトが収集対象。
+ターゲットノードであるネットワーク機器のファクトを収集する場合は、ios_factsモジュールのような、*_factsモジュールを
+利用する。またプラットフォームによって収集できるファクトの内容が異なる。
