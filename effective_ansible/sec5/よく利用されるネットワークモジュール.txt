@@ -47,4 +47,53 @@ result.stdout[0][0]     show versionコマンド結果の１行目  "Cisco IOS X
 result.stdout[1]        show running-configコマンド結果  "Building configuration...\n\nCurrent configuration...略..."
                         の改行コードを含む内容
 
+■ ios_configモジュール
+Cisco IOSのネットワーク機器に対して、設定コマンドを実行するモジュール。
+ios_commandモジュールとは異なり、グローバルコンフィグレーションモードに移行するため設定コマンドを実行できる。
 
+・ios_configモジュールの主なアーギュメント
+アーギュメント名    指定する値      デフォルト値　概要
+lines             文字列のリスト     なし       実行するコマンドを指定する。1つのコマンドまたは複数のコマンドを指定できる。
+parents           文字列のリスト     なし       linesアーギュメントで指定したコマンドを実行する階層を指定する。(interfaceコマンドなど)
+src               ファイル名のパス   なし       設定するコマンドを記載したファイル名を指定する。jinja2テンプレートも利用できる。
+save_when         always           never      copy running-config startup-configコマンドを実行する条件を指定する。
+                　never
+                  modified
+                  changed
+
+※デフォルトのneverでは、startup-configにコンフィグが保存されず、ネットワーク機器を再起動すると加えた変更が
+反映されないため注意が必要。
+modifiedはタスクによる変更とは関係なくstartup-configとrunning-configに差分があった場合に、running-configを
+startup-configにコピーする。
+changedはタスクによってコンフィグに差分が生じた場合に保存する。
+
+・ios_configモジュールの利用例
+- name: interface config
+  ios_config:
+    lines:
+      - ip address 172.16.0.254 255.255.255.0
+      - description core-to-dest 
+    parents:
+      - interface Vlan100
+
+(venv)$ ansible-playbook -i inventory.ini ios_config.yml
+
+■ ios_factsモジュール
+Cisco IOSのネットワーク機器のファクトを収集するモジュール。
+ホスト名、OSバージョン、シリアルナンバー、インターフェイス情報などのファクトを収集できる。
+
+・ios_factsモジュールの主なアーギュメント
+アーギュメント名    指定する値      デフォルト値　概要
+gather_subset     all             !config     収集するファクトの種類を指定する。デフォルト値の!configのように
+　                hardware                    指定値の最初に!をつけると収集対象から除外する
+                　interfaces 
+                  config
+
+・ios_factsモジュールの利用例     
+- name: facts
+  ios_facts:
+    gather_subset: all
+
+- name: debug
+  debug:
+    msg: "{{ ansible_net_version }}"       
