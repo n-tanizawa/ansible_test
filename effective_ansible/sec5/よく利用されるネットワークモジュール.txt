@@ -1,0 +1,41 @@
+[よく利用されるネットワークモジュール]
+ネットワークモジュールには、*_command、*_config、*_factsのように、多くのプラットフォームに共通した機能がある。
+
+■ ios_commandモジュール
+Cisco IOSのネットワーク機器に対して、指定したコマンドを実行するモジュール。
+実行できるコマンドは、showコマンドやclearコマンドなど。
+ios_commandモジュール内部ではコンフィグレーションモードに移行せず、設定コマンドは実行できないため、設定コマンドに
+ついては後述のios_configなどを利用する。
+また、手動での実行時と同じように、コマンド(例えばshow running-config)によっては特権が必要。
+
+・ios_commandモジュールの主なアーギュメント
+アーギュメント名    指定する値      デフォルト値　概要
+commands          文字列のリスト   (なし)       実行するコマンドを指定する。1つのコマンドまたは複数のコマンドを
+                                            　指定できる
+
+・ios_commandモジュールの利用例
+- name: show command
+  ios_command:
+    commands:
+      - show version
+      - show running-config
+    register: result
+
+- name: debug
+  debug:
+    msg: "{{ result.stdoout_lines[0] }}"
+
+(venv)$ ansible-playbook -i inventory.ini ios_command.yml
+
+・コマンド実行結果と格納先変数の関係
+格納先                   内容                            例
+result.stdout[0]        show versionコマンド結果の      "Cisco IOS XE Software, Version 16.06.03\nCisco IOS ...略
+                        改行コードを含む内容
+result.stdout_line[0]   show versionコマンド結果の       [
+                        1行1要素のリスト                 "Cisco IOS XE Software,Version16.06.03",
+                                                　　    "Cisco IOS Software [Everest], ...略...",
+                                                        ...略...
+                                                        ]
+result.stdout[0][0]     show versionコマンド結果の１行目  "Cisco IOS XE Software, Version16.06.03"
+result.stdout[1]        show running-configコマンド結果  "Building configuration...\n\nCurrent configuration...略..."
+                        の改行コードを含む内容
