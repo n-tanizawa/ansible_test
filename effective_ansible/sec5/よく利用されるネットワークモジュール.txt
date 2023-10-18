@@ -27,11 +27,18 @@ commands          文字列のリスト   (なし)       実行するコマン�
 
 (venv)$ ansible-playbook -i inventory.ini ios_command.yml
 
+レジスタ変数resultに格納した場合、result.stdoutやresult.stdoout_linesという私邸でコマンドの結果そのものを
+参照できる。stdoutとstdout_linesは改行の取り扱いが異なる。
+result.stdoutにはコマンドの結果が改行コードを含めて格納されるのに対し、result.stdout_linesには1行1要素のリストが
+格納される。また、commandsアーギュメントにはリストで複数のコマンドが指定できる。
+各コマンドと結果の格納先は、1つ目のコマンド結果がresult.stdout[0]およびresult.stdout_lines[0]に、
+2つ目のコマンド結果がresult.stdout[1]およびresult.stdout_lines[1]に格納される。
+
 ・コマンド実行結果と格納先変数の関係
 格納先                   内容                            例
 result.stdout[0]        show versionコマンド結果の      "Cisco IOS XE Software, Version 16.06.03\nCisco IOS ...略
                         改行コードを含む内容
-result.stdout_line[0]   show versionコマンド結果の       [
+result.stdout_lines[0]   show versionコマンド結果の       [
                         1行1要素のリスト                 "Cisco IOS XE Software,Version16.06.03",
                                                 　　    "Cisco IOS Software [Everest], ...略...",
                                                         ...略...
@@ -39,3 +46,5 @@ result.stdout_line[0]   show versionコマンド結果の       [
 result.stdout[0][0]     show versionコマンド結果の１行目  "Cisco IOS XE Software, Version16.06.03"
 result.stdout[1]        show running-configコマンド結果  "Building configuration...\n\nCurrent configuration...略..."
                         の改行コードを含む内容
+
+
