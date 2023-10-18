@@ -39,3 +39,37 @@ Cisco IOS XR            〇            -           -          〇
 Cisco NX-OS             〇            -           〇         〇
 Junos OS                〇            〇          -          〇
 https://docs.ansible.com/ansible/latest/network/user_guide/platform_index.html
+
+・接続に利用する主な変数
+項目                       変数名                     コネクションプラグイン名(ansible_connection変数)
+                                                      network_cli      netconf     　httpapi
+ホスト　　　               ansible_host                〇(変数の値)※    〇(変数の値)※ 〇(変数の値)※ 
+※  inventory_hostname
+プラットフォーム名         ansible_network_os   　    　    〇　　　　　　　 〇           〇
+ユーザ名                  ansible_user                     〇              〇           〇
+パスワード                ansible_password                 〇              〇           〇
+SSH用パスワード           ansible_ssh_password             〇              〇            -
+HTTP API用パスワード      ansible_httpapi_password          -               -           〇
+特権モード以降の有無       ansible_become                   〇(no)※2        -           〇(no)※2 
+※2 移行する場合はyesを指定。ログインユーザが特権ユーザの場合は指定不要。
+特権モード移行方法         ansible_become_method            〇(sudo)※3      -           〇(sudo)※3 
+※3 ネットワークモジュール向けに指定できる値はenableのみ
+特権パスワード            ansible_become_password           〇               -           〇
+SSL/TLS利用の有無         ansible_httpapi_use_ssl           -               -           〇(no) 
+※4 デフォルトはnoのためHTTPで接続する。
+ポート番号                ansible_port                      〇(22)          〇(830)      -
+HTTP API用ポート番号      ansible_httpapi_port              -               -            〇※4
+※4 デフォルト値は、ansible_httpapi_use_sslがnoの場合は80、yesの場合は443
+SSL/TLS証明書懸賞の有無※5 ansible_httpapi_validate_certs     -               -           〇(yes)
+※5 Ansible2.7から利用可
+
+
+
+プラットフォームとansible_network_osの対応表
+プラットフォーム       ansible_network_os変数に指定する値
+Arista EOS            eos
+Cisco IOS             ios 
+Cisco IOS XR          iosxr
+Cisco NX-OS           nxos
+F5 BIG-IP             (指定不要)
+juniper junos         junos
