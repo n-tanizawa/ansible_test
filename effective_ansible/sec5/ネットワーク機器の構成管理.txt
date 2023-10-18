@@ -1,0 +1,35 @@
+[ネットワーク機器の構成管理]
+Ansibleは、LinuxやWindowsといったサーバーの構成管理のほかにも、ネットワーク機器の構成管理にも応用できる。
+特にネットワーク機器の構成管理では、CiscoIOS、IOS XR、NX-OS、Juniper Junos、Ariasta EOS、F5 BIG-IPなどに対応し、
+状態の取得や設定変更を実現する。
+例えば、コンフィグのバックアップのような簡単な操作から、テンプレートと変数を利用したコンフィグ生成を投入といった
+一連の作業の自動化も可能。
+
+[ネットワークモジュールの特徴]
+ネットワークモジュールは、前述のLinuxやWindows対応のモジュールとは異なる特徴がある。
+LinuxやWindows対応のモジュールでは、ミドルウェアや機能ごとにモジュールがあるが、ネットワークモジュールは
+プラットフォーム(ネットワークOSや管理ソフトウェアの接続対象の種別の総称)ごとに分類されている。
+また、利用するコネクションプラグインもターゲットノードとなるプラットフォームの仕様によって使い分ける。
+
+■ プラットフォーム名による分類
+プラットフォーム名は、iosやjunosのように、そのモジュールが対応するプラットフォームを示している。
+ただし、net、cli、netconf、restconfについては特定のプラットフォーム専用ではなく、共通で利用するモジュールで
+あることを示す。
+
+・プラットフォーム名によるモジュールの分類
+分類                 説明                              プラットフォーム名の例 モジュール名の例
+プラットフォーム個別  特定のプラットフォーム用のモジュール ios、junos、eos       ios_command、junos_command、eos_command
+プラットフォーム共通  各プラットフォーム共通のモジュール   net、cli、netconf     net_user、cli_get、netconf_config
+
+・機能名によるモジュール分類
+操作分類    指定方法        概要                        機能名の例         モジュール名の例
+設定　      コマンド指定    手作業と同じくコマンドを      config            ios_config、junos_config、eos_config
+                          そのまま指定するタイプ
+            宣言的指定     あるべき状態を宣言的に        user、interface、  ios_user、junos_interface、eos_vlan
+                          指定するタイプ               vlan
+情報
+取得・操作   コマンド指定　　手作業と同じくコマンドを      command           ios_command、junos_command、eos_command
+                           そのまま指定するタイプ
+            オプション指定  取得したい情報をオプションで   facts            ios_facts、junos_facts、eos_facts
+                        　 config、interfaceのように
+                           指定するタイプ
