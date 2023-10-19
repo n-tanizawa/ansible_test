@@ -14,3 +14,7 @@ $template hostFile, “/var/log/rsyslog/%HOSTNAME%/%$year%-%$month%-%$day%.log�
 :fromhost-ip, !isequal, “127.0.0.1” -?hostFile
 ## rsyslogdを再起動
 systemctl restart rsyslog                  
+## firewalldの追加
+firewall-cmd --add-port=514/udp --add-port=514/tcp --permanent
+firewall-cmd --reload
+firewall-cmd --list-all

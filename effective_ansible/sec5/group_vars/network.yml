@@ -13,8 +13,7 @@ snmp:   # SNMP設定
 
 syslog: # Syslogサーバー設定
   servers:
-    - x.x.x.x
-    - x.x.x.x
+    - 192.168.1.44
 
 user:   # ユーザー設定
   - name: admin01     # ユーザー名
