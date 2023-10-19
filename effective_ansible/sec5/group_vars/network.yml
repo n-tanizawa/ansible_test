@@ -1,8 +1,7 @@
 ---
 ntp:    # NTPサーバー設定
   servers:
-    - x.x.x.x
-    - x.x.x.x
+    - 192.168.1.44
 
 snmp:   # SNMP設定
   community:
