@@ -30,9 +30,9 @@
         loop: "{{ show_commands }}"
 
 ##(4)Cisco IOSコマンド実行結果の変数定義
-     - name: set ios result
-       set_fact:
-         results: "{{ ios_results.results }}"
+      - name: set ios result
+        set_fact:
+          results: "{{ ios_results.results }}"
      when: ansible_network_os == "ios"
 ##### Cisco IOS用blockの終了 #####
 
@@ -47,9 +47,9 @@
         loop: "{{ show_commands }}"
 
 ##(6)Juniper Junosコマンド実行結果の変数定義
-     - name: set junos result
-       set_fact:
-        results: "{{ junos_results.results }}"
+      - name: set junos result
+        set_fact:
+          results: "{{ junos_results.results }}"
      when: ansible_network_os == "junos"
 ##### Juniper Junos用blockの終了 #####
 
