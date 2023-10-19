@@ -1,5 +1,5 @@
 [そのほかの設定]
-## syslogサーバの設定
+■ syslogサーバの設定
 vi /etc/rsyslog.conf
 
 ## ネットワーク機器からのログの通信を受け付けるため、/etc/rsyslog.confの以下パラメータのコメントを外す。
@@ -18,3 +18,11 @@ systemctl restart rsyslog
 firewall-cmd --add-port=514/udp --add-port=514/tcp --permanent
 firewall-cmd --reload
 firewall-cmd --list-all
+
+■ ntpサーバの設定
+## chronyのインストール
+yum -y install chrony
+## 設定の編集
+vi /etc/chrony.conf
+## 27行目に以下を追加
+allow 192.168.1.0/24
