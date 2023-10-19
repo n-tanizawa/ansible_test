@@ -1,5 +1,8 @@
 ---
 ansible_connection: network_cli     # 利用するコネクションプラグイン
+ansible_become: true
+ansible_become_method: "enable"
+ansible_become_pass: Passw0rd
 ansible_network_os: ios       # プラットフォーム名
 ansible_user: iosuser         # 接続するユーザー名
 ansible_password: iosp@ss99   # 接続するパスワード
