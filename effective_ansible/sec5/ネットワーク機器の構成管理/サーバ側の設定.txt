@@ -34,6 +34,14 @@ firewall-cmd --add-port=123/udp --permanent
 
 ■ 公開鍵の準備
 ssh-keygen -t rsa -b 2048
-file in which to save the key (/root/.ssh/id_rsa):/home/ansible/user_keys/admin01_id_rsa.pub
+file in which to save the key (/root/.ssh/id_rsa):/home/ansible/user_keys/admin01_id_rsa
 ssh-keygen -t rsa -b 2048
-file in which to save the key (/root/.ssh/id_rsa):/home/ansible/user_keys/admin02_id_rsa.pub
+file in which to save the key (/root/.ssh/id_rsa):/home/ansible/user_keys/admin02_id_rsa
+
+# ls -l /home/ansible/user_keys/
+合計 16
+-rw-------. 1 root root 1679 10月 19 18:17 admin01_id_rsa
+-rw-r--r--. 1 root root  408 10月 19 18:17 admin01_id_rsa.pub
+-rw-------. 1 root root 1675 10月 19 18:17 admin02_id_rsa
+-rw-r--r--. 1 root root  408 10月 19 18:17 admin02_id_rsa.pub
+
