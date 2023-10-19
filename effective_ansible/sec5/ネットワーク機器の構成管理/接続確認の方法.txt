@@ -1,0 +1,11 @@
+[接続確認の方法]
+## paramiko、ncclientのインストール
+$ pip install paramiko ncclient
+## ios_commandモジュールの実行
+$ ansible -i inventoroy.ini  ios -m ios_command -a "commands='show version'"
+
+## junos上でのNETCONFの有効化
+# set system services netconf ssh
+# commit
+## junos_commandモジュールの実行
+$ ansible -i inventoroy.ini  junos -m junos_command -a "commands='show version'"
