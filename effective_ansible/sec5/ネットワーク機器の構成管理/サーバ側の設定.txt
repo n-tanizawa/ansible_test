@@ -26,3 +26,8 @@ yum -y install chrony
 vi /etc/chrony.conf
 ## 27行目に以下を追加
 allow 192.168.1.0/24
+## chronyの再起動
+systemctl restart chronyd
+systemctl enable chronyd
+## firewalldの追加
+firewall-cmd --add-port=123/udp --permanent
