@@ -11,6 +11,9 @@
       username: ntanizawa
       password: T4at$N~HWV
       email: n-tanizawa@netone.co.jp
+    targets:
+      - '10.44.229.71'
+      - '10.44.229.72'
 
   tasks:
     - name: Create docker local network
@@ -21,10 +24,11 @@
 
     - name: Docker login
       command: docker login -u "{{ docker_auth.username }}" -p "{{ docker_auth.password }}"
-      with_items: "{{ docker_hosts }}"
       register: login_result
       become: yes
       become_user: root
+      delegate_to: "{{ item }}"
+      loop: "{{ targets }}"
 
     - name: Pull docker image
       docker_image:

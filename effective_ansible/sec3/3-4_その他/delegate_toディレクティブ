@@ -1,0 +1,5 @@
+[delegate_toディレクティブ]
+指定のホスト上に処理を委譲してモジュールを実行するディレクティブ。
+delegate_to[hostname,IPアドレス]
+
+delegate_to: "{{ hostvars.db1i.ansible_host }}"
