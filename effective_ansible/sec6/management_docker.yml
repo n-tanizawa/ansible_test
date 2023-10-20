@@ -26,8 +26,6 @@
       command: docker login -u "{{ docker_auth.username }}" -p "{{ docker_auth.password }}"
       become: yes
       become_user: root
-      delegate_to: "{{ item }}"
-      loop: "{{ targets }}"
 
     - name: Pull docker image
       command: docker pull "{{ required_docker_images }}"
