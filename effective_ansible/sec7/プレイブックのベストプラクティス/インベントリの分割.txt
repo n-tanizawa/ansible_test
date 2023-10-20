@@ -41,3 +41,34 @@ all.ymlには、OS共通のkeymapやモジュールなどを設定する。
 $ ansible-playbook -i production.ini web_deploy.yml
 ## 日本のWebサーバのみに適用する場合
 $ ansible-playbook -i production.ini web_deploy.yml -l jp_servers
+
+■ 階層化したインベントリ
+運用環境ごとのインベントリ構成は、あくまで運用環境ごとの設定が同じことを前提とし、変数の切り替えが少ない場合を
+想定したディレクトリ構成。つまり、運用環境ごとのインベントリ構成で対応すると、どの運用環境でもgroup_varsに
+定義した変数が同じように展開される。しかしながら、実際の運用では運用環境ごとにセキュリティ規則が異なり、使用
+するポート番号や各テンプレートの配置場所などが異なる場合も多い。このような場合には、ディレクトリ構造を階層化
+してインベントリの変数を定義することで対応が可能。
+Ansibleではインベントリディレクトリ配下に置かれたファイルではなく、階層化されたディレクトリもインベントリと
+して指定できる。したがって、あらかじめ運用環境ごとにディレクトリを分割し、個別の変数を切り替えることで、環境
+ごとの変数切り替えが実現できる。
+
+C:\USERS\TNCOC\デスクトップ\ANSIBLE\ANSIBLE_TEST\EFFECTIVE_ANSIBLE\SEC7
+├─inventory
+│  └─production
+│      ├─group_vars
+│      │      jp_servers.yml
+│      │      web_servers.yml
+│      │
+│      ├─hosts
+│      └─host_vars
+│              jp_servers.yml
+│              web_servers.yml
+
+各運用環境のディレクトリ配下にインベントリを作成した場合は、Ansibleによって、インベントリのある階層にある
+host_varsおよびgroup_varsが読み込まれる。Ansible実行時も階層化したインベントリディレクトリにあるインベン
+トリ(例ではhosts)を指定するだけで、劇的に各環境のホスト変数、グループ変数が読み込まれる
+
+## 本番環境のWebサーバに適用する場合
+$ ansible-playbook -i inventories/production/hosts web_deploy.yml
+## 日本にあるステージング環境のデータベースサーバのみに適用する場合
+$ ansible-playbook -i inventories/staging/hosts web_deploy.yml -l jp_servers
