@@ -13,9 +13,9 @@
       email: n-tanizawa@netone.co.jp
 
   tasks:
-    - name: Install the required packages
+    - name: Install git
       yum:
-        name: "{{ item }}"
+        name: git
         state: latest
         update_cache: yes
         
