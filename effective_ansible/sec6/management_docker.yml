@@ -52,23 +52,23 @@
       delegate_to: "{{ item }}"
       loop: "{{ targets }}"
 
-    - name: Build Dockerfile
-      command: docker build --pull --tag nginxinc/docker-nginx:v1 --file {{ tmp_dir }}/stable/debian/Dockerfile .
-      become: yes
-      become_user: root
-      delegate_to: "{{ item }}"
-      loop: "{{ targets }}"
-
     # - name: Build Dockerfile
-    #   docker_image:
-    #     docker_host: "{{ item }}"
-    #     build:
-    #       path: "{{ tmp_dir }}/stable/debian"
-    #       pull: yes
-    #     name: nginxinc/docker-nginx
-    #     tag: v1
-    #     source: build
-    #   with_items: "{{ docker_hosts }}"
+    #   command: docker build --pull --tag nginxinc/docker-nginx:v1 --file {{ tmp_dir }}/stable/debian/Dockerfile .
+    #   become: yes
+    #   become_user: root
+    #   delegate_to: "{{ item }}"
+    #   loop: "{{ targets }}"
+
+    - name: Build Dockerfile
+      docker_image:
+        docker_host: "{{ item }}"
+        build:
+          path: "{{ tmp_dir }}/stable/debian"
+          pull: yes
+        name: nginxinc/docker-nginx
+        tag: v1
+        source: build
+      with_items: "{{ docker_hosts }}"
 
     - name: Inspect docker image
       docker_image_facts:
