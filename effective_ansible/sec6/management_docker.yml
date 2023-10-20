@@ -11,7 +11,7 @@
   tasks:
     - name: Create docker local network
       docker_network:
-        docker_hosts: "{{ item }}"
+        docker_host: "{{ item }}"
         name: ansible_network
       with_items: "{{ docker_hosts }}"
 
