@@ -43,7 +43,7 @@
       delegate_to: "{{ item }}"
       loop: "{{ targets }}"
 
-    - name: main / Install the required packages
+    - name: Install the required packages
       package:
         name: git
         state: present
