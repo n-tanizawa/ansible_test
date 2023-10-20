@@ -1,0 +1,47 @@
+[そのほかの設定]
+■ syslogサーバの設定
+vi /etc/rsyslog.conf
+
+## ネットワーク機器からのログの通信を受け付けるため、/etc/rsyslog.confの以下パラメータのコメントを外す。
+# Provides UDP syslog reception 
+$ModLoad imudp 
+$UDPServerRun 514
+$ModLoad imtcp
+$InputTCPServerRun 514
+## 50行目に以下を追加
+$template hostFile, “/var/log/rsyslog/%HOSTNAME%/%$year%-%$month%-%$day%.log”
+## 57行目に以下を追加
+:fromhost-ip, !isequal, “127.0.0.1” -?hostFile
+## rsyslogdを再起動
+systemctl restart rsyslog                  
+## firewalldの追加
+firewall-cmd --add-port=514/udp --add-port=514/tcp --permanent
+firewall-cmd --reload
+firewall-cmd --list-all
+
+■ ntpサーバの設定
+## chronyのインストール
+yum -y install chrony
+## 設定の編集
+vi /etc/chrony.conf
+## 27行目に以下を追加
+allow 192.168.1.0/24
+## chronyの再起動
+systemctl restart chronyd
+systemctl enable chronyd
+## firewalldの追加
+firewall-cmd --add-port=123/udp --permanent
+
+■ 公開鍵の準備
+ssh-keygen -t rsa -b 2048
+file in which to save the key (/root/.ssh/id_rsa):/home/ansible/user_keys/admin01_id_rsa
+ssh-keygen -t rsa -b 2048
+file in which to save the key (/root/.ssh/id_rsa):/home/ansible/user_keys/admin02_id_rsa
+
+# ls -l /home/ansible/user_keys/
+合計 16
+-rw-------. 1 root root 1679 10月 19 18:17 admin01_id_rsa
+-rw-r--r--. 1 root root  408 10月 19 18:17 admin01_id_rsa.pub
+-rw-------. 1 root root 1675 10月 19 18:17 admin02_id_rsa
+-rw-r--r--. 1 root root  408 10月 19 18:17 admin02_id_rsa.pub
+

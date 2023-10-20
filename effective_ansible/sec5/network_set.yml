@@ -44,7 +44,7 @@
 ##(5)Juniper Junos NTPサーバの設定
       - name: set junos ntp
         junos_config:
-          src: junos_snmp.j2
+          src: junos_ntp.j2
 
 ##(6)Juniper Junos SNMPの設定
       - name: set junos snmp
