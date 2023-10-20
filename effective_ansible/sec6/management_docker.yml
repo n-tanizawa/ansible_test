@@ -24,18 +24,17 @@
 
     - name: Docker login
       command: docker login -u "{{ docker_auth.username }}" -p "{{ docker_auth.password }}"
-      register: login_result
       become: yes
       become_user: root
       delegate_to: "{{ item }}"
       loop: "{{ targets }}"
 
     - name: Pull docker image
-      docker_image:
-        docker_host: "{{ item }}"
-        name: "{{ required_docker_images }}"
-      with_items:
-        - "{{ docker_hosts }}"
+      command: docker pull "{{ required_docker_images }}"
+      become: yes
+      become_user: root
+      delegate_to: "{{ item }}"
+      loop: "{{ targets }}"
 
     - name: Get Nginx Dockerfile
       git:
