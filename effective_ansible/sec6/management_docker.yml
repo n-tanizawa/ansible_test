@@ -36,7 +36,6 @@
         name: "{{ required_docker_images }}"
       with_items:
         - "{{ docker_hosts }}"
-      when: login_result.results | selectattr("item", "equalto", item) | list | first | succeeded | bool
 
     - name: Get Nginx Dockerfile
       git:
