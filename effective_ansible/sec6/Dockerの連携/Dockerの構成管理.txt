@@ -48,3 +48,11 @@ $ export DOCKER_HOST=tcp://<Docker Host>:2376
 $ ./docker.py --list 
 ## ansible-1からnginx-1のHTTPコンテンツを取得
 $ ansible -i ./docker.py ansible-1 -a 'curl http://nginx-1' -c docker
+
+Docker用のスクリプト形式(script plugin)のダイナミックインベントリのスクリプトではdocker-pyのインストールが
+求められるが、必要なライブラリがdocker-composeのライブラリに含まれている。また、Docker SDKとdocker-pyの
+双方が同じ名前空間を利用しているため、同時にインストールすることはできない。そのため、ダイナミックインベントリ
+を活用する場合は、docker-pyをインストールせずに、Python3.6のインタープリタをスクリプト内で指定し、
+docker-composeのライブラリをインストールしておく。
+ダイナミックインベントリスクリプトの--listオプションから、指定したDockerホスト上のコンテナ情報が取得できれば、
+正しく設定できている。また、Docker Connectionプラグインを介して、コンテナにプレイブックを流すことも可能。
