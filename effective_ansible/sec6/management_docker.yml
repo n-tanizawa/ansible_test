@@ -40,8 +40,6 @@
       git:
         repo: https://github.com/nginxinc/docker-nginx.git
         dest: "{{ tmp_dir }}"
-      become: yes
-      become_user: root
       delegate_to: "{{ item }}"
       loop: "{{ targets }}"
 
