@@ -40,9 +40,13 @@
       git:
         repo: https://github.com/nginxinc/docker-nginx.git
         dest: "{{ tmp_dir }}"
+      become: yes
+      become_user: root
+      delegate_to: "{{ item }}"
+      loop: "{{ targets }}"
 
     - name: Build Dockerfile
-      command: docker build --pull --tag nginxinc/docker-nginx:v1 --file /root/effective_ansible/sec6/{{ tmp_dir }}/stable/debian/Dockerfile .
+      command: docker build --pull --tag nginxinc/docker-nginx:v1 --file {{ tmp_dir }}/stable/debian/Dockerfile .
       become: yes
       become_user: root
       delegate_to: "{{ item }}"
