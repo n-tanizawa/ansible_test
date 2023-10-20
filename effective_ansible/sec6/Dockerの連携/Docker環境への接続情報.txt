@@ -1,0 +1,48 @@
+[Docker環境への接続情報]
+コンテナのプロビジョニングを行うためには、プレイブック実行時にDocker Remote APIへの接続情報が必要。
+この接続情報を設定する方法は以下の2つがある。
+(1)個別のタスクによる接続情報の定義
+(2)環境変数による接続情報の定義
+
+・Docker環境への接続情報
+モジュール      デフォルト値                    環境変数名           詳細内容
+アーギュメント
+docker_host    unix://var/run/docker.sock     DOCKER_HOST         Docker Remote APIへの接続先
+api_version    docker-py対応バージョン         DOCKER_API_VERSION  Docker Remote APIのバージョン
+timeout        60                             DOCKER_TIMEOUT      API接続のタイムアウト(秒)
+tls            FALSE                          DOCKER_TLS          TLSの有効化
+tls_verify     FALSE                          DOCKER_TLS_VERIFY   TLSの有効化及び認証有無
+cert_path      -                              DOCKER_CERT_PATH    クライアント証明書配置場所
+
+■ 個別のタスクによる接続情報の定義
+各Dockerモジュールには、接続変数を設定するアーギュメントが用意されている。
+これらを各タスクで指定することにより、対象のDocker Remote APIに接続することができる。具体的には、各Docker
+モジュールのdocker_hostというアーギュメントを指定することにより、接続対象のDockerホストを指定することができる。
+
+・個別のタスクによる接続情報の定義例
+- name: Create a data container
+  docker_container:
+    name: data_container
+    image: centos
+    volumes:
+      - /data
+    docker_host: "{{ item }}"
+  with_item:
+    - '192.168.10.11:2367'
+    - '192.168.10.12:2367'
+
+なお、docker_hostにはデフォルト値として、Unixドメインソケット(unix://var/run/docker.sock)が設定されている。
+通常はDocker Remote APIからの接続が良いが、インベントリにDockerホストを定義しておくことにより、各ホストの
+Unixドメインソケットを使用して接続することが可能。ただし、Unixドメインソケットを利用する場合は、Ansibleの
+実行権限がroot権限、もしくはdockerグループである必要がある。
+
+■ 環境変数による接続情報の定義
+接続対象のDockerホストが限られている場合は、Ansibleのコントロールノード側で事前に環境変数を設定することに
+より、対象のDocker Remote APIに接続することができる。
+・環境変数による接続情報の定義例
+$ export DOCKER_TLS_VERIFY="1"
+$ export DOCKER_HOST="tcp://192.168.10.11:2367"
+$ docker info ##接続の確認
+$ ansible-playbook -i inventory.ini playbook.yml
+ただし、環境変数を利用した場合は、操作すべきターゲットノードが多いと、プレイブックごとに環境変数を切り替えて
+実行しなければいけないわずらわしさがある。
