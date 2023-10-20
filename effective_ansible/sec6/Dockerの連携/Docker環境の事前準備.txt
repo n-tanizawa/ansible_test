@@ -75,3 +75,5 @@ $ sudo mkdir -v /etc/systemd/system/docker.service.d
 $ sudo vi /etc/systemd/system/docker.service.d/docker_options.conf
 $ sudo systemctl deamon-reload
 $ sudo systemctl restart docker.service
+## firewalldの追加
+firewall-cmd --add-port=2376/udp --permanent
