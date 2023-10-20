@@ -13,10 +13,10 @@
       email: n-tanizawa@netone.co.jp
 
   tasks:
-    - name: Install git using dnf
+    - name: Install git 
       become: yes
       become_user: root
-      dnf:
+      yum:
         name: git
         state: present
         
