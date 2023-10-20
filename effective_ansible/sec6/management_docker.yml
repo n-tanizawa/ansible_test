@@ -11,7 +11,6 @@
       username: ntanizawa
       password: T4at$N~HWV
       email: n-tanizawa@netone.co.jp
-    ansible_python_interpreter: /root/venv/bin/python
 
   tasks:
     - name: Install git 
@@ -20,6 +19,8 @@
         state: present
       become: yes
       become_user: root
+      var:
+        ansible_python_interpreter: /usr/bin/python
         
     - name: Create docker local network
       docker_network:
