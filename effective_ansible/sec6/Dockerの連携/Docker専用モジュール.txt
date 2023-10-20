@@ -1,0 +1,10 @@
+[Docker専用モジュール]
+モジュール　        詳細
+docker_container   コンテナの起動や停止などの管理を行う
+docker_image       コンテナイメージの取得や変更管理を行う
+docker_image_info  コンテナイメージの情報を取得する
+docker_login       Dockerレジストリへのログインを行う
+docker_network     Dockerネットワークの管理を行う
+docker_secret      Swarm環境で機密情報管理を行う
+docker_compose     DockerComposeと連携したコンテナのサービス管理を行う
+docker_volume      Dockerボリュームの管理を行う
