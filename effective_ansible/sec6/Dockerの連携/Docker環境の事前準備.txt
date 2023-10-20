@@ -63,16 +63,15 @@ $ sudo pip3 install docker
 Dockerのインストール後のデフォルト設定では、Docker Remote APIは、Unixドメインソケットでリッスンされており、
 ホスト上のrootユーザからのみアクセスが許可されている。この状態では、外部からAPIを利用したプロビジョニング操作
 は行えない。そのためDockerの起動オプションを変更して、事前にTCPによるAPI接続設定を行う。
-# /etc/systemd/system/docker.service.d/override.conf
-[service]
-ExecStart=
+
+## ユニットファイルの更新
+$ sudo vi /usr/lib/systemd/system/docker.service
+14,15行目を書き換え
+#ExecStart=/usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
 ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2376
 ## -Hオプション dockerdの待機ソケット(UnixソケットまたはTCPポート)にバインドする
 デフォルトの設定では、systemdのソケットアクティベーション機能により、/lib/systemd/system/docker.socketを
 参照する。
-$ sudo mkdir -v /etc/systemd/system/docker.service.d
-## ユニットファイルの更新
-$ sudo vi /etc/systemd/system/docker.service.d/docker_options.conf
 $ sudo systemctl daemon-reload
 $ sudo systemctl restart docker.service
 ## firewalldの追加
