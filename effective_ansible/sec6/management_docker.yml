@@ -13,9 +13,11 @@
       email: n-tanizawa@netone.co.jp
 
   tasks:
-    - name: Install git 
+    - name: Install git and docker ## git cloneとdocker login用
       dnf:
-        name: git
+        name: 
+          - git
+          - docker
         state: present
       become: yes
       become_user: root
