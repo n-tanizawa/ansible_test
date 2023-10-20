@@ -20,7 +20,7 @@
       with_items: "{{ docker_hosts }}"
 
     - name: Docker login
-      ansible.builtin.command: docker login -u "{{ docker_auth.username }}" -p "{{ docker_auth.password }}"
+      command: docker login -u "{{ docker_auth.username }}" -p "{{ docker_auth.password }}"
       with_items: "{{ docker_hosts }}"
       register: login_result
       become: yes
