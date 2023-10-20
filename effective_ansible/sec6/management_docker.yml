@@ -11,11 +11,13 @@
       username: ntanizawa
       password: T4at$N~HWV
       email: n-tanizawa@netone.co.jp
-    # targets:
-    #   - '10.44.229.71'
-    #   - '10.44.229.72'
 
   tasks:
+    - name: Install the required packages
+      package:
+        name: git
+        state: present
+        
     - name: Create docker local network
       docker_network:
         docker_host: "{{ item }}"
@@ -35,35 +37,10 @@
       with_items:
         - "{{ docker_hosts }}"
 
-    # - name: Pull docker image
-    #   command: docker pull "{{ required_docker_images }}"
-    #   become: yes
-    #   become_user: root
-    #   delegate_to: "{{ item }}"
-    #   loop: "{{ targets }}"
-
-    # - name: Install the required packages
-    #   package:
-    #     name: git
-    #     state: present
-    #   become: yes
-    #   become_user: root
-    #   delegate_to: "{{ item }}"
-    #   loop: "{{ targets }}"
-
     - name: Get Nginx Dockerfile
       git:
         repo: https://github.com/nginxinc/docker-nginx.git
         dest: "{{ tmp_dir }}"
-      # delegate_to: "{{ item }}"
-      # loop: "{{ targets }}"
-
-    # - name: Build Dockerfile
-    #   command: docker build --pull --tag nginxinc/docker-nginx:v1 --file {{ tmp_dir }}/stable/debian/Dockerfile .
-    #   become: yes
-    #   become_user: root
-    #   delegate_to: "{{ item }}"
-    #   loop: "{{ targets }}"
 
     - name: Build Dockerfile
       docker_image:
