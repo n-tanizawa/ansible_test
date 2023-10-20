@@ -14,9 +14,10 @@
 
   tasks:
     - name: Install the required packages
-      package:
-        name: git
-        state: present
+      yum:
+        name: "{{ item }}"
+        state: latest
+        update_cache: yes
         
     - name: Create docker local network
       docker_network:
