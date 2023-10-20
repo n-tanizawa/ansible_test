@@ -31,6 +31,8 @@ systemctl restart chronyd
 systemctl enable chronyd
 ## firewalldの追加
 firewall-cmd --add-port=123/udp --permanent
+firewall-cmd --reload
+firewall-cmd --list-all
 
 ■ 公開鍵の準備
 ssh-keygen -t rsa -b 2048

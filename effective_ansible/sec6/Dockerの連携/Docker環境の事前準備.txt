@@ -73,7 +73,9 @@ ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2376
 $ sudo mkdir -v /etc/systemd/system/docker.service.d
 ## ユニットファイルの更新
 $ sudo vi /etc/systemd/system/docker.service.d/docker_options.conf
-$ sudo systemctl deamon-reload
+$ sudo systemctl daemon-reload
 $ sudo systemctl restart docker.service
 ## firewalldの追加
-firewall-cmd --add-port=2376/udp --permanent
+firewall-cmd --add-port=2376/tcp --permanent
+firewall-cmd --reload
+firewall-cmd --list-all
