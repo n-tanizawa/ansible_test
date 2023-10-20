@@ -13,12 +13,12 @@
       email: n-tanizawa@netone.co.jp
 
   tasks:
-  #   - name: Install git 
-  #     become: yes
-  #     become_user: root
-  #     yum:
-  #       name: git
-  #       state: present
+    - name: Install git 
+      become: yes
+      become_user: root
+      package:
+        name: git
+        state: present
         
     - name: Create docker local network
       docker_network:
