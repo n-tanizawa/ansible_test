@@ -21,8 +21,6 @@
 
     - name: Docker login
       ansible.builtin.command: docker login -u "{{ docker_auth.username }}" -p "{{ docker_auth.password }}"
-      args:
-        executable: "{{ ansible_become_exe }}"
       with_items: "{{ docker_hosts }}"
       register: login_result
       become: yes
