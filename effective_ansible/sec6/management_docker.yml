@@ -11,8 +11,7 @@
       username: ntanizawa
       password: T4at$N~HWV
       email: n-tanizawa@netone.co.jp
-    vars:
-      ansible_python_interpreter: /usr/bin/python
+    ansible_python_interpreter: /usr/bin/python
 
   tasks:
     - name: Install git 
