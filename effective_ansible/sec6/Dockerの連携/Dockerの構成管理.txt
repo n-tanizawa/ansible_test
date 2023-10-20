@@ -1,0 +1,50 @@
+[Dockerの構成管理]
+
+■ Docker Connectionプラグイン
+そもそもDockerコンテナを使うのは、コンテナ上のプロセスをユーザー空間で隔離することが目的であり、不要な
+パッケージインストールを避けるのが普通である。そのため、Ansibleの接続においてもsshdプロセスを起動しての
+コンソール作業は行わない。その代わりにDocker Connectionプラグインを活用する。
+Docker Connectionプラグインとは、Dockerコンテナに対して直接タスクを実行できるConnectionプラグインの一つ。
+Docker Connectionプラグインの動作は、Docker Remote APIを経由して、「docker cp」で実行ファイルを転送し、
+「docker exec」でモジュールのスクリプトを実行する。そのため、コンテナ内にsshdプロセスを起動せずとも、
+コンテナの構成管理を行うことができる。
+
+・Docker Connectionプラグインの利用時
+---
+- name: Configure Docker Container
+  hosts: ansible-1
+  connection: docker ## Docker Connectionプラグインの利用を定義
+  tasks:
+    - name: Test install compornent
+      shell: ansible-playbook check_container.yml
+
+...(省略)...
+
+Connectionプラグインの指定は、プレイ内connectionディレクティブまたはグループの接続変数に定義できる。
+ただし、コンテナの接続には、コンテナ名を取得するためのインベントリが必要。ダイナミックインベントリで
+これを補完できる。
+
+■ Dockerのダイナミックインベントリ
+Docker環境では、Docker Remote APIを介して、ダイナミックインベントリが利用できる。
+Docker Remote APIは、Dockerホストごとのコンテナリストを管理しているため、ターゲットノードがダイナミック
+インベントリの対象となる。また、ダイナミックインベントリを活用することで、プレイブックのターゲットセクション
+にはコンテナの名前を直接指定できる。
+
+多くの場合、専用のインベントリプラグインを使用することで、ダイナミックインベントリが利用できるが、Dockerは
+docker_swarm対応のものしかプラグインが存在しない。したがって、従来のスクリプト形式のダイナミックインベントリ
+を活用する。
+
+・Dockerのダイナミックインベントリの利用例
+$ cd PATH_to/effective_ansible/sec6
+$ curl https://raw.githubusercontent.com/ansible/ansible/devel/contrib/inventory/docker.py --output ./docker.py
+$ chmod +x ./docker.py
+## 1行目のインタプリタをPython2.7からPython3.6に変更
+$ sed -i '1d' .docker.py
+$ sed -i '1i#! /usr/bin/python3.6' ./docker.py
+## Docker Compose SDKの利用
+$ sudo pip3 install docker docker-compose==1.25.0
+## Docker Host例:10.44.229.71
+$ export DOCKER_HOST=tcp://<Docker Host>:2376
+$ ./docker.py --list 
+## ansible-1からnginx-1のHTTPコンテンツを取得
+$ ansible -i ./docker.py ansible-1 -a 'curl http://nginx-1' -c docker
