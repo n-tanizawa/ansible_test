@@ -44,9 +44,12 @@
     - name: Build Dockerfile
       docker_image:
         docker_host: "{{ item }}"
-        path: "{{ tmp_dir }}/stable/stretch"
+        build:
+          path: "{{ tmp_dir }}/stable/stretch"
+          pull: yes
         name: nginxinc/docker-nginx
         tag: v1
+        source: build
       with_items: "{{ docker_hosts }}"
 
     - name: Inspect docker image
