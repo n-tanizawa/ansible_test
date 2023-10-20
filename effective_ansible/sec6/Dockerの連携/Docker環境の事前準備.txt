@@ -1,0 +1,41 @@
+[Docker環境の事前準備]
+## CentOSに含まれる既存のパッケージ(docker-engineやdocker)の削除
+$ sudo yum remove docker \
+docker-client \
+docker-client-latest \
+docker-common \
+docker-latest \
+docker-latest-logrotate \
+docker-engine
+## Docker CEのインストールに必要なパッケージをインストール
+$ sudo yum install -y yum-utils \
+device-mapper-persistent-data lvm2
+## Docker CE用のYumリポジトリの登録
+$ sudo yum-config-manager \
+--add-repo https://download.docker.com/linux/centos/docker-ce.repo
+## Docker CEのインストールに必要なパッケージをインストール
+$ sudo yum makecache fast ##インデックスの更新
+$ sudo yum update -y ##パッケージアップデート
+$ sudo yum install \
+-y docker-ce-18.09.6-3.el7.x86_64 \
+docker-ce-cli-18.09.6-3.el7.x86_64 \
+containerd.io
+$ sudo mkdir /etc/docker
+$ sudo sh -c "cat <<EOF > /etc/docker/deamon.json
+{
+\"exec-opts\": [\"native.cgroupdriver=systemd\"],
+\"log-driver\": \"json-file\",
+\"log-opts\": {
+\"max-seze\": \"100m\"
+},
+\"storage-driver\": \"overlay2\",
+\"storage-opts\": [
+\"overlay2.override_kernel_check=true\"
+]
+}
+EOF"
+$ sudo mkdir -p /etc/systemd/system/docker.service.d
+## Dockerの起動
+$ sudo systemctl enable docker
+$ sudo systemctl deamon-reload
+$ sudo systemctl start docker
