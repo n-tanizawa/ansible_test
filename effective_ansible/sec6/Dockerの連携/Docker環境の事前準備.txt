@@ -38,7 +38,7 @@ EOF"
 $ sudo mkdir -p /etc/systemd/system/docker.service.d
 ## Dockerの起動
 $ sudo systemctl enable docker
-$ sudo systemctl deamon-reload
+$ sudo systemctl daemon-reload
 $ sudo systemctl start docker
 
 [Docker環境の前提条件]
