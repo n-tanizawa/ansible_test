@@ -3,8 +3,8 @@
   hosts: localhost
   vars:
     docker_hosts:
-      - '192.168.10.11:2376'
-      - '192.168.10.12:2376'
+      - '10.44.229.71:2376'
+      - '10.44.229.72:2376'
     required_docker_images: "ansible/centos7-ansible"
     tmp_dir: docker_repo
 
