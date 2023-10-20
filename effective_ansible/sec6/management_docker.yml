@@ -14,11 +14,11 @@
 
   tasks:
     - name: Install git 
-      become: yes
-      become_user: root
       dnf:
         name: git
         state: present
+      become: yes
+      become_user: root
         
     - name: Create docker local network
       docker_network:
