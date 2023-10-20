@@ -1,4 +1,5 @@
 [Docker環境の事前準備]
+■ Dockerのインストール
 ## CentOSに含まれる既存のパッケージ(docker-engineやdocker)の削除
 $ sudo yum remove docker \
 docker-client \
@@ -39,3 +40,38 @@ $ sudo mkdir -p /etc/systemd/system/docker.service.d
 $ sudo systemctl enable docker
 $ sudo systemctl deamon-reload
 $ sudo systemctl start docker
+
+[Docker環境の前提条件]
+コントロールノード
+・Docker SDK for Python 1.70以上
+・Python2.7またはPython3以上
+ターゲットノード
+・Docker Remote APIバージョン1.20以上
+
+■ Docker SDK for Pythonのインストール
+Dockerモジュールには、PythonのライブラリであるDocker SDKが利用されているため、事前にコントロールノードに
+インストールしておく必要がある。Docker専用モジュールを利用する際は、以下の2種類の接続方式によって、ターゲット
+ノードが異なる。
+(1)コントロールノード上からTCP経由でDocker Remote APIに接続する方式
+(2)ターゲットノード側にSSH接続を行った後に、Unixドメインソケットを利用してDocker Remote APIに接続する方式
+どちらの場合においても、Ansibleの実行スクリプトを動作させるコントロールノード上でDocker SDKがインストール
+されている必要があるため、コントロールノードからTCP経由で接続するのが良い。
+
+$ sudo pip3 install docker
+
+■ Docker Remote APIの設定
+Dockerのインストール後のデフォルト設定では、Docker Remote APIは、Unixドメインソケットでリッスンされており、
+ホスト上のrootユーザからのみアクセスが許可されている。この状態では、外部からAPIを利用したプロビジョニング操作
+は行えない。そのためDockerの起動オプションを変更して、事前にTCPによるAPI接続設定を行う。
+# /etc/systemd/system/docker.service.d/override.conf
+[service]
+ExecStart=
+ExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:2376
+## -Hオプション dockerdの待機ソケット(UnixソケットまたはTCPポート)にバインドする
+デフォルトの設定では、systemdのソケットアクティベーション機能により、/lib/systemd/system/docker.socketを
+参照する。
+$ sudo mkdir -v /etc/systemd/system/docker.service.d
+## ユニットファイルの更新
+$ sudo vi /etc/systemd/system/docker.service.d/docker_options.conf
+$ sudo systemctl deamon-reload
+$ sudo systemctl restart docker.service
