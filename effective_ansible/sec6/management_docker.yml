@@ -29,7 +29,7 @@
 
     - name: Build Dockerfile
       docker_image:
-        docker_hosts: "{{ item }}"
+        docker_host: "{{ item }}"
         path: "{{ tmp_dir }}/stable/stretch"
         name: nginxinc/docker-nginx
         tag: v1
@@ -48,7 +48,7 @@
 
     - name: Run nginx docker container
       docker_container:
-        docker_hosts: "{{ item }}"
+        docker_host: "{{ item }}"
         name: "nginx-1"
         image: "nginxinc/docker-nginx:v1"
         networks:
@@ -60,7 +60,7 @@
 
     - name: Run ansible docker container
       docker_container:
-        docker_hosts: "{{ item }}"
+        docker_host: "{{ item }}"
         name: "ansible-1"
         image: "{{ required_docker_images }}"
         command: /bin/bash
