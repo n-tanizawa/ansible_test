@@ -45,7 +45,7 @@
       docker_image:
         docker_host: "{{ item }}"
         build:
-          path: "{{ tmp_dir }}/stable/stretch"
+          path: "{{ tmp_dir }}/stable/debian"
           pull: yes
         name: nginxinc/docker-nginx
         tag: v1
