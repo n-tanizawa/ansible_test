@@ -2,7 +2,7 @@
 - name: Management Docker
   hosts: localhost
   vars:
-    docker_host:
+    docker_hosts:
       - '10.44.229.71:2376'
       - '10.44.229.72:2376'
     required_docker_images: "ansible/centos7-ansible"
@@ -11,7 +11,7 @@
   tasks:
     - name: Create docker local network
       docker_network:
-        docker_host: "{{ item }}"
+        docker_hosts: "{{ item }}"
         name: ansible_network
       with_items: "{{ docker_hosts }}"
 
@@ -29,7 +29,7 @@
 
     - name: Build Dockerfile
       docker_image:
-        docker_host: "{{ item }}"
+        docker_hosts: "{{ item }}"
         path: "{{ tmp_dir }}/stable/stretch"
         name: nginxinc/docker-nginx
         tag: v1
@@ -48,7 +48,7 @@
 
     - name: Run nginx docker container
       docker_container:
-        docker_host: "{{ item }}"
+        docker_hosts: "{{ item }}"
         name: "nginx-1"
         image: "nginxinc/docker-nginx:v1"
         networks:
@@ -60,7 +60,7 @@
 
     - name: Run ansible docker container
       docker_container:
-        docker_host: "{{ item }}"
+        docker_hosts: "{{ item }}"
         name: "ansible-1"
         image: "{{ required_docker_images }}"
         command: /bin/bash
