@@ -19,7 +19,7 @@
         state: present
       become: yes
       become_user: root
-      var:
+      vars:
         ansible_python_interpreter: /usr/bin/python
         
     - name: Create docker local network
