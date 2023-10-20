@@ -2,7 +2,7 @@
 - name: Management Docker
   hosts: localhost
   vars:
-    docker_hosts:
+    docker_host:
       - '10.44.229.71:2376'
       - '10.44.229.72:2376'
     required_docker_images: "ansible/centos7-ansible"
