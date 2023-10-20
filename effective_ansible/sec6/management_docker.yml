@@ -36,19 +36,19 @@
       delegate_to: "{{ item }}"
       loop: "{{ targets }}"
 
-    - name: Get Nginx Dockerfile
-      git:
-        repo: https://github.com/nginxinc/docker-nginx.git
-        dest: "{{ tmp_dir }}"
-      delegate_to: "{{ item }}"
-      loop: "{{ targets }}"
-
     - name: Install the required packages
       package:
         name: git
         state: present
       become: yes
       become_user: root
+      delegate_to: "{{ item }}"
+      loop: "{{ targets }}"
+
+    - name: Get Nginx Dockerfile
+      git:
+        repo: https://github.com/nginxinc/docker-nginx.git
+        dest: "{{ tmp_dir }}"
       delegate_to: "{{ item }}"
       loop: "{{ targets }}"
 
