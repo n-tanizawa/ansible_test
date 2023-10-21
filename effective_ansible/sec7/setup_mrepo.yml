@@ -8,8 +8,8 @@
       - createrepo
       - httpd
     firewalld_port:
-      - 80
-      - 443
+      - 80/tcp
+      - 443/tcp
     new_directory:
       - os
       - updates
@@ -23,7 +23,7 @@
 
     - name: check_install / Allow ports for firewalld
       firewalld:
-        port: {{ item }}
+        port: "{{ item }}"
         permanent: yes
         immediate: yes
         state: enabled
