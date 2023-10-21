@@ -35,7 +35,7 @@ $ sudo createrepo /var/www/html/extras
 ## リソースのApacheユーザーへの変更
 $ sudo chown apache:apache -R /var/www/html/extras
 
-上記の例では、Yumのextrasリポジトリを設定しているが、必要に応じて任意のリポジトリの動機を行うことができる
+上記の例では、Yumのextrasリポジトリを設定しているが、必要に応じて任意のリポジトリの同期を行うことができる
 
 ■ ターゲットノードのリポジトリ登録
 ミラーリポジトリを利用するすべてのターゲットノード側では、/etc/yum.repo.d/の配下にある利用リポジトリの詳細
