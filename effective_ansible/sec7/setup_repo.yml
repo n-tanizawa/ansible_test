@@ -1,0 +1,16 @@
+---
+- hosts: 10.44.229.71
+  tasks:
+   - name: common / setup_repo / Initialized yum repository
+     yum_repository:
+       name: "{{ item }}"
+       description: CentOS-$releasever - {{ item }}
+       baseurl: http://localhost/{{ item }}
+       gpgkey: file://etc/pki/rpm-gpg/RPM-GPM-KEY-CentOS-7
+       gpgcheck: yes
+       enabled: yes
+       file: CentOS-Base
+     loop:
+       - base
+       - extras
+       - updates
