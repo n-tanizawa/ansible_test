@@ -35,6 +35,11 @@ $ sudo createrepo /var/www/html/extras
 ## リソースのApacheユーザーへの変更
 $ sudo chown apache:apache -R /var/www/html/extras
 
+## firewalld設定
+$ sudo firewall-cmd --add-service=http --permanent
+$ sudo firewall-cmd --reload
+$ sudo firewall-cmd --list-all
+
 上記の例では、Yumのextrasリポジトリを設定しているが、必要に応じて任意のリポジトリの同期を行うことができる
 
 ■ ターゲットノードのリポジトリ登録
@@ -48,7 +53,7 @@ $ sudo chown apache:apache -R /var/www/html/extras
   yum_repository:
     name: "{{ item }}"
     description: CentOS-$releasever - {{ item }}
-    baseurl: http://localhost/{{ item }}
+    baseurl: http://10.44.229.72/{{ item }}
     gpgkey: file://etc/pki/rpm-gpg/RPM-GPM-KEY-CentOS-7
     gpgcheck: yes
     enabled: yes
