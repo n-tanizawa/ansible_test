@@ -31,10 +31,11 @@
 
     - name: Install packeges
       yum:
-        name: "{{ packeges }}"
+        name: "{{ item }}"
         state: present
       vars:
         ansible_python_interpreter: /usr/bin/python
+      loop: "{{ packeges }}"
 
     - name: Create directories if it doesn't exist
       ansible.builtin.file:
