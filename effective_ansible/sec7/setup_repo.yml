@@ -1,5 +1,5 @@
 ---
-- hosts: 10.44.229.71
+- hosts: test_servers
   tasks:
    - name: common / setup_repo / Initialized yum repository
      yum_repository:
