@@ -1,0 +1,28 @@
+[運用環境ごとのインベントリ]
+
+./sec7/
+├─ production.ini
+├─ staging.ini
+│
+├─group_vars
+│     ├─jp_servers.yml
+│     └─web_servers.yml
+│
+└─host_vars
+     ├─jp-web01.yml
+     └─jp-web02.yml
+
+運用環境ごとにインベントリを作成した場合は、「ロケーション」や「サーバ種別」のカテゴリグループごとの設定は、
+インベントリの中で調整する。たとえば、プレイブック内のターゲット(targets)にjp_serversのグループを指定した
+場合でも、group_vars/web_servers.ymlにグループ変数を定義しておくと、web_serversに属したターゲットノード
+には、web_servers.ymlに対して、同一の変数名を利用しないよう注意する必要がある。
+たとえば、web_server.ymlにはHTTPプロセスに必要なオプションなど、Webサーバグループのみに適用する変数を定義する。
+一方、jp_servers.ymlには、NTPの問い合わせた先サーバの指定など、日本のサーバグループ固有の変数を定義する。
+そして、ロケーションやサーバー種別に関係がない運用環境全体に定義する変数は、all.ymlに定義する。
+all.ymlには、OS共通のkeymapやモジュールなどを設定する。
+
+## 全ての本番環境のWebサーバに適用する場合
+$ ansible-playbook -i production.ini web_deploy.yml
+## 日本のWebサーバのみに適用する場合
+$ ansible-playbook -i production.ini web_deploy.yml -l jp_servers
+
