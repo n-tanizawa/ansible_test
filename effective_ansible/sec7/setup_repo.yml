@@ -3,7 +3,7 @@
   tasks:
    - name: common / setup_repo / Initialized yum repository
      yum_repository:
-       name: "{{ item }}"
+       name: "{{ item }}/tcp"
        description: CentOS-$releasever - {{ item }}
        baseurl: http://10.44.229.72/repos/centos/$releasever/{{ item }}/$basearch/
        gpgkey: file://etc/pki/rpm-gpg/RPM-GPM-KEY-CentOS-7
