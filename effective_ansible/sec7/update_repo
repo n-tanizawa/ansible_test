@@ -1,0 +1,12 @@
+#!/bin/bash
+
+VER='7'
+ARCH='x86_64'
+REPOS=(os updates extras)
+
+for REPO in ${REPOS[@]}
+do
+    rsync -avz --delete --exclude='repodata' \
+    rsync://ftp.riken.jp/centos/${VER}/${REPO}/${ARCH}/ /var/www/repos/centos/${VER}/${REPO}/${ARCH}/
+    createrepo /var/www/repos/centos/${VER}/${REPO}/${ARCH}/
+done
