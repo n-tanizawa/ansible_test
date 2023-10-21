@@ -44,12 +44,6 @@ rsync://ftp.riken.jp/centos/7/extras/x86_64/ \
 # createrepo /var/www/repos/centos/7/updates/x86_64/
 # createrepo /var/www/repos/centos/7/extras/x86_64/
 
-## リポジトリ情報の作成
-$ sudo createrepo /var/www/html/extras
-
-## リソースのApacheユーザーへの変更
-$ sudo chown apache:apache -R /var/www/html/extras
-
 ## firewalld設定
 $ sudo firewall-cmd --add-service=http --permanent
 $ sudo firewall-cmd --reload
@@ -107,6 +101,19 @@ Alias /repos /var/www/repos
     - extras
     - updates
 
+リポジトリ:パッケージを集めて保管している場所
+          CentOSにデフォルトでバンドルされているのは、base, updates, extras, centosplus, contrib の5つ
+          ただし、centosplus, contrib はデフォルト無効
 
+base : OSリリース時の状態
+updates : baseから更新があったパッケージが格納
+extras : baseに含まれない便利なソフトウェア群
+extras : ベースコンポーネントのupgradeをしない
+centosplus : ベースコンポーネントのupgradeをする
 
+コマンド yum repolist で確認可能
+また、/etc/yum.repos.d/CentOS-Base.repo に、デフォルトのリポジトリ設定が書かれている
+
+ディスクが不足した際の参考サイト
+https://ssilab.co.jp/blog/tech-blog/tech-blog-child/linux-partition_expansion
 
