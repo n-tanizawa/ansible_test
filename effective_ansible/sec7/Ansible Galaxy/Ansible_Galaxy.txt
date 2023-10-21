@@ -1,0 +1,25 @@
+[Ansible Galaxy]
+プレイブックを活用するためのベストプラクティスは、再利用可能なユニットでロールを管理することである。
+実際に様々な人がロールを作成しており、オープンソースとして公開している。そのため、一からプレイブックを作成
+せずとも、すでに公開されているロールを活用するだけで、構築や管理ノウハウが組み込まれたプレイブックを活用できる。
+個別に作成されるロールで共通で管理しているサイトが「Ansible Galaxy」と呼ばれる共有リポジトリである。
+Galaxyの検索ページから適切なロールを見つけ、指示に従ってダウンロードするだけで利用が可能。
+
+https://galaxy.ansible.com/ui/
+
+[Ansible Galaxyによるロール管理]
+ロールの取得は、ロールの検索結果に表示されるGitHubへのリンクからGit Cloneを行うか、「Installation」の
+インストールコマンドによってダウンロードできる。
+この際に、Ansibleのインストールに同梱されているansible-galaxyコマンドを使用する。
+ansible-galaxyコマンドでは、ロールの配置場所を設定しない限り環境変数「DEFAULT_ROLES_PATH」に定義された場所
+に、対象ロールがダウンロードされる。したがって、事前に配置するべきロールディレクトリが決まっている場合は、
+ロールディレクトリ名を「-p <ROLES_PATH>」に指定する。
+
+## 公開ロールの検索
+## ansible-galaxy search <Search Word>
+$ ansible-galaxy search mysql
+
+## 公開ロールのダウンロード
+## ansible-galaxy install -p <ROLES_PATH> <Author Account>.<Role Name>
+$ ansible-galaxy install -p roles nginxinc.nginx
+$ tree ./roles/nginxinc.nginx/
