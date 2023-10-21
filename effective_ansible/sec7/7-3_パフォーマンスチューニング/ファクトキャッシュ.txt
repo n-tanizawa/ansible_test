@@ -1,0 +1,79 @@
+[ファクトキャッシュ]
+Ansibleにはターゲットノードの機器情報(ファクト)を取得する機能があり、プレイブックに定義された処理の一番
+始めに実行される。この機能を利用すると、接続ごとにターゲットノードの細かな機器情報を取得することができるが、
+接続台数に比例してレスポンスタイムに影響を及ぼす。そのため、Ansibleのレスポンスタイムを向上させるためには、
+ファクト情報の取得時間を短縮することが効果的。
+ファクトを迅速に取得する方法の一つは、ファクトの情報の取得を無効化にすることである。
+ファクトはファクト変数としてプレイブックに活用できるが、すべてのタスクにおいてファクトが必要なわけではない。
+実行タスクやテンプレートでファクト変数を使用しない場合は、ファクト収集機能を無効化することが簡単な対処方法
+である。ファクト収集機能の無効化は「gather_facts」アーギュメントにて設定する。
+
+・ファクトの無効化
+---
+- hosts: web_servers
+  gather_facts: false ## falseにすることでファクト取得無効化
+  tasks:
+    ...
+
+しかしながら、ファクト変数なしで全ての処理を行うとすると、動的な機器情報の変更などに対応する柔軟性が損なわれる。
+そこで活用するのが、キャッシュプラグインで提供されているファクトキャッシュである。ファクトキャッシュは一度接続
+したノードのファクト情報を一時的に保存し、次回実行時にキャッシュから情報を得ることによって処理時間の短縮を図る
+機能である。
+プラグインが対応しているファクトキャッシュの保存先には以下である。
+
+・jsonfile: JSON形式のファイルに保存
+・memcached: memcachedに保存
+・memory: RAMに保存
+・mongodb: MongoDBに保存
+・pickle: Pickle形式のファイルに保存
+・redis: Redisに保存
+・yaml: YAML形式のファイルに保存
+
+デフォルトではファクトキャッシュは無効化されており、どの保存先を選ぶ場合にもansible.cfg、または環境変数
+(ANSIBLE_CACHE_PLUGIN)への設定が必要。
+
+・環境変数によるファクトキャッシュの有効化(jsonfile利用の例)
+$ export ANSIBLE_CACHE_PLUGIN=jsonfile
+
+■ jsonfileへのキャッシュ
+ファクトキャッシュのタイプの中で「jsonfile」「yaml」に関しては、ファクトはファイルシステムに保存される。
+キャッシュのために別のサービスを立ち上げる必要がなく、ansible.cfgの設定だけで簡単に利用できる一方で、
+ファクトのファイルを維持する必要がある。多くのターゲットノードに接続を行うと、その分ファイルの大きさが
+肥大化するため注意が必要。
+
+・jsonfileによるファクトキャッシュ設定(ansible.cfg)
+[defaults]
+gathering = smart
+
+fact_caching = jsonfile
+## Localホストのファイル保存場所
+fact_caching_connection = /tmp/ansible_facts
+## 24時間のキャッシュ保持期限
+fact_caching_timeout = 86400
+
+■ Memcachedへのキャッシュ
+Memcached上にファクトキャッシュを保存する場合は、あらかじめコントロールノード上にMemcachedを設定した後に、
+ansible.cfgの設定を行う必要がある。
+Memcachedのインストールは以下の手順の通り。また、Memcachedへの接続には、Pythonのpython-memcachedモジュール
+を利用するため、併せてインストールしておく。
+
+・コントロールノードへのMemcachedインストール手順
+$ sudo yum -y install memcached
+$ sudo systemctl start memcached
+$ sudo pip3 install python-memcached
+
+Memcachedを指定した場合、デフォルトではコントロールノード上のMemcached(127.0.0.1:11211)を利用するように
+設定されている。もし別のノード上にあるMemcachedを利用する場合は、「fact_caching_connection」を変更する。
+
+・Memcachedによるファクトキャッシュ設定(ansible.cfg)
+[defaults]
+gathering = smart
+
+fact_caching = memcached
+## LocalホストのMemcachedを利用(デフォルト値)
+fact_caching_connection = 127.0.0.1:11211
+## 24時間のキャッシュ保持期限
+fact_caching_timeout = 86400
+
+通常Memcachedに保存されたKeyは、memcached-toolにて確認できるが、ファクトキャッシュはバイナリ情報として
+保存されるため、読み取ることはできない。
