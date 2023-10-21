@@ -1,6 +1,7 @@
 ---
 - name: Create Mirror Repository
   hosts: mirror_repo
+  become: true
   vars:
     packeges:
       - yum-utils 
@@ -14,7 +15,7 @@
       - updates
       - extras
   tasks:
-    - name: configure / SELinux permissive
+    - name: Configure SELinux permissive
       selinux:
         policy: targeted
         state: permissive
