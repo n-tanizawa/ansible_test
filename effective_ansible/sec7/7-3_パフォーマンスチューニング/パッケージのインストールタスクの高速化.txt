@@ -53,7 +53,7 @@ $ sudo firewall-cmd --list-all
   yum_repository:
     name: "{{ item }}"
     description: CentOS-$releasever - {{ item }}
-    baseurl: http://10.44.229.72/{{ item }}
+    baseurl: http://localhost/{{ item }}
     gpgkey: file://etc/pki/rpm-gpg/RPM-GPM-KEY-CentOS-7
     gpgcheck: yes
     enabled: yes
