@@ -23,7 +23,7 @@
 
     - name: check_install / Allow ports for firewalld
       firewalld:
-        port: "{{ item }}"
+        port: {{ item }}
         permanent: yes
         immediate: yes
         state: enabled
