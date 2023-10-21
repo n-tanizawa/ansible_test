@@ -12,5 +12,6 @@
        file: CentOS-Base
      loop:
        - base
+       - os
        - extras
        - updates

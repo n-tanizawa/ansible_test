@@ -29,6 +29,24 @@ $ cd /var/www/html
 ## Apacheの公開ディレクトリへのリポジトリ同期
 $ sudo reposync -r extras
 
+# ディレクトリ作成
+[root@dlp ~]# mkdir -p /var/www/repos/centos/7/{os,updates,extras}/x86_64
+[root@dlp ~]# chmod -R 755 /var/www/repos
+# 公式リポジトリからデータコピー
+[root@dlp ~]# rsync -avz --delete --exclude='repodata' \
+rsync://ftp.riken.jp/centos/7/os/x86_64/ \
+/var/www/repos/centos/7/os/x86_64/
+[root@dlp ~]# rsync -avz --delete --exclude='repodata' \
+rsync://ftp.riken.jp/centos/7/updates/x86_64/ \
+/var/www/repos/centos/7/updates/x86_64/
+[root@dlp ~]# rsync -avz --delete --exclude='repodata' \
+rsync://ftp.riken.jp/centos/7/extras/x86_64/ \
+/var/www/repos/centos/7/extras/x86_64/
+# メタデータリポジトリ作成
+[root@dlp ~]# createrepo /var/www/repos/centos/7/os/x86_64/
+[root@dlp ~]# createrepo /var/www/repos/centos/7/updates/x86_64/
+[root@dlp ~]# createrepo /var/www/repos/centos/7/extras/x86_64/
+
 ## リポジトリ情報の作成
 $ sudo createrepo /var/www/html/extras
 
@@ -60,6 +78,7 @@ $ sudo firewall-cmd --list-all
     file: CentOS-Base
   loop:
     - base
+    - os
     - extras
     - updates
 
