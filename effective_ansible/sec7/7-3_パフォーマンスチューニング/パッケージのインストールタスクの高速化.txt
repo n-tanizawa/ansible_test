@@ -25,6 +25,7 @@ $ sudo yum install -y httpd
 $ sudo systemctl start httpd
 
 ## ミラー作成例
+## 例として、デフォルトで有効となっている [base], [updates], [extras] リポジトリについてローカルミラーを作成
 # ディレクトリ作成
 # mkdir -p /var/www/repos/centos/7/{os,updates,extras}/x86_64
 # chmod -R 755 /var/www/repos
@@ -84,7 +85,7 @@ done
   yum_repository:
     name: "{{ item }}"
     description: CentOS-$releasever - {{ item }}
-    baseurl: http://localhost/{{ item }}
+    baseurl: http://localhost/repos/centos/$releasever/{{ item }}/$basearch/
     gpgkey: file://etc/pki/rpm-gpg/RPM-GPM-KEY-CentOS-7
     gpgcheck: yes
     enabled: yes
