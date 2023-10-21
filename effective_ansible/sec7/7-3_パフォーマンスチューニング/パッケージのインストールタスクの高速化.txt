@@ -24,28 +24,24 @@ $ sudo yum install -y yum-utils createrepo
 $ sudo yum install -y httpd
 $ sudo systemctl start httpd
 
-## extrasのミラー作成例(※必要なレポジトリの同期を行う)
-$ cd /var/www/html
-## Apacheの公開ディレクトリへのリポジトリ同期
-$ sudo reposync -r extras
-
+## ミラー作成例
 # ディレクトリ作成
-[root@dlp ~]# mkdir -p /var/www/repos/centos/7/{os,updates,extras}/x86_64
-[root@dlp ~]# chmod -R 755 /var/www/repos
+# mkdir -p /var/www/repos/centos/7/{os,updates,extras}/x86_64
+# chmod -R 755 /var/www/repos
 # 公式リポジトリからデータコピー
-[root@dlp ~]# rsync -avz --delete --exclude='repodata' \
+# rsync -avz --delete --exclude='repodata' \
 rsync://ftp.riken.jp/centos/7/os/x86_64/ \
 /var/www/repos/centos/7/os/x86_64/
-[root@dlp ~]# rsync -avz --delete --exclude='repodata' \
+# rsync -avz --delete --exclude='repodata' \
 rsync://ftp.riken.jp/centos/7/updates/x86_64/ \
 /var/www/repos/centos/7/updates/x86_64/
-[root@dlp ~]# rsync -avz --delete --exclude='repodata' \
+# rsync -avz --delete --exclude='repodata' \
 rsync://ftp.riken.jp/centos/7/extras/x86_64/ \
 /var/www/repos/centos/7/extras/x86_64/
 # メタデータリポジトリ作成
-[root@dlp ~]# createrepo /var/www/repos/centos/7/os/x86_64/
-[root@dlp ~]# createrepo /var/www/repos/centos/7/updates/x86_64/
-[root@dlp ~]# createrepo /var/www/repos/centos/7/extras/x86_64/
+# createrepo /var/www/repos/centos/7/os/x86_64/
+# createrepo /var/www/repos/centos/7/updates/x86_64/
+# createrepo /var/www/repos/centos/7/extras/x86_64/
 
 ## リポジトリ情報の作成
 $ sudo createrepo /var/www/html/extras
@@ -58,7 +54,24 @@ $ sudo firewall-cmd --add-service=http --permanent
 $ sudo firewall-cmd --reload
 $ sudo firewall-cmd --list-all
 
-上記の例では、Yumのextrasリポジトリを設定しているが、必要に応じて任意のリポジトリの同期を行うことができる
+## 公式リポジトリから定期的にデータを更新するようにCron登録
+## 例では一日一回更新
+# vi /etc/cron.daily/update-repo
+# 新規作成
+#!/bin/bash
+
+VER='7'
+ARCH='x86_64'
+REPOS=(os updates extras)
+
+for REPO in ${REPOS[@]}
+do
+    rsync -avz --delete --exclude='repodata' \
+    rsync://ftp.riken.jp/centos/${VER}/${REPO}/${ARCH}/ /var/www/repos/centos/${VER}/${REPO}/${ARCH}/
+    createrepo /var/www/repos/centos/${VER}/${REPO}/${ARCH}/
+done
+
+# chmod 755 /etc/cron.daily/update-repo
 
 ■ ターゲットノードのリポジトリ登録
 ミラーリポジトリを利用するすべてのターゲットノード側では、/etc/yum.repo.d/の配下にある利用リポジトリの詳細
