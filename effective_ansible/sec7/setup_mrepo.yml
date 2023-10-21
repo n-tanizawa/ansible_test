@@ -55,13 +55,13 @@
         mode: '0755'
       loop: "{{ new_directory }}"
 
-    # - name: rsync
-    #   command: "{{ item }}"
-    #   loop: "{{ rsync_commands }}"
+    - name: rsync
+      command: "{{ item }}"
+      loop: "{{ rsync_commands }}"
 
-    # - name: createrepo
-    #   command: "{{ item }}"
-    #   loop: "{{ createrepo_commands }}"
+    - name: createrepo
+      command: "{{ item }}"
+      loop: "{{ createrepo_commands }}"
 
     - name: Configure update-repo
       copy:
