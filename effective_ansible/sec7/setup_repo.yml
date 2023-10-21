@@ -11,7 +11,7 @@
        enabled: yes
        file: CentOS-Base
      loop:
-       - os
+       - base
        - extras
        - updates
 
