@@ -74,6 +74,17 @@ done
 
 # chmod 755 /etc/cron.daily/update-repo
 
+## 他ホストからリポジトリが参照できるよう Apache httpd の設定を変更
+# vi /etc/httpd/conf.d/repos.conf
+# 新規作成
+Alias /repos /var/www/repos
+<directory /var/www/repos>
+    Options +Indexes
+    Require all granted
+</directory>
+
+# systemctl restart httpd
+
 ■ ターゲットノードのリポジトリ登録
 ミラーリポジトリを利用するすべてのターゲットノード側では、/etc/yum.repo.d/の配下にある利用リポジトリの詳細
 を変更する必要がある。利用するリポジトリのURLの指定先をミラーリポジトリサーバに向けることによって、ミラーリポ
