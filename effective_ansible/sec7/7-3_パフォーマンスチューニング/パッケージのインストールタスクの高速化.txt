@@ -22,7 +22,7 @@ $ sudo yum install -y yum-utils createrepo
 
 ## Apacheのインストールと起動
 $ sudo yum install -y httpd
-$ sudo yum systemctl start httpd
+$ sudo systemctl start httpd
 
 ## extrasのミラー作成例(※必要なレポジトリの同期を行う)
 $ cd /var/www/html
