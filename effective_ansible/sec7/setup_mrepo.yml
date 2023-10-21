@@ -30,7 +30,7 @@
       loop: "{{ firewalld_port }}"
 
     - name: Install packeges
-      dnf:
+      yum:
         name: "{{ packeges }}"
         state: present
       vars:
