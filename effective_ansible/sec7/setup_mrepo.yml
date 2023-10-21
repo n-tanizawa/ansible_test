@@ -19,7 +19,7 @@
       selinux:
         policy: targeted
         state: permissive
-        when: ansible_selinux.config_mode == 'enforcing' 
+      when: ansible_selinux.config_mode == 'enforcing' 
 
     - name: check_install / Allow ports for firewalld
       firewalld:
