@@ -23,3 +23,12 @@ $ ansible-galaxy search mysql
 ## ansible-galaxy install -p <ROLES_PATH> <Author Account>.<Role Name>
 $ ansible-galaxy install -p roles nginxinc.nginx
 $ tree ./roles/nginxinc.nginx/
+
+さらに、ansible-galaxyコマンドは、Ansible Galaxy上のロール管理だけでなく、自身が作成するロールの
+ディレクトリ構成を作るという機能もある。今までロールを利用する際は、defaultsやtask、templatesといった
+サブディレクティブを必要な分作成していたが、initオプションを利用することによって、ロールの初期ディレクトリ
+構成を自動で作成する。また作成した後は、通常通りmain.ymlにタスクの定義を行うところから始められる。
+
+## ロールディレクトリ作成
+## ansible-galaxy init <New Role Name>
+$ ansible-galaxy init roles/common
