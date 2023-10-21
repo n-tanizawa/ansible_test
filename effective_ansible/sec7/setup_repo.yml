@@ -6,7 +6,7 @@
        name: "{{ item }}"
        description: CentOS-$releasever - {{ item }}
        baseurl: http://10.44.229.62/repos/centos/$releasever/{{ item }}/$basearch/
-       gpgkey: file://etc/pki/rpm-gpg/RPM-GPM-KEY-CentOS-7
+       gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
        gpgcheck: yes
        enabled: yes
        file: CentOS-Base
@@ -15,3 +15,4 @@
        - os
        - extras
        - updates
+
