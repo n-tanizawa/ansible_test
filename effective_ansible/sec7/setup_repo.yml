@@ -3,15 +3,15 @@
   tasks:
    - name: common / setup_repo / Initialized yum repository
      yum_repository:
-       name: "{{ item }}"
-       description: CentOS-$releasever - {{ item }}
-       baseurl: http://10.44.229.62/repos/centos/$releasever/{{ item }}/$basearch/
+       name: "{{ item.name }}"
+       description: CentOS-$releasever - {{ item.name }}
+       baseurl: http://10.44.229.62/repos/centos/$releasever/{{ item.baseurl }}/$basearch/
        gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
        gpgcheck: yes
        enabled: yes
        file: CentOS-Base
      loop:
-       - base
-       - extras
-       - updates
+       - { name: 'base', baseurl: 'os' }
+       - { name: 'updates', baseurl: 'updates' }
+       - { name: 'extras', baseurl: 'extras' }
 
