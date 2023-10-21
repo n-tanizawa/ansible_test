@@ -65,7 +65,7 @@
 
     - name: Configure update-repo
       copy:
-        src: /root/effective_ansible/sec7/update-repo
+        src: /root/effective_ansible/sec7/update_repo.conf
         dest: /etc/cron.daily/update-repo
         owner: root
         group: root
