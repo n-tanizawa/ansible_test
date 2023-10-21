@@ -1,0 +1,63 @@
+[パッケージのインストールタスクの高速化]
+OSパッケージインストールタスクに対する、実行レスポンスタイムを短縮する方法。例えば、ターゲットノードが100台
+あったとした場合、そのすべてが一斉にインターネット越しにOSライブラリのパッケージ更新を行うと、膨大なネット
+ワークコストや時間がかかる。こうした外部にあるコンテンツの取得時間を短縮できれば、全体のパフォーマンス向上に
+貢献できる。特に、OSライブラリのインストールタスクの短縮に一番効果的な方法は、ローカル環境にパッケージミラー
+リポジトリを用意することである。
+
+これを利用することによってインターネット越しの接続が制限され、パッケージ取得のレスポンスタイムを最小限に抑える
+ことができる。事前にミラーリポジトリサーバの構築を行い、その後にターゲットノードからミラーリポジトリの登録を
+行う。
+
+■ ミラーリポジトリサーバの構築
+ローカルのミラーリポジトリを作成する方法は複数あり、RedHat系のYumを利用する場合と、DebianのAPTを利用する場合
+でも異なる。例えば、reposyncを利用したCentOSでのミラーリポジトリを構築することなどである。reposyncとは、指定
+したリポジトリとの同期を取るコマンドである。タあd氏、動着物の公式リポジトリは随時更新されるため、Cronなどの
+定期ジョブプロセスにより、定期的に同期を取らなければならない。また、パッケージ検索を行うには、リポジトリの情報
+を定義したXMLファイルをcreaterepoコマンドで作成する必要がある。
+
+・reposyncを利用したミラーリポジトリ構築
+## reposync/createrepoコマンドのインストール
+$ sudo yum install -y yum-utils createrepo
+
+## Apacheのインストールと起動
+$ sudo yum install -y httpd
+$ sudo yum systemctl start httpd
+
+## extrasのミラー作成例(※必要なレポジトリの同期を行う)
+$ cd /var/www/html
+## Apacheの公開ディレクトリへのリポジトリ同期
+$ sudo reposync -r extras
+
+## リポジトリ情報の作成
+$ sudo createrepo /var/www/html/extras
+
+## リソースのApacheユーザーへの変更
+$ sudo chown apache:apache -R /var/www/html/extras
+
+上記の例では、Yumのextrasリポジトリを設定しているが、必要に応じて任意のリポジトリの動機を行うことができる
+
+■ ターゲットノードのリポジトリ登録
+ミラーリポジトリを利用するすべてのターゲットノード側では、/etc/yum.repo.d/の配下にある利用リポジトリの詳細
+を変更する必要がある。利用するリポジトリのURLの指定先をミラーリポジトリサーバに向けることによって、ミラーリポ
+ジトリからパッケージを取得してタスクを高速化できる。さらに、今後も再利用できるように、プライブックのタスクと
+してミラーリポジトリ登録を行うと効率的。
+
+・ミラーリポジトリ登録用タスク
+- name: common / setup_repo / Initialized yum repository
+  yum_repository:
+    name: "{{ item }}"
+    description: CentOS-$releasever - {{ item }}
+    baseurl: http://localhost/{{ item }}
+    gpgkey: file://etc/pki/rpm-gpg/RPM-GPM-KEY-CentOS-7
+    gpgcheck: yes
+    enabled: yes
+    file: CentOS-Base
+  loop:
+    - base
+    - extras
+    - updates
+
+
+
+
