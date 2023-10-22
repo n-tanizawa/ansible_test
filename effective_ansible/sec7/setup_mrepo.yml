@@ -50,8 +50,8 @@
       ansible.builtin.file:
         path: "/var/www/repos/centos/7/{{ item }}/x86_64"
         state: directory
-        owner: root
-        group: root
+        owner: apache
+        group: apache
         mode: '0755'
       loop: "{{ directory_path }}"
 
