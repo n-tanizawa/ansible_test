@@ -11,11 +11,7 @@
     firewalld_port:
       - 80/tcp
       - 443/tcp
-    new_directory:
-      - os
-      - updates
-      - extras
-    rsync_lists:
+    directory_path:
       - os
       - updates
       - extras
@@ -57,7 +53,7 @@
         owner: apache
         group: apache
         mode: '0755'
-      loop: "{{ new_directory }}"
+      loop: "{{ directory_path }}"
 
     # - name: rsync
     #   command: "{{ item }}"
@@ -70,14 +66,14 @@
     - name: rsync
       synchronize: 
         mode: pull
-        src: rsync://ftp.riken.jp/centos/7/{{ item }}/x86_64/
-        dest: /var/www/repos/centos/7/{{ item }}/x86_64/
+        src: "rsync://ftp.riken.jp/centos/7/{{ item }}/x86_64/"
+        dest: "/var/www/repos/centos/7/{{ item }}/x86_64"
         recursive: yes
         delete: yes
         rsync_opts:
           - "-avz"
           - "--exclude='repodata"
-      loop: "{{ rsync_lists }}"
+      loop: "{{ directory_path }}"
 
     - name: createrepo
       command: "{{ item }}"
