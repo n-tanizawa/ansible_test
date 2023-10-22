@@ -16,6 +16,7 @@
       - os
       - updates
       - extras
+    # rsync_commands:
     #   - rsync -avz --delete --exclude='repodata' rsync://ftp.riken.jp/centos/7/os/x86_64/ /var/www/repos/centos/7/os/x86_64/
     #   - rsync -avz --delete --exclude='repodata' rsync://ftp.riken.jp/centos/7/updates/x86_64/ /var/www/repos/centos/7/updates/x86_64/
     #   - rsync -avz --delete --exclude='repodata' rsync://ftp.riken.jp/centos/7/extras/x86_64/ /var/www/repos/centos/7/extras/x86_64/
@@ -56,27 +57,24 @@
         mode: '0755'
       loop: "{{ directory_path }}"
 
-    # - name: rsync
-    #   command: "{{ item }}"
-    #   loop: "{{ rsync_commands }}"
+
+    - name: rsync commands
+      command: rsync -avz --delete --exclude='repodata' rsync://ftp.riken.jp/centos/7/{{ item }}/x86_64/ /var/www/repos/centos/7/{{ item }}/x86_64/
+      loop: "{{ rsync_lists }}"
 
     # - name: rsync
-    #   command: rsync -avz --delete --exclude='repodata' rsync://ftp.riken.jp/centos/7/{{ item }}/x86_64/ /var/www/repos/centos/7/{{ item }}/x86_64/
-    #   loop: "{{ rsync_lists }}"
-
-    - name: rsync
-      synchronize: 
-        mode: pull
-        src: "rsync://ftp.riken.jp/centos/7/{{ item }}/x86_64/"
-        dest: "/var/www/repos/centos/7/{{ item }}/x86_64/"
-        recursive: yes
-        delete: yes
-        rsync_opts:
-          - "-avz"
-          - "--exclude='repodata'"
-      loop: "{{ directory_path }}"
-      vars: 
-        ansible_python_interpreter: python3
+    #   synchronize: 
+    #     mode: pull
+    #     src: "rsync://ftp.riken.jp/centos/7/{{ item }}/x86_64/"
+    #     dest: "/var/www/repos/centos/7/{{ item }}/x86_64/"
+    #     recursive: yes
+    #     delete: yes
+    #     rsync_opts:
+    #       - "-avz"
+    #       - "--exclude='repodata'"
+    #   loop: "{{ directory_path }}"
+    #   vars: 
+    #     ansible_python_interpreter: python3
 
     - name: createrepo
       command: "{{ item }}"
