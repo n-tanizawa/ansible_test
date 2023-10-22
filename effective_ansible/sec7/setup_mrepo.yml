@@ -72,8 +72,7 @@
         delete: yes
         rsync_opts:
           - "-avz"
-          - "--exclude='repodata"
-          - "--out-format='<<CHANGED>>%i %n%L'"
+          - "--exclude='repodata'"
       loop: "{{ directory_path }}"
       vars: 
         ansible_python_interpreter: python3
