@@ -65,21 +65,21 @@
     #   command: "{{ item }}"
     #   loop: "{{ rsync_commands }}"
 
-    # - name: rsync
-    #   command: rsync -avz --delete --exclude='repodata' rsync://ftp.riken.jp/Linux/centos/7/{{ item }}/x86_64/Packages/ /var/www/repos/centos/7/{{ item }}/x86_64/
-    #   loop: "{{ rsync_lists }}"
-
     - name: rsync
-      synchronize: 
-        mode: pull
-        src: "rsync://ftp.riken.jp/Linux/centos/7/{{ item }}/x86_64/"
-        dest: "/var/www/repos/centos/7/{{ item }}/x86_64/"
-        recursive: yes
-        delete: yes
-        rsync_opts:
-          - "-avz"
-          - "--exclude='repodata"
+      command: rsync -avz --delete --exclude='repodata' rsync://ftp.riken.jp/Linux/centos/7/{{ item }}/x86_64/ /var/www/repos/centos/7/{{ item }}/x86_64/
       loop: "{{ rsync_lists }}"
+
+    # - name: rsync
+    #   synchronize: 
+    #     mode: pull
+    #     src: "rsync://ftp.riken.jp/Linux/centos/7/{{ item }}/x86_64/"
+    #     dest: "/var/www/repos/centos/7/{{ item }}/x86_64/"
+    #     recursive: yes
+    #     delete: yes
+    #     rsync_opts:
+    #       - "-avz"
+    #       - "--exclude='repodata"
+    #   loop: "{{ rsync_lists }}"
 
     - name: createrepo
       command: "{{ item }}"
