@@ -35,3 +35,6 @@ git -c user.name="bar" -c user.email=bar@example.com commit -m "test"
 # global	使用ユーザー	                      ~/.gitconfig                        --global
                                                  または~/.config/git/config	
 # local	    設定したリポジトリ	                  .git/config（設定したリポジトリ内）   --localまたはなし
+
+Gitにパスワード認証なしでPushするまでの手順
+https://nishinatoshiharu.com/how-to-gitpush-with-ssh/
