@@ -60,7 +60,7 @@
 
     - name: rsync commands
       command: rsync -avz --delete --exclude='repodata' rsync://ftp.riken.jp/centos/7/{{ item }}/x86_64/ /var/www/repos/centos/7/{{ item }}/x86_64/
-      loop: "{{ rsync_lists }}"
+      loop: "{{ directory_path }}"
 
     # - name: rsync
     #   synchronize: 
