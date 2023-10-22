@@ -1,0 +1,9 @@
+2023-10-22 16:45:46,100 p=24706 u=admin |  PLAY [test_servers] ************************************************************
+2023-10-22 16:45:46,108 p=24706 u=admin |  TASK [Gathering Facts] *********************************************************
+2023-10-22 16:45:47,322 p=24706 u=admin |  ok: [10.44.229.71]
+2023-10-22 16:45:47,374 p=24706 u=admin |  TASK [common / setup_repo / Initialized yum repository] ************************
+2023-10-22 16:45:47,748 p=24706 u=admin |  ok: [10.44.229.71] => (item={'name': 'base', 'baseurl': 'os'})
+2023-10-22 16:45:47,972 p=24706 u=admin |  ok: [10.44.229.71] => (item={'name': 'updates', 'baseurl': 'updates'})
+2023-10-22 16:45:48,204 p=24706 u=admin |  ok: [10.44.229.71] => (item={'name': 'extras', 'baseurl': 'extras'})
+2023-10-22 16:45:48,206 p=24706 u=admin |  PLAY RECAP *********************************************************************
+2023-10-22 16:45:48,206 p=24706 u=admin |  10.44.229.71               : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
