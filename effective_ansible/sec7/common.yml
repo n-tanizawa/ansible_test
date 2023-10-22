@@ -34,6 +34,7 @@
       poll: 1
       register: yum_sleeper
       ignore_errors: yes
+      strategy: free
 
     ##(4)EPELリポジトリの設定
     - name: configure / Import EPEL Repository
@@ -41,3 +42,4 @@
         name: epel-release
         state: latest
         update_cache: yes
+      strategy: free
