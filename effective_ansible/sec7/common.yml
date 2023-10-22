@@ -6,9 +6,14 @@
   strategy: free
  
   pre_tasks:
-    - name: Remove YUM lock file
-      command: rm /var/run/yum.pid
-      become: yes
+    - name: Check for YUM lock file
+      shell: "[[ -f /var/run/yum.pid ]] && echo 'Lock file exists' || echo 'Lock file does not exist'"
+      register: yum_lock_check
+      ignore_errors: yes
+
+    - name: Remove YUM lock file if it exists
+      shell: "[[ -f /var/run/yum.pid ]] && rm -f /var/run/yum.pid"
+      when: yum_lock_check.stdout == 'Lock file exists'
   
   tasks:
     #(1)SELinuxのモード変更 
@@ -38,8 +43,6 @@
         update_cache: yes
       async: 1000
       poll: 1
-      register: yum_sleeper
-      ignore_errors: yes
 
     ##(4)EPELリポジトリの設定
     - name: configure / Import EPEL Repository
