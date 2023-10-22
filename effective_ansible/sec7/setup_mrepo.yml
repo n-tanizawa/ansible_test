@@ -66,7 +66,7 @@
     #   loop: "{{ rsync_commands }}"
 
     - name: rsync
-      synchronaze: 
+      synchronize: 
         mode: pull
         src: "http://ftp.riken.jp/Linux/centos/7/{{ item }}/x86_64/Packages/"
         dest: "/var/www/repos/centos/7/{{ item }}/x86_64/"
