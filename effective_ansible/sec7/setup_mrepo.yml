@@ -67,7 +67,7 @@
       synchronize: 
         mode: pull
         src: "rsync://ftp.riken.jp/centos/7/{{ item }}/x86_64/"
-        dest: "/var/www/repos/centos/7/{{ item }}/x86_64"
+        dest: "/var/www/repos/centos/7/{{ item }}/x86_64/"
         recursive: yes
         delete: yes
         rsync_opts:
