@@ -4,6 +4,7 @@
   become: true
   become_user: root
   strategy: free
+  gather_facts: false
  
   pre_tasks:
     - name: Check for YUM lock file
