@@ -74,8 +74,7 @@
           - "-avz"
           - "--exclude='repodata"
       loop: "{{ directory_path }}"
-      vars:
-        ansible_python_interpreter=python3
+      vars: ansible_python_interpreter=python3
 
     - name: createrepo
       command: "{{ item }}"
