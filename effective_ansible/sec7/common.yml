@@ -3,6 +3,7 @@
   hosts: test_servers
   become: true
   become_user: root
+  strategy: free
   tasks:
 #(1)SELinuxのモード変更
   
@@ -34,7 +35,6 @@
       poll: 1
       register: yum_sleeper
       ignore_errors: yes
-      strategy: free
 
     ##(4)EPELリポジトリの設定
     - name: configure / Import EPEL Repository
@@ -42,4 +42,4 @@
         name: epel-release
         state: latest
         update_cache: yes
-      strategy: free
+
