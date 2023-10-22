@@ -4,9 +4,14 @@
   become: true
   become_user: root
   strategy: free
-  tasks:
-#(1)SELinuxのモード変更
+ 
+  pre_tasks:
+    - name: Remove YUM lock file
+      command: rm /var/run/yum.pid
+      become: yes
   
+  tasks:
+    #(1)SELinuxのモード変更 
     - name: configure / SELinux permissive
       selinux:
         policy: targeted
