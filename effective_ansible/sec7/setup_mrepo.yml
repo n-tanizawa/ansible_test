@@ -3,7 +3,7 @@
   hosts: mirror_repo
   become: true
   vars:
-    packeges:
+    packages:
       - yum-utils 
       - rsync
       - createrepo
@@ -44,7 +44,7 @@
         state: present
       vars:
         ansible_python_interpreter: /usr/bin/python
-      loop: "{{ packeges }}"
+      loop: "{{ packages }}"
 
     - name: Create directories if it doesn't exist
       ansible.builtin.file:
