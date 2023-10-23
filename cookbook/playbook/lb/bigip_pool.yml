@@ -4,6 +4,10 @@
   gather_facts: false
   vars:
     pool_name: http_pool
+    nodes:
+      - { name: "web_node001", addr: 10.44.228.161 }
+      - { name: "web_node002", addr: 10.44.228.162 }
+      - { name: "web_node003", addr: 10.44.228.163 }
 
   tasks:
     - name: create pool
@@ -18,6 +22,7 @@
         state: present
         pool: "{{ pool_name }}"
         aggregate:
-          - name: web_node001
-            address: 10.100.0.135
+          - name: "{{ item.name }}"
+            address: "{{ item.addr }}"
             port: 80
+      loop: "{{ nodes }}"
