@@ -3,7 +3,7 @@
   connection: ansible.builtin.local
   gather_facts: false
   vars:
-    off_member
+    off_member:
       - { name: "web_node003", addr: "10.44.228.163" }
 
   tasks:
