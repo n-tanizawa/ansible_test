@@ -2,14 +2,20 @@
 - hosts: bigip
   connection: ansible.builtin.local
   gather_facts: false
+  vars:
+    nodes:
+      - { name: "web_node001", addr: 10.44.228.161 }
+      - { name: "web_node002", addr: 10.44.228.162 }
+      - { name: "web_node003", addr: 10.44.228.163 }
 
   tasks:
     - name: change connection limit
       f5networks.f5_modules.bigip_node:
         state: present
-        name: web_node001
-        address: 10.100.0.135
+        name: "{{ item.name }}"
+        address: "{{ item.addr }}"
         monitors: /Common/icmp
         availability_requirements:
           type: all
         connection_limit: 100
+      loop: "{{ nodes }}"
