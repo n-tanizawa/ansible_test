@@ -4,10 +4,9 @@
   gather_facts: false
   vars:
     interface_info:
-      - { name: "internal_selfip" ,  addr: "10.44.228.167", vlan: "internal" }
-      - { name: "external_selfip" , addr: "19.168.1.70", vlan: "external" }
-      - { name: "HA_selfip" ,  addr: "10.44.229.173", vlan: "HA" }
-    netmask: 24
+      - { name: "internal_selfip" ,  addr: "10.44.228.167", mask: 24, vlan: "internal" }
+      - { name: "external_selfip" , addr: "19.168.1.70", mask: 24, vlan: "external" }
+      - { name: "HA_selfip" ,  addr: "10.44.229.173", mask: 28, vlan: "HA" }
 
   tasks:
     - name: create selfip(non-flooting)
@@ -15,7 +14,7 @@
         state: present
         name: "{{ item.name }}"
         address: "{{ item.addr }}"
-        netmask: "{{ netmask }}"
+        netmask: "{{ item.mask }}"
         vlan: "{{ item.vlan }}"
         allow_service: default
         traffic_group: /Common/traffic-group-local-only
