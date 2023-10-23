@@ -19,4 +19,4 @@
         name: "{{ vlan_name }}"
         tag: "{{ item.vlan_id }}"
         state: present
-        loop: "{{ interface_info }}"
+      loop: "{{ interface_info }}"
