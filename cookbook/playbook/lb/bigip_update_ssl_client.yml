@@ -24,7 +24,7 @@
     - name: update the ssl profile of the virtual server
       f5networks.f5_modules.bigip_virtual_server:
         state: present
-        name: web_server001
+        name: web_server
         port: '443'
         profiles:
           - name: sslclient01
