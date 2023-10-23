@@ -4,9 +4,9 @@
   gather_facts: false
   vars:
     interface_info:
-      - { name: "internal_selfip" ,  addr: "192.168.1.70/24", vlan: "internal" }
-      - { name: "external_selfip" , addr: "192.168.1.70/24", vlan: "external" }
-      - { name: "HA_selfip" ,  addr: "192.168.1.70/24", vlan: "HA" }
+      - { name: "internal_selfip" ,  addr: "192.168.1.70", vlan: "internal" }
+      - { name: "external_selfip" , addr: "192.168.1.70", vlan: "external" }
+      - { name: "HA_selfip" ,  addr: "192.168.1.70", vlan: "HA" }
     netmask: 24
 
   tasks:
