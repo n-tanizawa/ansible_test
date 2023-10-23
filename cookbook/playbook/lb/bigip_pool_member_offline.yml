@@ -10,7 +10,7 @@
     - name: offline pool member
       f5networks.f5_modules.bigip_pool_member:
         state: forced_offline
-        pool: http_pool_1
+        pool: http_pool
         aggregate:
           - name: off_member.name
             address: off_member.addr
