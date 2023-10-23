@@ -7,6 +7,6 @@
     - name: attached irule to virtual server
       f5networks.f5_modules.bigip_virtual_server:
         state: present
-        name: web_server001
+        name: web_server
         irules:
           - _sys_https_redirect
