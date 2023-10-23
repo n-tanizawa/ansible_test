@@ -2,7 +2,7 @@
 - hosts: bigip
   connection: ansible.builtin.local
   gather_facts: false
-  var:
+  vars:
     interface_info:
       - { name: "internal_selfip" ,  addr_info: "192.168.1.70/24", vlan: "internal" }
       - { name: "external_selfip" , addr_info: "192.168.1.70/24", vlan: "external" }
