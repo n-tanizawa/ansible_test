@@ -4,17 +4,18 @@
   gather_facts: false
   vars:
     interface_info:
-      - { name: "internal_selfip" ,  addr_info: "192.168.1.70/24", vlan: "internal" }
-      - { name: "external_selfip" , addr_info: "192.168.1.70/24", vlan: "external" }
-      - { name: "HA_selfip" ,  addr_info: "192.168.1.70/24", vlan: "HA" }
+      - { name: "internal_selfip" ,  addr: "192.168.1.70/24", vlan: "internal" }
+      - { name: "external_selfip" , addr: "192.168.1.70/24", vlan: "external" }
+      - { name: "HA_selfip" ,  addr: "192.168.1.70/24", vlan: "HA" }
+    netmask: 24
 
   tasks:
     - name: create selfip(non-flooting)
       f5networks.f5_modules.bigip_selfip:
         state: present
         name: "{{ item.name }}"
-        address: "{{ item.addr_info }} | ansible.netcommon.ipaddr('address')"
-        netmask: "{{ item.addr_info }} | ansible.netcommon.ipaddr('netmask')"
+        address: "{{ item.addr }}"
+        netmask: "{{ netmask }}"
         vlan: "{{ item.vlan }}"
         allow_service: default
         traffic_group: /Common/traffic-group-local-only
