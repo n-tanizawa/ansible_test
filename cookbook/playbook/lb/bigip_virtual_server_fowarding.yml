@@ -8,7 +8,7 @@
       f5networks.f5_modules.bigip_virtual_server:
         state: present
         name: forwarding_virtual_server
-        source: '10.100.0.0/26'
+        source: '10.44.228.0/24'
         destination: '0.0.0.0'
         mask: '0'
         port: '*'
