@@ -12,6 +12,6 @@
         state: forced_offline
         pool: http_pool_1
         aggregate:
-          - name: "{{ off_member.name }}"
-            address: "{{ off_member.addr }}"
+          - name: off_member.name
+            address: off_member.addr
             port: 80
