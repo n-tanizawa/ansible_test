@@ -6,7 +6,7 @@
     interface_info:
       - { name: "internal_selfip" ,  addr: "10.44.228.167", mask: 24, vlan: "internal" }
       - { name: "external_selfip" , addr: "19.168.1.70", mask: 24, vlan: "external" }
-      - { name: "HA_selfip" ,  addr: "10.44.229.173", mask: 28, vlan: "HA" }
+      - { name: "HA_selfip" ,  addr: "10.44.229.67", mask: 28, vlan: "HA" }
 
   tasks:
     - name: create selfip(non-flooting)
