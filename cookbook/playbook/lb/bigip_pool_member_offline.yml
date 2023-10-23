@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     off_member
-    - { name: web_node003, addr: 10.44.228.163 }
+      - { name: web_node003, addr: 10.44.228.163 }
 
   tasks:
     - name: offline pool member
