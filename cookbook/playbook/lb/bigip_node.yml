@@ -2,14 +2,20 @@
 - hosts: bigip
   connection: ansible.builtin.local
   gather_facts: false
+  vars:
+    nodes:
+      - 10.44.228.161
+      - 10.44.228.162
+      - 10.44.228.163
 
   tasks:
     - name: create node (ip)
       f5networks.f5_modules.bigip_node:
         state: present
         name: web_node001
-        address: 10.100.0.135
+        address: 
         monitors: /Common/icmp
         availability_requirements:
           type: all
         connection_limit: 0
+      loop: "{{ nodes }}"
