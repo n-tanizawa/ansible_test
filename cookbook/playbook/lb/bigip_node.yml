@@ -4,16 +4,16 @@
   gather_facts: false
   vars:
     nodes:
-      - 10.44.228.161
-      - 10.44.228.162
-      - 10.44.228.163
+      - { name: "web_node001", addr: 10.44.228.161 }
+      - { name: "web_node002", addr: 10.44.228.162 }
+      - { name: "web_node003", addr: 10.44.228.163 }
 
   tasks:
     - name: create node (ip)
       f5networks.f5_modules.bigip_node:
         state: present
-        name: web_node001
-        address: 
+        name: "{{ item.name }}"
+        address: "{{ item.addr }}"
         monitors: /Common/icmp
         availability_requirements:
           type: all
