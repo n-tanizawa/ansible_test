@@ -13,8 +13,8 @@
       f5networks.f5_modules.bigip_selfip:
         state: present
         name: "{{ item.name }}"
-        address: "{{ '{{ item.addr_info }}' | ansible.netcommon.ipaddr('address') }}"
-        netmask: "{{ '{{ item.addr_info }}' | ansible.netcommon.ipaddr('netmask') }}"
+        address: "{{ item.addr_info }} | ansible.netcommon.ipaddr('address')"
+        netmask: "{{ item.addr_info }} | ansible.netcommon.ipaddr('netmask')"
         vlan: "{{ item.vlan }}"
         allow_service: default
         traffic_group: /Common/traffic-group-local-only
